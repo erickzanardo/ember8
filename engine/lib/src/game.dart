@@ -28,6 +28,17 @@ class EmberGameObject extends SpriteComponent with HasGameRef<EmberGame> {
 
     x = data['x'] as double;
     y = data['y'] as double;
+
+    data['w'] = width;
+    data['h'] = height;
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+
+    x = data['x'];
+    y = data['y'];
   }
 }
 
@@ -41,7 +52,12 @@ class EmberBackgroundComponent extends BaseComponent {
   @override
   Future<void>? onLoad() async {
     paint = Paint()..color = palette.backgroundColor;
-    rect = Rect.fromLTWH(0, 0, EmberGame.resolution.x, EmberGame.resolution.y);
+    rect = Rect.fromLTWH(
+      0,
+      0,
+      EmberCartridgeEngine.resolution.x,
+      EmberCartridgeEngine.resolution.y,
+    );
   }
 
   @override
@@ -56,7 +72,6 @@ class EmberBackgroundComponent extends BaseComponent {
 }
 
 class EmberGame extends BaseGame {
-  static final resolution = Vector2(160, 144);
   final EmberCartridge cartridge;
   late EmberCartridgeEngine engine;
 
@@ -64,7 +79,9 @@ class EmberGame extends BaseGame {
 
   @override
   Future<void> onLoad() async {
-    viewport = FixedResolutionViewport(resolution);
+    viewport = FixedResolutionViewport(
+      EmberCartridgeEngine.resolution,
+    );
 
     add(EmberBackgroundComponent(cartridge.palette));
 
@@ -74,5 +91,11 @@ class EmberGame extends BaseGame {
     cartridge.objects.forEach((key, value) {
       add(EmberGameObject(name: key, data: value));
     });
+  }
+
+  @override
+  void update(double dt) {
+    engine.tick(dt);
+    super.update(dt);
   }
 }

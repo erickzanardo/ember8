@@ -1,5 +1,8 @@
 import 'dart:ui';
 
+import 'package:flame/extensions.dart';
+import 'package:hetu_script/hetu_script.dart';
+
 class EmberPalette {
   final List<Color> colors;
 
@@ -31,22 +34,47 @@ class EmberSprite {
 class EmberCartridge {
   final EmberPalette palette;
   final List<EmberSprite> sprites;
+  final List<String> scripts;
   final Map<String, Map<String, Object>> objects;
 
   EmberCartridge({
     this.palette = const EmberPalette.base(),
     this.sprites = const [],
+    this.scripts = const [],
     this.objects = const {},
   });
 }
 
 class EmberCartridgeEngine {
+  static final resolution = Vector2(160, 144);
   final EmberCartridge cartridge;
   final Map<String, Image> sprites = {};
+  late Hetu hetu;
 
   EmberCartridgeEngine(this.cartridge);
 
+  String _parseGlobals(String script) {
+    return script
+        .replaceAll(
+          'SCREEN_WIDTH',
+          EmberCartridgeEngine.resolution.x.toString(),
+        )
+        .replaceAll(
+          'SCREEN_HEIGHT',
+          EmberCartridgeEngine.resolution.y.toString(),
+        );
+  }
+
   Future<void> load() async {
+    hetu = Hetu();
+    await hetu.init();
+
+    await Future.wait([
+      ...cartridge.scripts.map((script) async {
+        await hetu.eval(_parseGlobals(script));
+      }).toList(),
+    ]);
+
     await Future.wait(
       cartridge.sprites.map((sprite) async {
         final recorder = PictureRecorder();
@@ -70,5 +98,19 @@ class EmberCartridgeEngine {
       }).toList(),
     );
   }
-}
 
+  void tick(double dt) async {
+    await Future.wait(cartridge.objects.values
+        .where((obj) => obj['script'] != null)
+        .map((obj) async {
+      final scriptName = obj['script'] as String?;
+      await hetu.invoke(
+        scriptName!,
+        positionalArgs: [
+          dt,
+          obj,
+        ],
+      );
+    }).toList());
+  }
+}
