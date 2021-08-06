@@ -1,0 +1,16 @@
+name: engine
+description: The engine for the ember 8 console
+version: 0.0.1
+homepage:
+
+environment:
+  sdk: ">=2.13.0 <3.0.0"
+  flutter: ">=2.2.3"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  hetu_script: ^0.1.2+5
+  flame: ^1.0.0-releasecandidate.13
+
+flutter:
