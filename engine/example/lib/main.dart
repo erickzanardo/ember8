@@ -1,6 +1,7 @@
 import 'package:engine/engine.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   final cartridge = EmberCartridge(
@@ -43,12 +44,18 @@ void main() {
       }
       ''',
     ],
+    dpadScript: '''
+        fun dpadHandler(key, type) {
+          print(key)
+          print(type)
+        }
+    ''',
   );
 
   runApp(MyApp(cartridge: cartridge));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   final EmberCartridge cartridge;
 
   const MyApp({
@@ -56,7 +63,45 @@ class MyApp extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  // This widget is the root of your application.
+  @override
+  State<StatefulWidget> createState() {
+    return _MyAppState();
+  }
+}
+
+class _MyAppState extends State<MyApp> {
+  late EmberGame game;
+
+  @override
+  void initState() {
+    super.initState();
+
+    game = EmberGame(widget.cartridge);
+
+    RawKeyboard.instance.addListener(_keyboardEvent);
+  }
+
+  void _keyboardEvent(RawKeyEvent event) {
+    final buttonEvent = event is RawKeyDownEvent
+        ? ButtonEvent.down
+        : ButtonEvent.up;
+
+    if (event.character == 'a') {
+      game.sendDpadEvent(DpadEvent.left, buttonEvent);
+    } else if (event.character == 'd') {
+      game.sendDpadEvent(DpadEvent.right, buttonEvent);
+    } else if (event.character == 'w') {
+      game.sendDpadEvent(DpadEvent.top, buttonEvent);
+    } else if (event.character == 's') {
+      game.sendDpadEvent(DpadEvent.bottom, buttonEvent);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -65,7 +110,7 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         body: GameWidget(
-          game: EmberGame(cartridge),
+          game: game,
         ),
       ),
     );

@@ -3,6 +3,18 @@ import 'dart:ui';
 import 'package:flame/extensions.dart';
 import 'package:hetu_script/hetu_script.dart';
 
+enum DpadEvent {
+  top,
+  bottom,
+  left,
+  right,
+}
+
+enum ButtonEvent {
+  down,
+  up,
+}
+
 class EmberPalette {
   final List<Color> colors;
 
@@ -36,12 +48,14 @@ class EmberCartridge {
   final List<EmberSprite> sprites;
   final List<String> scripts;
   final Map<String, Map<String, Object>> objects;
+  final String? dpadScript;
 
   EmberCartridge({
     this.palette = const EmberPalette.base(),
     this.sprites = const [],
     this.scripts = const [],
     this.objects = const {},
+    this.dpadScript,
   });
 }
 
@@ -65,11 +79,45 @@ class EmberCartridgeEngine {
         );
   }
 
+  String _mapDpadEvent(DpadEvent event) {
+    switch(event) {
+      case DpadEvent.top:
+        return 'top';
+      case DpadEvent.left:
+        return 'left';
+      case DpadEvent.right:
+        return 'right';
+      case DpadEvent.bottom:
+        return 'bottom';
+    }
+  }
+
+  String _mapButtonEvent(ButtonEvent event) {
+    switch(event) {
+      case ButtonEvent.up:
+        return 'up';
+      case ButtonEvent.down:
+        return 'down';
+    }
+  }
+
+  void dpadEvent(DpadEvent dpadEvent, ButtonEvent buttonEvent) {
+    if (cartridge.dpadScript != null) {
+      hetu.invoke(
+          'dpadHandler',
+          positionalArgs: [_mapDpadEvent(dpadEvent), _mapButtonEvent(buttonEvent)],
+      );
+    }
+  }
+
   Future<void> load() async {
     hetu = Hetu();
     await hetu.init();
 
     await Future.wait([
+      if (cartridge.dpadScript != null)
+        hetu.eval(cartridge.dpadScript!),
+
       ...cartridge.scripts.map((script) async {
         await hetu.eval(_parseGlobals(script));
       }).toList(),

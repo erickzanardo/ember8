@@ -77,6 +77,10 @@ class EmberGame extends BaseGame {
 
   EmberGame(this.cartridge);
 
+  void sendDpadEvent(DpadEvent dpadEvent, ButtonEvent buttonEvent) {
+    engine.dpadEvent(dpadEvent, buttonEvent);
+  }
+
   @override
   Future<void> onLoad() async {
     viewport = FixedResolutionViewport(
