@@ -5,7 +5,7 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 
-import './core.dart';
+import './core/core.dart';
 
 class EmberGameObject extends SpriteComponent with HasGameRef<EmberGame> {
   final String name;

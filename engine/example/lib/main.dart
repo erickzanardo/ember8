@@ -26,8 +26,9 @@ void main() {
       },
     },
     scripts: [
-      '''
-      fun playerController(dt, obj) {
+      EmberControllerScript(
+        name: 'playerController',
+        body: '''
         let x = obj['x']
         let w = obj['w'] 
         let d = obj['d']
@@ -41,15 +42,16 @@ void main() {
         }
 
         obj['x'] = x + (40 * dt * d)
-      }
       ''',
+      ),
+      EmberDpadScript(
+          name: 'playerMovement',
+          body: '''
+            print(key)
+            print(type)
+          '''
+      ),
     ],
-    dpadScript: '''
-        fun dpadHandler(key, type) {
-          print(key)
-          print(type)
-        }
-    ''',
   );
 
   runApp(MyApp(cartridge: cartridge));
@@ -82,9 +84,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _keyboardEvent(RawKeyEvent event) {
-    final buttonEvent = event is RawKeyDownEvent
-        ? ButtonEvent.down
-        : ButtonEvent.up;
+    final buttonEvent =
+        event is RawKeyDownEvent ? ButtonEvent.down : ButtonEvent.up;
 
     if (event.character == 'a') {
       game.sendDpadEvent(DpadEvent.left, buttonEvent);
