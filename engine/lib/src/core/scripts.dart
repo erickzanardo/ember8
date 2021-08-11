@@ -13,7 +13,7 @@ abstract class EmberScript {
 
   @override
   String toString() {
-    return build()
+    final script = build()
         .replaceAll(
           'SCREEN_WIDTH',
           EmberCartridgeEngine.resolution.x.toString(),
@@ -22,6 +22,11 @@ abstract class EmberScript {
           'SCREEN_HEIGHT',
           EmberCartridgeEngine.resolution.y.toString(),
         );
+
+    return '''
+        external fun get_obj
+        $script
+    ''';
   }
 }
 

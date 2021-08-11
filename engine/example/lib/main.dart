@@ -20,7 +20,7 @@ void main() {
       'player': {
         'x': 10.0,
         'y': 138.0,
-        'd': 1,
+        'd': 0,
         'sprite': 'pad',
         'script': 'playerController',
       },
@@ -33,22 +33,25 @@ void main() {
         let w = obj['w'] 
         let d = obj['d']
 
-        if ((x + w >= SCREEN_WIDTH && d > 0)) {
-          obj['d'] = -1
-        }
-
-        if ((x < 0 && d < 0)) {
-          obj['d'] = 1
-        }
-
         obj['x'] = x + (40 * dt * d)
       ''',
       ),
       EmberDpadScript(
           name: 'playerMovement',
           body: '''
-            print(key)
-            print(type)
+          let player = get_obj('player')
+          if (key == 'left' && type == 'down') {
+            player['d'] = -1
+          }
+          if (key == 'right' && type == 'down') {
+            player['d'] = 1
+          }
+          if (key == 'left' && type == 'up' && player['d'] == -1) {
+            player['d'] = 0
+          }
+          if (key == 'right' && type == 'up' && player['d'] == 1) {
+            player['d'] = 0
+          }
           '''
       ),
     ],
@@ -79,28 +82,23 @@ class _MyAppState extends State<MyApp> {
     super.initState();
 
     game = EmberGame(widget.cartridge);
-
-    RawKeyboard.instance.addListener(_keyboardEvent);
   }
 
-  void _keyboardEvent(RawKeyEvent event) {
+  KeyEventResult _keyboardEvent(FocusNode node, RawKeyEvent event) {
     final buttonEvent =
         event is RawKeyDownEvent ? ButtonEvent.down : ButtonEvent.up;
 
-    if (event.character == 'a') {
+    if (event.logicalKey == LogicalKeyboardKey.keyA) {
       game.sendDpadEvent(DpadEvent.left, buttonEvent);
-    } else if (event.character == 'd') {
+    } else if (event.logicalKey == LogicalKeyboardKey.keyD) {
       game.sendDpadEvent(DpadEvent.right, buttonEvent);
-    } else if (event.character == 'w') {
+    } else if (event.logicalKey == LogicalKeyboardKey.keyW) {
       game.sendDpadEvent(DpadEvent.top, buttonEvent);
-    } else if (event.character == 's') {
+    } else if (event.logicalKey == LogicalKeyboardKey.keyS) {
       game.sendDpadEvent(DpadEvent.bottom, buttonEvent);
     }
-  }
 
-  @override
-  void dispose() {
-    super.dispose();
+    return KeyEventResult.handled;
   }
 
   @override
@@ -110,8 +108,12 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
-        body: GameWidget(
-          game: game,
+        body: Focus(
+          autofocus: true,
+          onKey: _keyboardEvent,
+          child: GameWidget(
+            game: game,
+          ),
         ),
       ),
     );

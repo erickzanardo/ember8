@@ -52,7 +52,9 @@ class EmberCartridgeEngine {
   Future<void> load() async {
     for (final script in cartridge.scripts) {
       final hetu = Hetu();
-      await hetu.init();
+      await hetu.init(externalFunctions: {
+        'get_obj': (String objName) => cartridge.objects[objName],
+      });
       await hetu.eval(script.toString());
 
       if (script is EmberControllerScript) {
@@ -68,7 +70,7 @@ class EmberCartridgeEngine {
       }).toList(),
     );
   }
-
+ 
   void tick(double dt) async {
     await Future.wait(cartridge.objects.values
         .where((obj) => obj['script'] != null)
