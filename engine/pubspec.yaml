@@ -12,5 +12,6 @@ dependencies:
     sdk: flutter
   hetu_script: ^0.1.2+5
   flame: ^1.0.0-releasecandidate.13
+  uuid: ^3.0.4
 
 flutter:

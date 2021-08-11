@@ -2,7 +2,7 @@
 
 import 'dart:ui';
 
-import 'package:flame/components.dart';
+import 'package:flame/components.dart' hide ActionEvent;
 import 'package:flame/game.dart';
 
 import './core/core.dart';
@@ -81,6 +81,10 @@ class EmberGame extends BaseGame {
     engine.dpadEvent(dpadEvent, buttonEvent);
   }
 
+  void sendActionEvent(ActionEvent actionEvent, ButtonEvent buttonEvent) {
+    engine.actionEvent(actionEvent, buttonEvent);
+  }
+
   @override
   Future<void> onLoad() async {
     viewport = FixedResolutionViewport(
@@ -89,7 +93,12 @@ class EmberGame extends BaseGame {
 
     add(EmberBackgroundComponent(cartridge.palette));
 
-    engine = EmberCartridgeEngine(cartridge);
+    engine = EmberCartridgeEngine(
+        cartridge,
+        onNewObject: (name, data) {
+          add(EmberGameObject(name: name, data: data));
+        },
+    );
     await engine.load();
 
     cartridge.objects.forEach((key, value) {

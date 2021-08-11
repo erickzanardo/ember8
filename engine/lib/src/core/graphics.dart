@@ -23,7 +23,7 @@ class EmberPalette {
 
 class EmberSprite {
   final String name;
-  final List<List<int>> pixels;
+  final List<List<int?>> pixels;
 
   EmberSprite(this.name, this.pixels);
 
@@ -36,10 +36,13 @@ class EmberSprite {
 
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
-        canvas.drawRect(
-          Rect.fromLTWH(x.toDouble(), y.toDouble(), 1, 1),
-          Paint()..color = palette.colors[pixels[y][x]],
-        );
+        final pixel = pixels[y][x];
+        if (pixel != null) {
+          canvas.drawRect(
+              Rect.fromLTWH(x.toDouble(), y.toDouble(), 1, 1),
+              Paint()..color = palette.colors[pixel],
+          );
+        }
       }
     }
 

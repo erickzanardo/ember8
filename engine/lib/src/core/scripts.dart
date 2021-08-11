@@ -25,6 +25,8 @@ abstract class EmberScript {
 
     return '''
         external fun get_obj
+        external fun create_obj
+        external fun create_anonymous_obj
         $script
     ''';
   }
@@ -46,8 +48,8 @@ class EmberControllerScript extends EmberScript {
   }
 }
 
-class EmberDpadScript extends EmberScript {
-  EmberDpadScript({
+abstract class EmberButtonScript extends EmberScript {
+  EmberButtonScript({
     required String name,
     required String body,
   }) : super(name: name, body: body);
@@ -60,4 +62,18 @@ class EmberDpadScript extends EmberScript {
       }
     ''';
   }
+}
+
+class EmberDpadScript extends EmberButtonScript {
+  EmberDpadScript({
+    required String name,
+    required String body,
+  }) : super(name: name, body: body);
+}
+
+class EmberActionScript extends EmberButtonScript {
+  EmberActionScript({
+    required String name,
+    required String body,
+  }) : super(name: name, body: body);
 }

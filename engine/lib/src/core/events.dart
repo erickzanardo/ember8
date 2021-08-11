@@ -5,6 +5,10 @@ enum DpadEvent {
   right,
 }
 
+enum ActionEvent {
+  a, b,
+}
+
 enum ButtonEvent {
   down,
   up,

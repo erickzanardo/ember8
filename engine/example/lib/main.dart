@@ -7,22 +7,46 @@ void main() {
   final cartridge = EmberCartridge(
     sprites: [
       EmberSprite(
-        'pad',
+        'ship',
         [
-          [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-          [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-          [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-          [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+          [null, null, 4, 4, 4, null, null],
+          [null, null, 4, 4, 4, null, null],
+          [null, null, 4, 4, 4, null, null],
+          [null, null, 4, 4, 4, null, null],
+          [null, null, 4, 4, 4, null, null],
+          [null, null, 4, 4, 4, null, null],
+          [null,    6, 4, 4, 4, 6   , null],
+          [null,    6, 4, 4, 4, 6   , null],
+          [   5,    6, 4, 4, 4, 6   , 5   ],
+          [   5,    6, 4, 4, 4, 6   , 5   ],
+          [   5,    6, 4, 4, 4, 6   , 5   ],
+          [   5,    6, 4, 4, 4, 6   , 5   ],
+        ],
+      ),
+      EmberSprite(
+        'bullet',
+        [
+          [7, 7],
+          [7, 7],
+          [7, 7],
+          [7, 7],
         ],
       ),
     ],
     objects: {
       'player': {
-        'x': 10.0,
-        'y': 138.0,
-        'd': 0,
-        'sprite': 'pad',
+        'x': 80.0,
+        'y': 120.0,
+        'dx': 0.0,
+        'dy': 0.0,
+        'sprite': 'ship',
         'script': 'playerController',
+      },
+    },
+    templates: {
+      'bullet': {
+        'script': 'bulletController',
+        'sprite': 'bullet',
       },
     },
     scripts: [
@@ -30,29 +54,63 @@ void main() {
         name: 'playerController',
         body: '''
         let x = obj['x']
+        let y = obj['y']
         let w = obj['w'] 
-        let d = obj['d']
+        let dx = obj['dx']
+        let dy = obj['dy']
 
-        obj['x'] = x + (40 * dt * d)
+        obj['x'] = x + (40 * dt * dx)
+        obj['y'] = y + (40 * dt * dy)
+      ''',
+      ),
+      EmberControllerScript(
+        name: 'bulletController',
+        body: '''
+        let y = obj['y']
+
+        obj['y'] = y - (80 * dt)
       ''',
       ),
       EmberDpadScript(
-          name: 'playerMovement',
+          name: 'playerMovementHandler',
           body: '''
           let player = get_obj('player')
           if (key == 'left' && type == 'down') {
-            player['d'] = -1
+            player['dx'] = -1
           }
           if (key == 'right' && type == 'down') {
-            player['d'] = 1
+            player['dx'] = 1
           }
-          if (key == 'left' && type == 'up' && player['d'] == -1) {
-            player['d'] = 0
+          if (key == 'left' && type == 'up' && player['dx'] == -1) {
+            player['dx'] = 0
           }
-          if (key == 'right' && type == 'up' && player['d'] == 1) {
-            player['d'] = 0
+          if (key == 'right' && type == 'up' && player['dx'] == 1) {
+            player['dx'] = 0
+          }
+          if (key == 'bottom' && type == 'down') {
+            player['dy'] = 1
+          }
+          if (key == 'top' && type == 'down') {
+            player['dy'] = -1
+          }
+          if (key == 'bottom' && type == 'up' && player['dy'] == 1) {
+            player['dy'] = 0
+          }
+          if (key == 'top' && type == 'up' && player['dy'] == -1) {
+            player['dy'] = 0
           }
           '''
+      ),
+      EmberActionScript(
+          name: 'playerActionHandler',
+          body: '''
+          if (key == 'a' && type == 'down') {
+            let player = get_obj('player');
+            let x = player['x'] + 3;
+            let y = player['y'];
+            create_anonymous_obj('bullet', {'x': x, 'y': y })
+          }
+          ''',
       ),
     ],
   );
@@ -96,6 +154,10 @@ class _MyAppState extends State<MyApp> {
       game.sendDpadEvent(DpadEvent.top, buttonEvent);
     } else if (event.logicalKey == LogicalKeyboardKey.keyS) {
       game.sendDpadEvent(DpadEvent.bottom, buttonEvent);
+    } else if (event.logicalKey == LogicalKeyboardKey.keyK) {
+      game.sendActionEvent(ActionEvent.a, buttonEvent);
+    } else if (event.logicalKey == LogicalKeyboardKey.keyL) {
+      game.sendActionEvent(ActionEvent.b, buttonEvent);
     }
 
     return KeyEventResult.handled;
