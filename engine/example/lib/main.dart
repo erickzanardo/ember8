@@ -67,8 +67,14 @@ void main() {
         name: 'bulletController',
         body: '''
         let y = obj['y']
+        let h = obj['h']
 
         obj['y'] = y - (80 * dt)
+
+        if (y + h < 0) {
+          remove_obj(objId)
+        }
+
       ''',
       ),
       EmberDpadScript(

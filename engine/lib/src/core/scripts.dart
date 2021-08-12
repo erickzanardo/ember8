@@ -27,6 +27,7 @@ abstract class EmberScript {
         external fun get_obj
         external fun create_obj
         external fun create_anonymous_obj
+        external fun remove_obj
         $script
     ''';
   }
@@ -41,7 +42,7 @@ class EmberControllerScript extends EmberScript {
   @override
   String build() {
     return '''
-      fun $name(dt, obj) {
+      fun $name(dt, obj, objId) {
         $body
       }
     ''';

@@ -15,6 +15,8 @@ class EmberCartridgeEngine {
   final Map<String, Hetu> actionControllers = {};
   final void Function(String, Map<String, Object>) onNewObject;
 
+  final List<String> _toRemove = [];
+
   EmberCartridgeEngine(this.cartridge, {
     required this.onNewObject,
   });
@@ -107,6 +109,9 @@ class EmberCartridgeEngine {
         'create_anonymous_obj': (String templateName, Map<dynamic, dynamic> properties) {
           _createObj(templateName, Uuid().v1(), properties);
         },
+        'remove_obj': (String objName) {
+          _toRemove.add(objName);
+        },
       });
       await hetu.eval(script.toString());
 
@@ -127,16 +132,21 @@ class EmberCartridgeEngine {
   }
  
   void tick(double dt) async {
-    await Future.wait(cartridge.objects.values
-        .where((obj) => obj['script'] != null)
+    if (_toRemove.isNotEmpty) {
+      cartridge.objects.removeWhere((key, value) => _toRemove.contains(key));
+      _toRemove.clear();
+    }
+    await Future.wait(cartridge.objects.entries
+        .where((obj) => obj.value['script'] != null)
         .map((obj) async {
-      final scriptName = obj['script'] as String?;
+      final scriptName = obj.value['script'] as String?;
       final hetu = controllers[scriptName];
       await hetu?.invoke(
         scriptName!,
         positionalArgs: [
           dt,
-          obj,
+          obj.value,
+          obj.key,
         ],
       );
     }).toList());
