@@ -28,6 +28,8 @@ abstract class EmberScript {
         external fun create_obj
         external fun create_anonymous_obj
         external fun remove_obj
+        external fun obj_overlaps 
+        external fun query_objs
         $script
     ''';
   }

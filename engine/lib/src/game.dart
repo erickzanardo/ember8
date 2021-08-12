@@ -94,10 +94,14 @@ class EmberGame extends BaseGame {
     add(EmberBackgroundComponent(cartridge.palette));
 
     engine = EmberCartridgeEngine(
-        cartridge,
-        onNewObject: (name, data) {
-          add(EmberGameObject(name: name, data: data));
-        },
+      cartridge,
+      onNewObject: (name, data) {
+        add(EmberGameObject(name: name, data: data));
+      },
+      onRemoveObject: (key) {
+        components.removeWhere(
+            (element) => element is EmberGameObject && element.name == key);
+      },
     );
     await engine.load();
 

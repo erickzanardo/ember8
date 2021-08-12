@@ -14,11 +14,14 @@ class EmberCartridgeEngine {
   final Map<String, Hetu> dpadControllers = {};
   final Map<String, Hetu> actionControllers = {};
   final void Function(String, Map<String, Object>) onNewObject;
+  final void Function(String) onRemoveObject;
 
   final List<String> _toRemove = [];
 
-  EmberCartridgeEngine(this.cartridge, {
+  EmberCartridgeEngine(
+    this.cartridge, {
     required this.onNewObject,
+    required this.onRemoveObject,
   });
 
   String _mapDpadEvent(DpadEvent event) {
@@ -78,7 +81,8 @@ class EmberCartridgeEngine {
     }
   }
 
-  void _createObj(String templateName, String objName, Map<dynamic, dynamic> properties) {
+  void _createObj(
+      String templateName, String objName, Map<dynamic, dynamic> properties) {
     final template = cartridge.templates[templateName];
 
     if (template == null) {
@@ -100,17 +104,43 @@ class EmberCartridgeEngine {
     onNewObject(objName, newObject);
   }
 
+  Rect _objRect(Map<String, Object> obj) {
+    return Rect.fromLTWH(
+      obj['x'] as double,
+      obj['y'] as double,
+      obj['w'] as double,
+      obj['h'] as double,
+    );
+  }
+
   Future<void> load() async {
     for (final script in cartridge.scripts) {
       final hetu = Hetu();
       await hetu.init(externalFunctions: {
         'get_obj': (String objName) => cartridge.objects[objName],
         'create_obj': _createObj,
-        'create_anonymous_obj': (String templateName, Map<dynamic, dynamic> properties) {
+        'create_anonymous_obj':
+            (String templateName, Map<dynamic, dynamic> properties) {
           _createObj(templateName, Uuid().v1(), properties);
         },
         'remove_obj': (String objName) {
           _toRemove.add(objName);
+        },
+        'obj_overlaps': (String objId1, String objId2) {
+          final obj1 = cartridge.objects[objId1];
+          final obj2 = cartridge.objects[objId2];
+
+          if (obj1 != null && obj2 != null) {
+            return _objRect(obj1).overlaps(_objRect(obj2));
+          }
+
+          return false;
+        },
+        'query_objs': (String field, dynamic value) {
+          return cartridge.objects.entries
+              .where((element) => element.value[field] == value)
+              .map((e) => e.key)
+              .toList();
         },
       });
       await hetu.eval(script.toString());
@@ -130,10 +160,15 @@ class EmberCartridgeEngine {
       }).toList(),
     );
   }
- 
+
   void tick(double dt) async {
     if (_toRemove.isNotEmpty) {
-      cartridge.objects.removeWhere((key, value) => _toRemove.contains(key));
+      _toRemove.forEach((key) { 
+        final obj = cartridge.objects.remove(key);
+        if (obj != null) {
+          onRemoveObject(key);
+        }
+      });
       _toRemove.clear();
     }
     await Future.wait(cartridge.objects.entries

@@ -15,12 +15,25 @@ void main() {
           [null, null, 4, 4, 4, null, null],
           [null, null, 4, 4, 4, null, null],
           [null, null, 4, 4, 4, null, null],
-          [null,    6, 4, 4, 4, 6   , null],
-          [null,    6, 4, 4, 4, 6   , null],
-          [   5,    6, 4, 4, 4, 6   , 5   ],
-          [   5,    6, 4, 4, 4, 6   , 5   ],
-          [   5,    6, 4, 4, 4, 6   , 5   ],
-          [   5,    6, 4, 4, 4, 6   , 5   ],
+          [null, 6, 4, 4, 4, 6, null],
+          [null, 6, 4, 4, 4, 6, null],
+          [5, 6, 4, 4, 4, 6, 5],
+          [5, 6, 4, 4, 4, 6, 5],
+          [5, 6, 4, 4, 4, 6, 5],
+          [5, 6, 4, 4, 4, 6, 5],
+        ],
+      ),
+      EmberSprite(
+        'enemy',
+        [
+          [5, 6, 4, 4, 4, 6, 5],
+          [5, 6, 4, 4, 4, 6, 5],
+          [5, 6, 4, 4, 4, 6, 5],
+          [5, 6, null, 4, null, 6, 5],
+          [5, 6, 4, 4, 4, 6, 5],
+          [5, 6, 4, 4, 4, 6, 5],
+          [5, 6, 4, 4, 4, 6, 5],
+          [5, 6, 4, 4, 4, 6, 5],
         ],
       ),
       EmberSprite(
@@ -42,10 +55,35 @@ void main() {
         'sprite': 'ship',
         'script': 'playerController',
       },
+      'enemy1': {
+        'x': 80.0,
+        'y': 20.0,
+        'dx': 0.0,
+        'dy': 0.0,
+        'sprite': 'enemy',
+        'script': 'enemyController',
+      },
+      'enemy2': {
+        'x': 100.0,
+        'y': 20.0,
+        'dx': 0.0,
+        'dy': 0.0,
+        'sprite': 'enemy',
+        'script': 'enemyController',
+      },
+      'enemy3': {
+        'x': 60.0,
+        'y': 20.0,
+        'dx': 0.0,
+        'dy': 0.0,
+        'sprite': 'enemy',
+        'script': 'enemyController',
+      },
     },
     templates: {
       'bullet': {
         'script': 'bulletController',
+        'tag': 'bullet',
         'sprite': 'bullet',
       },
     },
@@ -77,9 +115,20 @@ void main() {
 
       ''',
       ),
-      EmberDpadScript(
-          name: 'playerMovementHandler',
-          body: '''
+      EmberControllerScript(
+        name: 'enemyController',
+        body: '''
+            let bullets = query_objs('tag', 'bullet')
+            for (var bulletId in bullets) {
+              let bullet = get_obj(bulletId)
+              if (obj_overlaps(objId, bulletId)) {
+                remove_obj(objId);
+                remove_obj(bulletId);
+              }
+            }
+          ''',
+      ),
+      EmberDpadScript(name: 'playerMovementHandler', body: '''
           let player = get_obj('player')
           if (key == 'left' && type == 'down') {
             player['dx'] = -1
@@ -105,11 +154,10 @@ void main() {
           if (key == 'top' && type == 'up' && player['dy'] == -1) {
             player['dy'] = 0
           }
-          '''
-      ),
+          '''),
       EmberActionScript(
-          name: 'playerActionHandler',
-          body: '''
+        name: 'playerActionHandler',
+        body: '''
           if (key == 'a' && type == 'down') {
             let player = get_obj('player');
             let x = player['x'] + 3;
