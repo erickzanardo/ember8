@@ -7,6 +7,18 @@ void main() {
   final cartridge = EmberCartridge(
     sprites: [
       EmberSprite(
+        'title',
+        [
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 4, 4, 4, 0, 0, 4, 4, 0, 0],
+          [0, 4, 0, 0, 0, 0, 4, 0, 0, 4, 0],
+          [0, 4, 0, 4, 0, 0, 4, 0, 0, 4, 0],
+          [0, 4, 0, 0, 4, 0, 4, 0, 0, 4, 0],
+          [0, 0, 4, 4, 0, 0, 0, 4, 4, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ],
+      ),
+      EmberSprite(
         'ship',
         [
           [null, null, 4, 4, 4, null, null],
@@ -46,40 +58,53 @@ void main() {
         ],
       ),
     ],
-    objects: {
-      'player': {
-        'x': 80.0,
-        'y': 120.0,
-        'dx': 0.0,
-        'dy': 0.0,
-        'sprite': 'ship',
-        'script': 'playerController',
-      },
-      'enemy1': {
-        'x': 80.0,
-        'y': 20.0,
-        'dx': 0.0,
-        'dy': 0.0,
-        'sprite': 'enemy',
-        'script': 'enemyController',
-      },
-      'enemy2': {
-        'x': 100.0,
-        'y': 20.0,
-        'dx': 0.0,
-        'dy': 0.0,
-        'sprite': 'enemy',
-        'script': 'enemyController',
-      },
-      'enemy3': {
-        'x': 60.0,
-        'y': 20.0,
-        'dx': 0.0,
-        'dy': 0.0,
-        'sprite': 'enemy',
-        'script': 'enemyController',
-      },
+    stages: {
+      'title': EmberStage({
+        'title': {
+          'x': 80.0,
+          'y': 20.0,
+          'sprite': 'title',
+        },
+      }),
+      'game': EmberStage({
+        'player': {
+          'x': 80.0,
+          'y': 120.0,
+          'dx': 0.0,
+          'dy': 0.0,
+          'sprite': 'ship',
+          'script': 'playerController',
+        },
+        'enemy1': {
+          'x': 80.0,
+          'y': 20.0,
+          'dx': 0.0,
+          'dy': 0.0,
+          'sprite': 'enemy',
+          'script': 'enemyController',
+          'tag': 'enemy',
+        },
+        'enemy2': {
+          'x': 100.0,
+          'y': 20.0,
+          'dx': 0.0,
+          'dy': 0.0,
+          'sprite': 'enemy',
+          'script': 'enemyController',
+          'tag': 'enemy',
+        },
+        'enemy3': {
+          'x': 60.0,
+          'y': 20.0,
+          'dx': 0.0,
+          'dy': 0.0,
+          'sprite': 'enemy',
+          'script': 'enemyController',
+          'tag': 'enemy',
+        },
+      }),
     },
+    initialStage: 'title',
     templates: {
       'bullet': {
         'script': 'bulletController',
@@ -124,11 +149,19 @@ void main() {
               if (obj_overlaps(objId, bulletId)) {
                 remove_obj(objId);
                 remove_obj(bulletId);
+
+                let enemies = query_objs('tag', 'enemy')
+                if (enemies.length == 1) {
+                  enter_stage('title')
+                }
               }
             }
           ''',
       ),
-      EmberDpadScript(name: 'playerMovementHandler', body: '''
+      EmberDpadScript(
+        name: 'playerMovementHandler',
+        stage: 'game',
+        body: '''
           let player = get_obj('player')
           if (key == 'left' && type == 'down') {
             player['dx'] = -1
@@ -157,12 +190,22 @@ void main() {
           '''),
       EmberActionScript(
         name: 'playerActionHandler',
+        stage: 'game',
         body: '''
           if (key == 'a' && type == 'down') {
             let player = get_obj('player');
             let x = player['x'] + 3;
             let y = player['y'];
             create_anonymous_obj('bullet', {'x': x, 'y': y })
+          }
+          ''',
+      ),
+      EmberActionScript(
+        name: 'titleController',
+        stage: 'title',
+        body: '''
+          if (key == 'a' && type == 'down') {
+            enter_stage('game')
           }
           ''',
       ),

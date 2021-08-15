@@ -30,6 +30,7 @@ abstract class EmberScript {
         external fun remove_obj
         external fun obj_overlaps 
         external fun query_objs
+        external fun enter_stage
         $script
     ''';
   }
@@ -52,9 +53,12 @@ class EmberControllerScript extends EmberScript {
 }
 
 abstract class EmberButtonScript extends EmberScript {
+  final String stage;
+
   EmberButtonScript({
     required String name,
     required String body,
+    required this.stage,
   }) : super(name: name, body: body);
 
   @override
@@ -71,12 +75,14 @@ class EmberDpadScript extends EmberButtonScript {
   EmberDpadScript({
     required String name,
     required String body,
-  }) : super(name: name, body: body);
+    required String stage,
+  }) : super(name: name, body: body, stage: stage);
 }
 
 class EmberActionScript extends EmberButtonScript {
   EmberActionScript({
     required String name,
     required String body,
-  }) : super(name: name, body: body);
+    required String stage,
+  }) : super(name: name, body: body, stage: stage);
 }

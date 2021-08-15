@@ -102,10 +102,22 @@ class EmberGame extends BaseGame {
         components.removeWhere(
             (element) => element is EmberGameObject && element.name == key);
       },
+      onChangeStage: () {
+        _removeGameObjects();
+        _loadStageObjects();
+      },
     );
     await engine.load();
 
-    cartridge.objects.forEach((key, value) {
+    _loadStageObjects();
+  }
+
+  void _removeGameObjects() {
+    components.removeWhere((element) => element is EmberGameObject);
+  }
+
+  void _loadStageObjects() {
+    engine.runningStage.objects.forEach((key, value) {
       add(EmberGameObject(name: key, data: value));
     });
   }
