@@ -7,6 +7,7 @@ import 'package:flutter/material.dart' hide IconButton;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'new_script_form.dart';
+import 'script_side_item.dart';
 
 class ScriptsWorkspace extends StatelessWidget {
 
@@ -51,7 +52,10 @@ class ScriptsWorkspace extends StatelessWidget {
                   Expanded(
                     child: SideBar(
                       children: state.scripts.map((e) {
-                        return Text(e.name);
+                        return ScriptSideItem(
+                            name: e.name,
+                            type: e.type,
+                        );
                       }).toList(),
                     ),
                   ),

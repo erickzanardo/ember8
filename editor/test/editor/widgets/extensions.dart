@@ -1,5 +1,6 @@
 import 'package:editor/src/editor/editor.dart';
 import 'package:editor/src/widgets/tab.dart';
+import 'package:flutter/material.dart' hide Tab;
 import 'package:flutter_test/flutter_test.dart';
 
 extension EditorWidgetTester on WidgetTester {

@@ -22,6 +22,7 @@ void main() {
 
       expect(find.text('playerController'), findsOneWidget);
       expect(find.text('Empty'), findsNothing);
+      expect(find.byIcon(Icons.computer), findsOneWidget);
     });
 
     testWidgets('it adds a directional pad script', (tester) async {
@@ -46,8 +47,7 @@ void main() {
 
       expect(find.text('playerMovement'), findsOneWidget);
       expect(find.text('Empty'), findsNothing);
-
-      // expect to find the correct icon here 
+      expect(find.byIcon(Icons.gamepad), findsOneWidget);
     });
 
     testWidgets('it adds an action button event script', (tester) async {
@@ -72,8 +72,7 @@ void main() {
 
       expect(find.text('playerActions'), findsOneWidget);
       expect(find.text('Empty'), findsNothing);
-
-      // expect to find the correct icon here 
+      expect(find.byIcon(Icons.sports_mma), findsOneWidget);
     });
 
     testWidgets('it can cancel the new script', (tester) async {
