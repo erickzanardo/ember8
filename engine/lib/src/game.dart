@@ -26,16 +26,16 @@ class EmberGameObject extends SpriteComponent with HasGameRef<EmberGame> {
       height = image.height.toDouble();
     }
 
-    x = data['x'] as double;
-    y = data['y'] as double;
+    x = data['x'].toDouble();
+    y = data['y'].toDouble();
   }
 
   @override
   void update(double dt) {
     super.update(dt);
 
-    x = data['x'];
-    y = data['y'];
+    x = data['x'].toDouble();
+    y = data['y'].toDouble();
   }
 }
 
@@ -106,22 +106,26 @@ class EmberGame extends BaseGame {
     );
     await engine.load();
 
-    _loadStageObjects();
+    await _loadStageObjects();
   }
 
   void _removeGameObjects() {
     components.removeWhere((element) => element is EmberGameObject);
   }
 
-  void _loadStageObjects() {
-    engine.runningStage.objects.forEach((key, value) {
-      add(EmberGameObject(name: key, data: value));
-    });
+  Future<void> _loadStageObjects() async {
+    await Future.wait(
+      engine.runningStage.objects.entries.map(
+        (entry) => add(
+          EmberGameObject(name: entry.key, data: entry.value),
+        ),
+      ),
+    );
   }
 
   @override
   void update(double dt) {
-    engine.tick(dt);
     super.update(dt);
+    engine.tick(dt);
   }
 }
