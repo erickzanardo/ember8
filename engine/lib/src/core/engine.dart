@@ -22,7 +22,7 @@ class EmberCartridgeEngine {
   final Map<String, _ButtonScriptInstance> dpadControllers = {};
   final Map<String, _ButtonScriptInstance> actionControllers = {};
 
-  final void Function(String, Map<String, Object>) onNewObject;
+  final void Function(String, Map<String, dynamic>) onNewObject;
   final void Function(String) onRemoveObject;
   final void Function() onChangeStage;
 
@@ -30,6 +30,7 @@ class EmberCartridgeEngine {
   late String currentStage;
 
   final List<String> _toRemove = [];
+  final List<MapEntry<String, Map<String, dynamic>>> _toAdd = [];
 
   EmberCartridgeEngine(
     this.cartridge, {
@@ -74,11 +75,11 @@ class EmberCartridgeEngine {
       if (entry.value.stage == currentStage) {
         final hetu = entry.value.hetu;
         hetu.invoke(
-            entry.key,
-            positionalArgs: [
-              _mapDpadEvent(dpadEvent),
-              _mapButtonEvent(buttonEvent)
-            ],
+          entry.key,
+          positionalArgs: [
+            _mapDpadEvent(dpadEvent),
+            _mapButtonEvent(buttonEvent)
+          ],
         );
       }
     }
@@ -89,11 +90,11 @@ class EmberCartridgeEngine {
       if (entry.value.stage == currentStage) {
         final hetu = entry.value.hetu;
         hetu.invoke(
-            entry.key,
-            positionalArgs: [
-              _mapActionEvent(actionEvent),
-              _mapButtonEvent(buttonEvent)
-            ],
+          entry.key,
+          positionalArgs: [
+            _mapActionEvent(actionEvent),
+            _mapButtonEvent(buttonEvent)
+          ],
         );
       }
     }
@@ -118,22 +119,32 @@ class EmberCartridgeEngine {
       ..._castedMap,
     };
 
-    runningStage.objects[objName] = newObject;
-    onNewObject(objName, newObject);
+    _toAdd.add(MapEntry(objName, newObject));
+  }
+
+  double _objHeight(String objId) {
+    final image = sprites[runningStage.objects[objId]?['sprite']];
+    return (image?.height ?? 0).toDouble();
+  }
+
+  double _objWidth(String objId) {
+    final image = sprites[runningStage.objects[objId]?['sprite']];
+    return (image?.width ?? 0).toDouble();
   }
 
   Rect _objRect(Map<String, dynamic> obj) {
+    final image = sprites[obj['sprite']];
     return Rect.fromLTWH(
       obj['x'] as double,
       obj['y'] as double,
-      obj['w'] as double,
-      obj['h'] as double,
+      (image?.width ?? 0).toDouble(),
+      (image?.height ?? 0).toDouble(),
     );
   }
 
   Future<void> load() async {
     if (!cartridge.stages.containsKey(cartridge.initialStage)) {
-      throw "Unknown initial stage '${cartridge.initialStage}'";
+      throw ArgumentError("Unknown initial stage '${cartridge.initialStage}'");
     }
 
     currentStage = cartridge.initialStage;
@@ -174,15 +185,19 @@ class EmberCartridgeEngine {
             onChangeStage();
           }
         },
+        'obj_width': _objWidth,
+        'obj_height': _objHeight,
       });
       await hetu.eval(script.toString());
 
       if (script is EmberControllerScript) {
         controllers[script.name] = hetu;
       } else if (script is EmberDpadScript) {
-        dpadControllers[script.name] = _ButtonScriptInstance(hetu, script.stage);
+        dpadControllers[script.name] =
+            _ButtonScriptInstance(hetu, script.stage);
       } else if (script is EmberActionScript) {
-        actionControllers[script.name] = _ButtonScriptInstance(hetu, script.stage);
+        actionControllers[script.name] =
+            _ButtonScriptInstance(hetu, script.stage);
       }
     }
 
@@ -193,7 +208,7 @@ class EmberCartridgeEngine {
     );
   }
 
-  void tick(double dt) async {
+  Future<void> tick(double dt) async {
     if (_toRemove.isNotEmpty) {
       _toRemove.forEach((key) {
         final obj = runningStage.objects.remove(key);
@@ -204,20 +219,27 @@ class EmberCartridgeEngine {
       _toRemove.clear();
     }
 
+    if (_toAdd.isNotEmpty) {
+      _toAdd.forEach((element) {
+        runningStage.objects[element.key] = element.value;
+        onNewObject(element.key, element.value);
+      });
+      _toAdd.clear();
+    }
+
     final entries = runningStage.objects.entries;
-    await Future.wait(entries
-        .where((obj) => obj.value['script'] != null)
-        .map((obj) async {
-          final scriptName = obj.value['script'] as String?;
-          final hetu = controllers[scriptName];
-          await hetu?.invoke(
-              scriptName!,
-              positionalArgs: [
-                dt,
-                obj.value,
-                obj.key,
-              ],
-          );
-        }).toList());
+    await Future.wait(
+        entries.where((obj) => obj.value['script'] != null).map((obj) async {
+      final scriptName = obj.value['script'] as String?;
+      final hetu = controllers[scriptName];
+      await hetu?.invoke(
+        scriptName!,
+        positionalArgs: [
+          dt,
+          obj.value,
+          obj.key,
+        ],
+      );
+    }).toList());
   }
 }

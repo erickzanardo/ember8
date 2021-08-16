@@ -28,9 +28,6 @@ class EmberGameObject extends SpriteComponent with HasGameRef<EmberGame> {
 
     x = data['x'] as double;
     y = data['y'] as double;
-
-    data['w'] = width;
-    data['h'] = height;
   }
 
   @override

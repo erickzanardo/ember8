@@ -31,6 +31,8 @@ abstract class EmberScript {
         external fun obj_overlaps 
         external fun query_objs
         external fun enter_stage
+        external fun obj_width 
+        external fun obj_height 
         $script
     ''';
   }

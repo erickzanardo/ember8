@@ -118,7 +118,6 @@ void main() {
         body: '''
         let x = obj['x']
         let y = obj['y']
-        let w = obj['w'] 
         let dx = obj['dx']
         let dy = obj['dy']
 
@@ -130,7 +129,7 @@ void main() {
         name: 'bulletController',
         body: '''
         let y = obj['y']
-        let h = obj['h']
+        let h = obj_height(objId) 
 
         obj['y'] = y - (80 * dt)
 
