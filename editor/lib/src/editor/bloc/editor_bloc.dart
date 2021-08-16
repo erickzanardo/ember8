@@ -12,6 +12,17 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
   Stream<EditorState> mapEventToState(EditorEvent event) async* {
     if (event is SelectTabEvent) {
       yield state.copyWith(currentTab: event.newTab);
+    } else if (event is NewScriptEvent) {
+      yield state.copyWith(
+          scripts: [
+            ...state.scripts,
+            EditorScript(
+                type: event.type,
+                name: event.name,
+                body: '',
+            ),
+          ],
+      );
     }
   }
 }

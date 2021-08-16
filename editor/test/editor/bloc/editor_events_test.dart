@@ -18,5 +18,24 @@ void main() {
         expect(event1, isNot(event2));
       });
     });
+    group('NewScriptEvent', () {
+      test('objects with the same name and type are equal', () {
+        const event1 = NewScriptEvent('playerController', EditorScriptType.controller);
+        const event2 = NewScriptEvent('playerController', EditorScriptType.controller);
+
+        expect(event1, event2);
+      });
+      test('objects with the different newTab are not equals', () {
+        var event1 = const NewScriptEvent('playerController', EditorScriptType.controller);
+        var event2 = const NewScriptEvent('playerController', EditorScriptType.dpad);
+
+        expect(event1, isNot(event2));
+
+        event1 = const NewScriptEvent('playerController', EditorScriptType.controller);
+        event2 = const NewScriptEvent('blaController', EditorScriptType.controller);
+
+        expect(event1, isNot(event2));
+      });
+    });
   });
 }
