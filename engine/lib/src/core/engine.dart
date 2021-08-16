@@ -122,7 +122,7 @@ class EmberCartridgeEngine {
     onNewObject(objName, newObject);
   }
 
-  Rect _objRect(Map<String, Object> obj) {
+  Rect _objRect(Map<String, dynamic> obj) {
     return Rect.fromLTWH(
       obj['x'] as double,
       obj['y'] as double,
@@ -195,7 +195,7 @@ class EmberCartridgeEngine {
 
   void tick(double dt) async {
     if (_toRemove.isNotEmpty) {
-      _toRemove.forEach((key) { 
+      _toRemove.forEach((key) {
         final obj = runningStage.objects.remove(key);
         if (obj != null) {
           onRemoveObject(key);

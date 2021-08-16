@@ -2,7 +2,7 @@ import 'scripts.dart';
 
 import 'graphics.dart';
 
-Map<String, Object> _copyMap(Map map) {
+Map<String, dynamic> _copyMap(Map map) {
   final Map<String, Object> newMap = {};
 
   for (final entry in map.entries) {
@@ -17,7 +17,7 @@ Map<String, Object> _copyMap(Map map) {
 }
 
 class EmberStage {
-  final Map<String, Map<String, Object>> objects;
+  final Map<String, Map<String, dynamic>> objects;
 
   EmberStage(this.objects);
 
