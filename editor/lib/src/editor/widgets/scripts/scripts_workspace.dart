@@ -1,3 +1,6 @@
+import 'package:editor/src/editor/bloc/editor_bloc.dart';
+import 'package:editor/src/editor/bloc/editor_events.dart';
+import 'package:editor/src/editor/widgets/scripts/script_editor.dart';
 import 'package:editor/src/project/bloc/project_bloc.dart';
 import 'package:editor/src/project/bloc/project_events.dart';
 import 'package:editor/src/project/bloc/project_state.dart';
@@ -10,7 +13,6 @@ import 'new_script_form.dart';
 import 'script_side_item.dart';
 
 class ScriptsWorkspace extends StatelessWidget {
-
   static const newScriptKey = Key('new_script_key');
 
   const ScriptsWorkspace({Key? key}) : super(key: key);
@@ -53,8 +55,13 @@ class ScriptsWorkspace extends StatelessWidget {
                     child: SideBar(
                       children: state.scripts.map((e) {
                         return ScriptSideItem(
-                            name: e.name,
-                            type: e.type,
+                          name: e.name,
+                          type: e.type,
+                          onClick: () {
+                            context
+                                .read<EditorBloc>()
+                                .add(OpenScriptEvent(e.name));
+                          },
                         );
                       }).toList(),
                     ),
@@ -62,9 +69,9 @@ class ScriptsWorkspace extends StatelessWidget {
                 ],
               ),
             ),
-            Expanded(
+            const Expanded(
               flex: 8,
-              child: Container(color: Colors.black),
+              child: ScriptEditor(), 
             ),
           ],
         );

@@ -15,6 +15,35 @@ void main() {
       expect(newState.currentTab, EditorTab.sprites);
 
       expect(newEqualState, state);
+      expect(newState, isNot(state));
+    });
+    test('copyWith returns a new instance (openScripts)', () {
+      const state = EditorState();
+
+      final newState = state.copyWith(
+          openScripts: ['playerController'],
+      );
+
+      final newEqualState = state.copyWith();
+
+      expect(newState.openScripts, ['playerController']);
+
+      expect(newEqualState, state);
+      expect(newState, isNot(state));
+    });
+    test('copyWith returns a new instance (currentOpenScript)', () {
+      const state = EditorState();
+
+      final newState = state.copyWith(
+          currentOpenScript: 'playerController'
+      );
+
+      final newEqualState = state.copyWith();
+
+      expect(newState.currentOpenScript, 'playerController');
+
+      expect(newEqualState, state);
+      expect(newState, isNot(state));
     });
   });
 }

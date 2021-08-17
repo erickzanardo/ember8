@@ -1,6 +1,6 @@
 import 'package:editor/src/editor/editor.dart';
+import 'package:editor/src/widgets/icon_button.dart';
 import 'package:editor/src/widgets/tab.dart';
-import 'package:flutter/material.dart' hide Tab;
 import 'package:flutter_test/flutter_test.dart';
 
 extension EditorWidgetTester on WidgetTester {
@@ -17,6 +17,17 @@ extension EditorCommonFinders on CommonFinders {
     return byWidgetPredicate((widget) {
       return widget is Tab && widget.selected == selected && widget.label == label;
     });
+  }
+
+  Finder closeIconFromTabOptions({
+    required String label,
+    bool selected = false,
+  }) {
+    final tab = byWidgetPredicate((widget) {
+      return widget is Tab && widget.selected == selected && widget.label == label;
+    });
+
+    return descendant(of: tab, matching: byType(IconButton));
   }
 }
 

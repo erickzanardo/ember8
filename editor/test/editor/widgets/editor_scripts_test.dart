@@ -2,12 +2,14 @@ import 'package:editor/src/editor/widgets/scripts/scripts_workspace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'extensions.dart';
+import '../../page_objects.dart';
+import '../../widgets_extensions.dart';
 
 void main() {
   group('Widgets - Editor - Scripts', () {
-    testWidgets('it adds a controller script (the default one)', (tester) async {
-      await tester.pumpEditor(); 
+    testWidgets('it adds a controller script (the default one)',
+        (tester) async {
+      await tester.pumpEditor();
 
       // Scripts is the initial tab and should show an empty message
       expect(find.text('Empty'), findsOneWidget);
@@ -26,24 +28,13 @@ void main() {
     });
 
     testWidgets('it adds a directional pad script', (tester) async {
-      await tester.pumpEditor(); 
+      await tester.pumpEditor();
 
       // Scripts is the initial tab and should show an empty message
       expect(find.text('Empty'), findsOneWidget);
 
-      await tester.tap(find.byKey(ScriptsWorkspace.newScriptKey));
-      await tester.pumpAndSettle();
-
-      await tester.enterText(find.byType(TextField), 'playerMovement');
-
-      await tester.tap(find.text('Controller'));
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.text('Directional Pad').last);
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.text('Create'));
-      await tester.pumpAndSettle();
+      await ScriptsPageObject(tester)
+          .createScript('playerMovement', 'Directional Pad');
 
       expect(find.text('playerMovement'), findsOneWidget);
       expect(find.text('Empty'), findsNothing);
@@ -51,24 +42,13 @@ void main() {
     });
 
     testWidgets('it adds an action button event script', (tester) async {
-      await tester.pumpEditor(); 
+      await tester.pumpEditor();
 
       // Scripts is the initial tab and should show an empty message
       expect(find.text('Empty'), findsOneWidget);
 
-      await tester.tap(find.byKey(ScriptsWorkspace.newScriptKey));
-      await tester.pumpAndSettle();
-
-      await tester.enterText(find.byType(TextField), 'playerActions');
-
-      await tester.tap(find.text('Controller'));
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.text('Action Button').last);
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.text('Create'));
-      await tester.pumpAndSettle();
+      await ScriptsPageObject(tester)
+          .createScript('playerActions', 'Action Button');
 
       expect(find.text('playerActions'), findsOneWidget);
       expect(find.text('Empty'), findsNothing);
@@ -76,20 +56,124 @@ void main() {
     });
 
     testWidgets('it can cancel the new script', (tester) async {
-      await tester.pumpEditor(); 
+      final scriptsPageObject = ScriptsPageObject(tester);
+
+      await tester.pumpEditor();
 
       // Scripts is the initial tab and should show an empty message
       expect(find.text('Empty'), findsOneWidget);
 
-      await tester.tap(find.byKey(ScriptsWorkspace.newScriptKey));
-      await tester.pumpAndSettle();
+      await scriptsPageObject.openScriptCreationForm();
 
-      await tester.enterText(find.byType(TextField), 'playerActions');
+      await scriptsPageObject.fillNewScriptName('playerActions');
 
-      await tester.tap(find.text('Cancel'));
-      await tester.pumpAndSettle();
+      await scriptsPageObject.cancelScriptForm();
 
       expect(find.text('Empty'), findsOneWidget);
+    });
+
+    testWidgets('it can open scripts from the sidebar', (tester) async {
+      final scriptsPageObject = ScriptsPageObject(tester);
+
+      await tester.pumpEditor();
+
+      // Creates a script first
+      await scriptsPageObject.createScript('playerController', 'Controller');
+      await scriptsPageObject.createScript('playerMovement', 'Action Button');
+
+      await tester.tap(find.text('playerController'));
+      await tester.pumpAndSettle();
+
+      // A tab should have open, with it selected
+      expect(
+        find.byTabOptions(label: 'playerController', selected: true),
+        findsOneWidget,
+      );
+
+      await tester.tap(find.text('playerMovement'));
+      await tester.pumpAndSettle();
+
+      // A tab should have open, with it selected and the previous should exists still
+      // but not selected
+      expect(
+        find.byTabOptions(label: 'playerMovement', selected: true),
+        findsOneWidget,
+      );
+      expect(
+        find.byTabOptions(label: 'playerController', selected: false),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('it can close open scripts using the icon on the tab', (tester) async {
+      final scriptsPageObject = ScriptsPageObject(tester);
+
+      await tester.pumpEditor();
+
+      // Creates a script first
+      await scriptsPageObject.createScript('playerController', 'Controller');
+      await scriptsPageObject.createScript('playerMovement', 'Action Button');
+
+      await tester.tap(find.text('playerController'));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('playerMovement'));
+      await tester.pumpAndSettle();
+
+      // Making sure our scripts are open
+      expect(
+        find.byTabOptions(label: 'playerMovement', selected: true),
+        findsOneWidget,
+      );
+      expect(
+        find.byTabOptions(label: 'playerController', selected: false),
+        findsOneWidget,
+      );
+
+      await tester.tap(find.closeIconFromTabOptions(label: 'playerMovement', selected: true));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byTabOptions(label: 'playerMovement', selected: true),
+        findsNothing,
+      );
+    });
+    testWidgets('it can change between tabs', (tester) async {
+      final scriptsPageObject = ScriptsPageObject(tester);
+
+      await tester.pumpEditor();
+
+      // Creates a script first
+      await scriptsPageObject.createScript('playerController', 'Controller');
+      await scriptsPageObject.createScript('playerMovement', 'Action Button');
+
+      await tester.tap(find.text('playerController'));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('playerMovement'));
+      await tester.pumpAndSettle();
+
+      // Making sure our scripts are open
+      expect(
+        find.byTabOptions(label: 'playerMovement', selected: true),
+        findsOneWidget,
+      );
+      expect(
+        find.byTabOptions(label: 'playerController', selected: false),
+        findsOneWidget,
+      );
+
+      await tester.tap(find.byTabOptions(label: 'playerController', selected: false));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byTabOptions(label: 'playerMovement', selected: false),
+        findsOneWidget,
+      );
+      expect(
+        find.byTabOptions(label: 'playerController', selected: true),
+        findsOneWidget,
+      );
     });
   });
 }

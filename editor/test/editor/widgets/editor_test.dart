@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'extensions.dart';
+import '../../widgets_extensions.dart';
 
 void main() {
   group('Widgets - Editor', () {
