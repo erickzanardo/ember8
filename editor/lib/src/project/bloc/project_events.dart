@@ -16,3 +16,13 @@ class NewScriptEvent extends ProjectEvent {
   List<Object?> get props => [name, type];
 }
 
+class UpdateScriptEvent extends ProjectEvent {
+  final String name;
+  final String code;
+
+  const UpdateScriptEvent(this.name, this.code);
+
+  @override
+  List<Object?> get props => [name, code];
+}
+

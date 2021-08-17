@@ -1,6 +1,7 @@
 import 'package:editor/src/editor/bloc/editor_bloc.dart';
 import 'package:editor/src/editor/bloc/editor_events.dart';
 import 'package:editor/src/editor/bloc/editor_state.dart';
+import 'package:editor/src/editor/widgets/scripts/script_code_field.dart';
 import 'package:editor/src/widgets/tab.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart' hide Tab;
@@ -51,7 +52,11 @@ class ScriptEditor extends StatelessWidget {
                 );
               }).toList(),
             ),
-            Expanded(child: Container(color: Colors.grey)),
+            Expanded(
+              child: ScriptCodeField(
+                scriptName: selection.selected,
+              ),
+            ),
           ],
         );
       },

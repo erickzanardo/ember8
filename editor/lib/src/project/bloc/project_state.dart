@@ -19,6 +19,14 @@ class ProjectScript extends Equatable {
 
   @override
   List<Object?> get props => [type, name, body];
+
+  ProjectScript copyWithNewBody(String body) {
+    return ProjectScript(
+        type: type,
+        name: name,
+        body: body,
+    );
+  }
 }
 
 

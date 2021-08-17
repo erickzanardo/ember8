@@ -27,6 +27,34 @@ void main() {
         ]),
       ],
     );
+    blocTest<ProjectBloc, ProjectState>(
+      'Update the script body on UpdateScriptEvent',
+      build: () => ProjectBloc(
+        initialState: const ProjectState(
+          scripts: [
+            ProjectScript(
+              type: ProjectScriptType.controller,
+              name: 'playerController',
+              body: '',
+            ),
+          ],
+        ),
+      ),
+      act: (bloc) => bloc.add(
+        const UpdateScriptEvent(
+          'playerController',
+          'bla',
+        ),
+      ),
+      expect: () => [
+        const ProjectState(scripts: [
+          ProjectScript(
+            type: ProjectScriptType.controller,
+            name: 'playerController',
+            body: 'bla',
+          ),
+        ]),
+      ],
+    );
   });
 }
-

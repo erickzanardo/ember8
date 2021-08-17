@@ -1,3 +1,4 @@
+import 'package:code_text_field/code_text_field.dart';
 import 'package:editor/src/editor/widgets/scripts/scripts_workspace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -175,5 +176,38 @@ void main() {
         findsOneWidget,
       );
     });
+
+    // TODO investigate better why this test don't work
+    // it seems that CodeField has some issues and tester.enterText
+    // don't work with it
+    //testWidgets('it can write code', (tester) async {
+    //  final scriptsPageObject = ScriptsPageObject(tester);
+
+    //  await tester.pumpEditor();
+
+    //  // Creates a script first
+    //  await scriptsPageObject.createScript('playerController', 'Controller');
+    //  await scriptsPageObject.createScript('playerMovement', 'Action Button');
+
+    //  await tester.tap(find.text('playerController'));
+    //  await tester.pumpAndSettle();
+
+    //  await tester.enterText(find.byType(CodeField), 'this is some code on the first tab');
+
+    //  await tester.tap(find.text('playerMovement'));
+    //  await tester.pumpAndSettle();
+
+    //  await tester.enterText(find.byType(CodeField).last, 'this is some code on the second tab');
+
+    //  await tester.tap(find.text('playerController'));
+    //  await tester.pumpAndSettle();
+
+    //  expect(find.text('this is some code on the first tab'), findsOneWidget);
+
+    //  await tester.tap(find.text('playerMovement'));
+    //  await tester.pumpAndSettle();
+
+    //  expect(find.text('this is some code on the second tab'), findsOneWidget);
+    //});
   });
 }

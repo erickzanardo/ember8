@@ -21,6 +21,16 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
             ),
           ],
       );
+    } else if (event is UpdateScriptEvent) {
+      yield state.copyWith(
+          scripts: state.scripts.map((script) {
+            if (script.name == event.name) {
+              return script.copyWithNewBody(event.code);
+            } else {
+              return script;
+            }
+          }).toList(),
+      );
     }
   }
 }
