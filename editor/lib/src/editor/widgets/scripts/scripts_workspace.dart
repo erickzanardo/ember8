@@ -1,6 +1,6 @@
-import 'package:editor/src/editor/bloc/editor_bloc.dart';
-import 'package:editor/src/editor/bloc/editor_events.dart';
-import 'package:editor/src/editor/bloc/editor_state.dart';
+import 'package:editor/src/project/bloc/project_bloc.dart';
+import 'package:editor/src/project/bloc/project_events.dart';
+import 'package:editor/src/project/bloc/project_state.dart';
 import 'package:editor/src/widgets/icon_button.dart';
 import 'package:editor/src/widgets/side_bar.dart';
 import 'package:flutter/material.dart' hide IconButton;
@@ -17,7 +17,7 @@ class ScriptsWorkspace extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditorBloc, EditorState>(
+    return BlocBuilder<ProjectBloc, ProjectState>(
       builder: (context, state) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -42,7 +42,7 @@ class ScriptsWorkspace extends StatelessWidget {
 
                           if (script != null) {
                             context
-                                .read<EditorBloc>()
+                                .read<ProjectBloc>()
                                 .add(NewScriptEvent(script.name, script.type));
                           }
                         },

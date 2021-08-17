@@ -16,26 +16,5 @@ void main() {
         const EditorState(currentTab: EditorTab.sprites),
       ],
     );
-    blocTest<EditorBloc, EditorState>(
-      'Add a new script on NewScriptEvent',
-      build: () => EditorBloc(
-        initialState: const EditorState(),
-      ),
-      act: (bloc) => bloc.add(
-        const NewScriptEvent(
-          'playerController',
-          EditorScriptType.controller,
-        ),
-      ),
-      expect: () => [
-        const EditorState(scripts: [
-          EditorScript(
-            type: EditorScriptType.controller,
-            name: 'playerController',
-            body: '',
-          ),
-        ]),
-      ],
-    );
   });
 }

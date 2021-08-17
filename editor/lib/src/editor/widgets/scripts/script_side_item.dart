@@ -1,9 +1,9 @@
-import 'package:editor/src/editor/bloc/editor_state.dart';
+import 'package:editor/src/project/bloc/project_state.dart';
 import 'package:flutter/material.dart';
 
 class ScriptSideItem extends StatelessWidget {
 
-  final EditorScriptType type;
+  final ProjectScriptType type;
   final String name;
 
   const ScriptSideItem({
@@ -14,11 +14,11 @@ class ScriptSideItem extends StatelessWidget {
 
   IconData _mapTypeIcon() {
     switch(type) {
-      case EditorScriptType.dpad:
+      case ProjectScriptType.dpad:
         return Icons.gamepad;
-      case EditorScriptType.action:
+      case ProjectScriptType.action:
         return Icons.sports_mma;
-      case EditorScriptType.controller:
+      case ProjectScriptType.controller:
         return Icons.computer;
     }
   }

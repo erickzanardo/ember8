@@ -1,9 +1,9 @@
-import 'package:editor/src/editor/bloc/editor_state.dart';
+import 'package:editor/src/project/bloc/project_state.dart';
 import 'package:flutter/material.dart';
 
 class NewScriptFormEntry {
   final String name;
-  final EditorScriptType type;
+  final ProjectScriptType type;
 
   NewScriptFormEntry(this.name, this.type);
 }
@@ -20,15 +20,15 @@ class NewScriptForm extends StatefulWidget {
 class _NewScriptFormState extends State<NewScriptForm> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  EditorScriptType _type = EditorScriptType.controller;
+  ProjectScriptType _type = ProjectScriptType.controller;
 
-  String _mapTypeLabel(EditorScriptType type) {
+  String _mapTypeLabel(ProjectScriptType type) {
     switch (type) {
-      case EditorScriptType.dpad:
+      case ProjectScriptType.dpad:
         return 'Directional Pad';
-      case EditorScriptType.action:
+      case ProjectScriptType.action:
         return 'Action Button';
-      case EditorScriptType.controller:
+      case ProjectScriptType.controller:
         return 'Controller';
     }
   }
@@ -60,7 +60,7 @@ class _NewScriptFormState extends State<NewScriptForm> {
                       return 'This field is required';
                     },
                   ),
-                  DropdownButtonFormField<EditorScriptType>(
+                  DropdownButtonFormField<ProjectScriptType>(
                     value: _type,
                     decoration: const InputDecoration(
                       labelText: 'Script type',
@@ -72,7 +72,7 @@ class _NewScriptFormState extends State<NewScriptForm> {
                         }
                       });
                     },
-                    items: EditorScriptType.values.map((type) {
+                    items: ProjectScriptType.values.map((type) {
                       return DropdownMenuItem(
                         value: type,
                         child: Text(

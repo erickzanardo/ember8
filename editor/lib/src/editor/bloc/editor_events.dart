@@ -14,13 +14,3 @@ class SelectTabEvent extends EditorEvent {
   @override
   List<Object?> get props => [newTab];
 }
-
-class NewScriptEvent extends EditorEvent {
-  final String name;
-  final EditorScriptType type;
-
-  const NewScriptEvent(this.name, this.type);
-
-  @override
-  List<Object?> get props => [name, type];
-}

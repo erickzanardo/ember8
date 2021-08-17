@@ -1,3 +1,4 @@
+import 'package:editor/src/project/bloc/project_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,8 +13,15 @@ class Editor extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
-            body: BlocProvider(
-                create: (_) => EditorBloc(),
+            body: MultiBlocProvider(
+                providers: [
+                  BlocProvider<EditorBloc>(
+                      create: (_) => EditorBloc(),
+                  ),
+                  BlocProvider<ProjectBloc>(
+                      create: (_) => ProjectBloc(),
+                  ),
+                ],
                 child: const EditorScaffold(),
             ),
         ),

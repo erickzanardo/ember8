@@ -16,27 +16,5 @@ void main() {
 
       expect(newEqualState, state);
     });
-
-    test('copyWith returns a new instance (scripts)', () {
-      const state = EditorState();
-
-      const newScript = EditorScript(
-        type: EditorScriptType.controller,
-        name: 'playerController',
-        body: '',
-      );
-
-      final newState = state.copyWith(
-        scripts: const [
-          newScript,
-        ],
-      );
-
-      final newEqualState = state.copyWith();
-
-      expect(newState.scripts, [newScript]);
-
-      expect(newEqualState, state);
-    });
   });
 }
