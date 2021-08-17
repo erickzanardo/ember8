@@ -26,12 +26,18 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
       }
     } else if (event is CloseScriptEvent) {
       if (state.openScripts.contains(event.scriptName)) {
+        final newScripts = state.openScripts
+            .where((script) => script != event.scriptName)
+            .toList();
+        var currentOpenScript = '';
+        if (state.currentOpenScript == event.scriptName &&
+            newScripts.isNotEmpty) {
+          currentOpenScript = newScripts.last;
+        }
+
         yield state.copyWith(
-          openScripts: [
-            ...state.openScripts
-                .where((script) => script != event.scriptName)
-                .toList(),
-          ],
+          openScripts: [...newScripts],
+          currentOpenScript: currentOpenScript,
         );
       }
     } else if (event is SelectScriptEvent) {

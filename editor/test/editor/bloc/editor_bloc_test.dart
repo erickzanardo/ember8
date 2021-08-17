@@ -65,6 +65,31 @@ void main() {
         act: (bloc) => bloc.add(const CloseScriptEvent('playerController')),
         expect: () => [],
       );
+      blocTest<EditorBloc, EditorState>(
+        'if closing a selected tab, we need to the last remaining one',
+        build: () => EditorBloc(
+          initialState: const EditorState(
+            openScripts: ['playerController', 'playerMovement'],
+            currentOpenScript: 'playerController',
+          ),
+        ),
+        act: (bloc) => bloc.add(const CloseScriptEvent('playerController')),
+        expect: () => [
+          const EditorState(
+              openScripts: ['playerMovement'],
+              currentOpenScript: 'playerMovement'),
+        ],
+      );
+      blocTest<EditorBloc, EditorState>(
+        'if closing a selected tab, and there is no more remaining, clear the open one',
+        build: () => EditorBloc(
+          initialState: const EditorState(openScripts: ['playerController']),
+        ),
+        act: (bloc) => bloc.add(const CloseScriptEvent('playerController')),
+        expect: () => [
+          const EditorState(openScripts: [], currentOpenScript: ''),
+        ],
+      );
     });
     group('SelectScriptEvent', () {
       blocTest<EditorBloc, EditorState>(
