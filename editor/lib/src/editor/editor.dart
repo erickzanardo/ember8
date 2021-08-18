@@ -1,4 +1,5 @@
 import 'package:editor/src/project/bloc/project_bloc.dart';
+import 'package:editor/src/workspaces/bloc/workspace_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,6 +18,9 @@ class Editor extends StatelessWidget {
                 providers: [
                   BlocProvider<EditorBloc>(
                       create: (_) => EditorBloc(),
+                  ),
+                  BlocProvider<ScriptsWorkspaceBloc>(
+                      create: (_) => ScriptsWorkspaceBloc(),
                   ),
                   BlocProvider<ProjectBloc>(
                       create: (_) => ProjectBloc(),

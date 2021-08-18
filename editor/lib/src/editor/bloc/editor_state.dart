@@ -9,17 +9,12 @@ enum EditorTab {
 class EditorState extends Equatable {
   final EditorTab currentTab;
 
-  final List<String> openScripts;
-  final String currentOpenScript;
-
   const EditorState({
     this.currentTab = EditorTab.scripts,
-    this.openScripts = const [],
-    this.currentOpenScript = '',
   });
 
   @override
-  List<Object?> get props => [currentTab, openScripts, currentOpenScript];
+  List<Object?> get props => [currentTab];
 
   EditorState copyWith({
     EditorTab? currentTab,
@@ -28,8 +23,6 @@ class EditorState extends Equatable {
   }) {
     return EditorState(
         currentTab: currentTab ?? this.currentTab,
-        openScripts: openScripts ?? this.openScripts,
-        currentOpenScript: currentOpenScript ?? this.currentOpenScript,
     );
   }
 }

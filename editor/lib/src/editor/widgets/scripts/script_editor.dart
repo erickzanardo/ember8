@@ -1,8 +1,8 @@
-import 'package:editor/src/editor/bloc/editor_bloc.dart';
-import 'package:editor/src/editor/bloc/editor_events.dart';
-import 'package:editor/src/editor/bloc/editor_state.dart';
 import 'package:editor/src/editor/widgets/scripts/script_code_field.dart';
 import 'package:editor/src/widgets/tab.dart';
+import 'package:editor/src/workspaces/bloc/workspace_bloc.dart';
+import 'package:editor/src/workspaces/bloc/workspace_events.dart';
+import 'package:editor/src/workspaces/bloc/workspace_state.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart' hide Tab;
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,10 +22,11 @@ class ScriptEditor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<EditorBloc, EditorState, _ScriptEditorSelector>(
+    return BlocSelector<ScriptsWorkspaceBloc, WorkspaceState,
+        _ScriptEditorSelector>(
       selector: (state) => _ScriptEditorSelector(
-        state.currentOpenScript,
-        state.openScripts,
+        state.currentEditor,
+        state.openEditors,
       ),
       builder: (context, selection) {
         if (selection.open.isEmpty) {
@@ -43,10 +44,14 @@ class ScriptEditor extends StatelessWidget {
                     label: script,
                     selected: script == selection.selected,
                     onClick: () {
-                      context.read<EditorBloc>().add(SelectScriptEvent(script));
+                      context
+                          .read<ScriptsWorkspaceBloc>()
+                          .add(SelectEditorEvent(script));
                     },
                     onClose: () {
-                      context.read<EditorBloc>().add(CloseScriptEvent(script));
+                      context
+                          .read<ScriptsWorkspaceBloc>()
+                          .add(CloseEditorEvent(script));
                     },
                   ),
                 );
