@@ -5,13 +5,11 @@ class ScriptSideItem extends StatelessWidget {
 
   final ProjectScriptType type;
   final String name;
-  final VoidCallback onClick;
 
   const ScriptSideItem({
     Key? key,
     required this.type,
     required this.name,
-    required this.onClick,
   }) : super(key: key);
 
   IconData _mapTypeIcon() {
@@ -27,26 +25,17 @@ class ScriptSideItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onClick,
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 5.0),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Icon(_mapTypeIcon()),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 5.0),
-                    child: Text(name),
-                  ),
-                ),
-              ],
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Icon(_mapTypeIcon()),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 5.0),
+              child: Text(name),
+            ),
           ),
-        ),
-      ),
+        ],
     );
   }
 }

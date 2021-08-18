@@ -6,6 +6,7 @@ import 'package:editor/src/widgets/icon_button.dart';
 import 'package:editor/src/widgets/side_bar.dart';
 import 'package:editor/src/workspaces/bloc/workspace_bloc.dart';
 import 'package:editor/src/workspaces/bloc/workspace_events.dart';
+import 'package:editor/src/workspaces/widgets/workspace.dart';
 import 'package:flutter/material.dart' hide IconButton;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,59 +22,32 @@ class ScriptsWorkspace extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProjectBloc, ProjectState>(
       builder: (context, state) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 2,
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        key: newScriptKey,
-                        data: Icons.add,
-                        tooltip: 'New script',
-                        onClick: () async {
-                          final script = await showDialog<NewScriptFormEntry>(
-                            context: context,
-                            builder: (context) {
-                              return const NewScriptForm();
-                            },
-                          );
+        return Workspace<ScriptsWorkspaceBloc, ProjectScript>(
+            addButtonKey: newScriptKey,
+            addButtonTooltip: 'New script',
+            onAddButtonClick: () async {
+              final script = await showDialog<NewScriptFormEntry>(
+                  context: context,
+                  builder: (context) {
+                    return const NewScriptForm();
+                  },
+              );
 
-                          if (script != null) {
-                            context
-                                .read<ProjectBloc>()
-                                .add(NewScriptEvent(script.name, script.type));
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                  Expanded(
-                    child: SideBar(
-                      children: state.scripts.map((e) {
-                        return ScriptSideItem(
-                          name: e.name,
-                          type: e.type,
-                          onClick: () {
-                            context
-                                .read<ScriptsWorkspaceBloc>()
-                                .add(OpenEditorEvent(e.name));
-                          },
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const Expanded(
-              flex: 8,
-              child: ScriptEditor(), 
-            ),
-          ],
+              if (script != null) {
+                context
+                    .read<ProjectBloc>()
+                    .add(NewScriptEvent(script.name, script.type));
+              }
+            },
+            buildSideBarItem: (script) {
+              return ScriptSideItem(
+                  name: script.name,
+                  type: script.type,
+              );
+            },
+            mapItemValue: (script) => script.name,
+            items: state.scripts,
+            editor: const ScriptEditor(),
         );
       },
     );
