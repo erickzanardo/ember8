@@ -3,6 +3,7 @@ import 'package:editor/src/widgets/side_bar.dart';
 import 'package:editor/src/widgets/side_bar_item.dart';
 import 'package:editor/src/workspaces/bloc/workspace_bloc.dart';
 import 'package:editor/src/workspaces/bloc/workspace_events.dart';
+import 'package:editor/src/workspaces/widgets/workspace_editor.dart';
 import 'package:flutter/material.dart' hide IconButton;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,8 +13,9 @@ class Workspace<T extends WorkspaceBloc, V> extends StatelessWidget {
   final Future<void> Function() onAddButtonClick;
   final Widget Function(V) buildSideBarItem;
   final String Function(V) mapItemValue;
+  final Widget Function(String) buildCurrent;
+  final String emptyMessage;
   final List<V> items;
-  final Widget editor;
 
   const Workspace({
     Key? key,
@@ -23,7 +25,8 @@ class Workspace<T extends WorkspaceBloc, V> extends StatelessWidget {
     required this.buildSideBarItem,
     required this.mapItemValue,
     required this.items,
-    required this.editor,
+    required this.buildCurrent,
+    required this.emptyMessage,
   }) : super(key: key);
 
   @override
@@ -66,7 +69,7 @@ class Workspace<T extends WorkspaceBloc, V> extends StatelessWidget {
         ),
         Expanded(
           flex: 8,
-          child: editor,
+          child: WorkspaceEditor<T>(emptyMessage: emptyMessage, buildCurrent: buildCurrent),
         ),
       ],
     );

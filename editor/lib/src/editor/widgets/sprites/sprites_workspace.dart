@@ -43,7 +43,8 @@ class SpritesWorkspace extends StatelessWidget {
           },
           mapItemValue: (sprite) => sprite.name,
           items: state.sprites,
-          editor: Container(color: Colors.blue),
+          emptyMessage: 'Nothing to show yet, select a sprite on the left side bar',
+          buildCurrent: (_) => Container(color: Colors.blue),
         );
       },
     );

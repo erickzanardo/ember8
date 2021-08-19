@@ -1,4 +1,4 @@
-import 'package:editor/src/editor/widgets/scripts/script_editor.dart';
+import 'package:editor/src/editor/widgets/scripts/script_code_field.dart';
 import 'package:editor/src/project/bloc/project_bloc.dart';
 import 'package:editor/src/project/bloc/project_events.dart';
 import 'package:editor/src/project/bloc/project_state.dart';
@@ -44,7 +44,8 @@ class ScriptsWorkspace extends StatelessWidget {
             },
             mapItemValue: (script) => script.name,
             items: state.scripts,
-            editor: const ScriptEditor(),
+            emptyMessage: 'Nothing open yet, select a script on the left side bar',
+            buildCurrent: (current) => ScriptCodeField(scriptName: current),
         );
       },
     );

@@ -59,4 +59,15 @@ class SpritesPageObject extends PageObject {
     await tester.tap(find.byKey(SpritesWorkspace.newSpriteKey));
     await tester.pumpAndSettle();
   }
+
+  Future<void> createSprite(String name, int width, int height) async {
+    await openSpritesCreationForm();
+
+    await tester.enterText(find.byType(TextField).at(0), name);
+    await tester.enterText(find.byType(TextField).at(1), width.toString());
+    await tester.enterText(find.byType(TextField).at(2), height.toString());
+
+    await tester.tap(find.text('Create'));
+    await tester.pumpAndSettle();
+  }
 }
