@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:editor/src/project/bloc/project_bloc.dart';
 import 'package:editor/src/project/bloc/project_events.dart';
@@ -70,15 +72,66 @@ void main() {
       ),
       expect: () => [
         const ProjectState(
-            sprites: [
-              ProjectSprite(
-                  name: 'player',
-                  pixels: [
-                    [null, null],
-                    [null, null],
-                  ],
-              ),
-            ],
+          sprites: [
+            ProjectSprite(
+              name: 'player',
+              pixels: [
+                [null, null],
+                [null, null],
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+    blocTest<ProjectBloc, ProjectState>(
+      'Changes the pixel of a sprite on PaintSpritePixelEvent',
+      build: () => ProjectBloc(
+        initialState: const ProjectState(
+          sprites: [
+            ProjectSprite(
+              name: 'bullet',
+              pixels: [
+                [null, null],
+                [null, null],
+              ],
+            ),
+            ProjectSprite(
+              name: 'player',
+              pixels: [
+                [null, null],
+                [null, null],
+              ],
+            )
+          ],
+        ),
+      ),
+      act: (bloc) => bloc.add(
+        const PaintSpritePixelEvent(
+          spriteName: 'player',
+          x: 0,
+          y: 0,
+          color: 0,
+        ),
+      ),
+      expect: () => [
+        const ProjectState(
+          sprites: [
+            ProjectSprite(
+              name: 'bullet',
+              pixels: [
+                [null, null],
+                [null, null],
+              ],
+            ),
+            ProjectSprite(
+              name: 'player',
+              pixels: [
+                [0, null],
+                [null, null],
+              ],
+            ),
+          ],
         ),
       ],
     );

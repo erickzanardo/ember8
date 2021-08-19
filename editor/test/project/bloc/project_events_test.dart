@@ -1,5 +1,6 @@
 import 'package:editor/src/project/bloc/project_events.dart';
 import 'package:editor/src/project/bloc/project_state.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -64,6 +65,36 @@ void main() {
 
         event1 = const NewSpriteEvent(name: 'player', width: 10, height: 10);
         event2 = const NewSpriteEvent(name: 'player', width: 10, height: 12);
+
+        expect(event1, isNot(event2));
+      });
+    });
+
+    group('PaintSpritePixelEvent', () {
+      test('objects with the same attribute values are equal', () {
+        const event1 = PaintSpritePixelEvent(spriteName: 'player', x: 1, y: 1, color: 1);
+        const event2 = PaintSpritePixelEvent(spriteName: 'player', x: 1, y: 1, color: 1);
+
+        expect(event1, event2);
+      });
+      test('objects with the different attributes are not equals', () {
+        var event1 = const PaintSpritePixelEvent(spriteName: 'bullet', x: 1, y: 1, color: 1);
+        var event2 = const PaintSpritePixelEvent(spriteName: 'player', x: 1, y: 1, color: 1);
+
+        expect(event1, isNot(event2));
+
+        event1 = const PaintSpritePixelEvent(spriteName: 'player', x: 2, y: 1, color: 1);
+        event2 = const PaintSpritePixelEvent(spriteName: 'player', x: 1, y: 1, color: 1);
+
+        expect(event1, isNot(event2));
+
+        event1 = const PaintSpritePixelEvent(spriteName: 'player', x: 1, y: 2, color: 1);
+        event2 = const PaintSpritePixelEvent(spriteName: 'player', x: 1, y: 1, color: 1);
+
+        expect(event1, isNot(event2));
+
+        event1 = const PaintSpritePixelEvent(spriteName: 'player', x: 1, y: 1, color: 0);
+        event2 = const PaintSpritePixelEvent(spriteName: 'player', x: 1, y: 1, color: 1);
 
         expect(event1, isNot(event2));
       });

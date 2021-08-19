@@ -1,4 +1,5 @@
 import 'package:editor/src/editor/widgets/sprites/new_sprite_form.dart';
+import 'package:editor/src/editor/widgets/sprites/sprite_editor/sprite_editor.dart';
 import 'package:editor/src/project/bloc/project_bloc.dart';
 import 'package:editor/src/project/bloc/project_events.dart';
 import 'package:editor/src/project/bloc/project_state.dart';
@@ -44,7 +45,7 @@ class SpritesWorkspace extends StatelessWidget {
           mapItemValue: (sprite) => sprite.name,
           items: state.sprites,
           emptyMessage: 'Nothing to show yet, select a sprite on the left side bar',
-          buildCurrent: (_) => Container(color: Colors.blue),
+          buildCurrent: (current) => SpriteEditor(spriteName: current),
         );
       },
     );

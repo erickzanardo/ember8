@@ -40,6 +40,10 @@ class ProjectSprite extends Equatable {
 
   @override
   List<Object?> get props => [name, pixels];
+
+  ProjectSprite copyWithNewPixels(List<List<int?>> pixels) {
+    return ProjectSprite(name: name, pixels: pixels);
+  }
 }
 
 class ProjectState extends Equatable {

@@ -45,6 +45,28 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
           ),
         ],
       );
+    } else if (event is PaintSpritePixelEvent) {
+      yield state.copyWith(
+        sprites: [
+          ...state.sprites.map((sprite) {
+            if (sprite.name == event.spriteName) {
+              final newPixels = List.generate(sprite.pixels.length, (y) {
+                return List.generate(sprite.pixels[y].length, (x) {
+                  if (y == event.y && x == event.x) {
+                    return event.color;
+                  } else {
+                    return sprite.pixels[y][x];
+                  }
+                });
+              });
+
+              return sprite.copyWithNewPixels(newPixels);
+            } else {
+              return sprite;
+            }
+          }).toList(),
+        ],
+      );
     }
   }
 }
