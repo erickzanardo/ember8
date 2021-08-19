@@ -26,3 +26,17 @@ class UpdateScriptEvent extends ProjectEvent {
   List<Object?> get props => [name, code];
 }
 
+class NewSpriteEvent extends ProjectEvent {
+  final String name;
+  final int width;
+  final int height;
+
+  const NewSpriteEvent({
+    required this.name,
+    required this.width,
+    required this.height,
+  });
+
+  @override
+  List<Object?> get props => [name, width, height];
+}

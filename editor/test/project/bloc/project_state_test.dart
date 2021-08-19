@@ -24,5 +24,28 @@ void main() {
 
       expect(newEqualState, state);
     });
+
+    test('copyWith returns a new instance (sprites)', () {
+      const state = ProjectState();
+
+      const newSprite = ProjectSprite(
+        name: 'player',
+        pixels: [
+          [1, 1],
+        ]
+      );
+
+      final newState = state.copyWith(
+        sprites: const [
+          newSprite,
+        ],
+      );
+
+      final newEqualState = state.copyWith();
+
+      expect(newState.sprites, [newSprite]);
+
+      expect(newEqualState, state);
+    });
   });
 }

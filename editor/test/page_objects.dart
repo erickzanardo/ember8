@@ -1,4 +1,6 @@
+import 'package:editor/src/editor/widgets/editor_scaffold.dart';
 import 'package:editor/src/editor/widgets/scripts/scripts_workspace.dart';
+import 'package:editor/src/editor/widgets/sprites/sprites_workspace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -6,6 +8,15 @@ abstract class PageObject {
   final WidgetTester tester;
 
   PageObject(this.tester);
+}
+
+class EditorPageObject extends PageObject {
+  EditorPageObject(WidgetTester tester) : super(tester);
+
+  Future<void> openSpriteTab() async {
+    await tester.tap(find.text('Sprites'));
+    await tester.pumpAndSettle();
+  }
 }
 
 class ScriptsPageObject extends PageObject {
@@ -37,6 +48,15 @@ class ScriptsPageObject extends PageObject {
     await tester.pumpAndSettle();
 
     await tester.tap(find.text('Create'));
+    await tester.pumpAndSettle();
+  }
+}
+
+class SpritesPageObject extends PageObject {
+  SpritesPageObject(WidgetTester tester) : super(tester);
+
+  Future<void> openSpritesCreationForm() async {
+    await tester.tap(find.byKey(SpritesWorkspace.newSpriteKey));
     await tester.pumpAndSettle();
   }
 }

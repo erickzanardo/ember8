@@ -56,5 +56,31 @@ void main() {
         ]),
       ],
     );
+    blocTest<ProjectBloc, ProjectState>(
+      'Add a new sprite on NewSpriteEvent',
+      build: () => ProjectBloc(
+        initialState: const ProjectState(),
+      ),
+      act: (bloc) => bloc.add(
+        const NewSpriteEvent(
+          name: 'player',
+          width: 2,
+          height: 2,
+        ),
+      ),
+      expect: () => [
+        const ProjectState(
+            sprites: [
+              ProjectSprite(
+                  name: 'player',
+                  pixels: [
+                    [null, null],
+                    [null, null],
+                  ],
+              ),
+            ],
+        ),
+      ],
+    );
   });
 }

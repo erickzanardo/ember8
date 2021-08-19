@@ -52,3 +52,9 @@ class ScriptsWorkspaceBloc extends WorkspaceBloc {
   }) : super(initialState: initialState);
 }
 
+class SpritesWorkspaceBloc extends WorkspaceBloc {
+  SpritesWorkspaceBloc({
+    WorkspaceState initialState = const WorkspaceState(),
+  }) : super(initialState: initialState);
+}
+

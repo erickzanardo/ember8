@@ -29,22 +29,38 @@ class ProjectScript extends Equatable {
   }
 }
 
+class ProjectSprite extends Equatable {
+  final String name;
+  final List<List<int?>> pixels;
 
-class ProjectState extends Equatable {
-  final List<ProjectScript> scripts;
-
-  const ProjectState({
-    this.scripts = const [],
+  const ProjectSprite({
+    required this.name,
+    required this.pixels,
   });
 
   @override
-  List<Object?> get props => [scripts];
+  List<Object?> get props => [name, pixels];
+}
+
+class ProjectState extends Equatable {
+  final List<ProjectScript> scripts;
+  final List<ProjectSprite> sprites;
+
+  const ProjectState({
+    this.scripts = const [],
+    this.sprites = const [],
+  });
+
+  @override
+  List<Object?> get props => [scripts, sprites];
 
   ProjectState copyWith({
     List<ProjectScript>? scripts,
+    List<ProjectSprite>? sprites,
   }) {
     return ProjectState(
         scripts: scripts ?? this.scripts,
+        sprites: sprites ?? this.sprites,
     );
   }
 }
