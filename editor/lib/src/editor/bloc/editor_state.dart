@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 enum EditorTab {
   scripts,
   sprites,
+  templates,
   stages,
 }
 

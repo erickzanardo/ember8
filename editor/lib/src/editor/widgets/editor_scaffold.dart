@@ -42,6 +42,15 @@ class EditorScaffold extends StatelessWidget {
                     ),
                     Expanded(
                       child: Tab(
+                          label: 'Templates',
+                          selected: state.currentTab == EditorTab.templates,
+                          onClick: () {
+                            context.read<EditorBloc>().add(const SelectTabEvent(EditorTab.templates));
+                          },
+                      ),
+                    ),
+                    Expanded(
+                      child: Tab(
                           label: 'Stages',
                           selected: state.currentTab == EditorTab.stages,
                           onClick: () {
@@ -55,6 +64,8 @@ class EditorScaffold extends StatelessWidget {
                 const Expanded(child: ScriptsWorkspace()),
               if (state.currentTab == EditorTab.sprites)
                 const Expanded(child: SpritesWorkspace()),
+              if (state.currentTab == EditorTab.templates)
+                Expanded(child: Text(state.currentTab.toString())),
               if (state.currentTab == EditorTab.stages)
                 Expanded(child: Text(state.currentTab.toString())),
             ],
