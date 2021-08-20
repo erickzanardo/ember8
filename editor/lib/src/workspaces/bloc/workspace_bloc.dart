@@ -58,3 +58,9 @@ class SpritesWorkspaceBloc extends WorkspaceBloc {
   }) : super(initialState: initialState);
 }
 
+class TemplatesWorkspaceBloc extends WorkspaceBloc {
+  TemplatesWorkspaceBloc({
+    WorkspaceState initialState = const WorkspaceState(),
+  }) : super(initialState: initialState);
+}
+

@@ -2,6 +2,7 @@ import 'package:editor/src/editor/widgets/scripts/scripts_workspace.dart';
 import 'package:editor/src/editor/widgets/sprites/sprite_editor/color_palette.dart';
 import 'package:editor/src/editor/widgets/sprites/sprite_editor/sprite_editor_cell.dart';
 import 'package:editor/src/editor/widgets/sprites/sprites_workspace.dart';
+import 'package:editor/src/editor/widgets/templates/templates_workspace.dart';
 import 'package:editor/src/widgets/clickable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -17,6 +18,11 @@ class EditorPageObject extends PageObject {
 
   Future<void> openSpriteTab() async {
     await tester.tap(find.text('Sprites'));
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> openTemplateTab() async {
+    await tester.tap(find.text('Templates'));
     await tester.pumpAndSettle();
   }
 }
@@ -87,6 +93,24 @@ class SpritesPageObject extends PageObject {
     final pixels = find.byType(SpriteEditorCell);
 
     await tester.tap(pixels.at(index));
+    await tester.pumpAndSettle();
+  }
+}
+
+class TemplatesPageObject extends PageObject {
+  TemplatesPageObject(WidgetTester tester) : super(tester);
+
+  Future<void> openTemplatesCreationForm() async {
+    await tester.tap(find.byKey(TemplatesWorkspace.newTemplateKey));
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> createTemplate(String name) async {
+    await openTemplatesCreationForm();
+
+    await tester.enterText(find.byType(TextField), name);
+
+    await tester.tap(find.text('Create'));
     await tester.pumpAndSettle();
   }
 }

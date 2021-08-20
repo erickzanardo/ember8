@@ -1,5 +1,6 @@
 import 'package:editor/src/editor/widgets/scripts/scripts_workspace.dart';
 import 'package:editor/src/editor/widgets/sprites/sprites_workspace.dart';
+import 'package:editor/src/editor/widgets/templates/templates_workspace.dart';
 import 'package:flutter/material.dart' hide Tab;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -65,7 +66,7 @@ class EditorScaffold extends StatelessWidget {
               if (state.currentTab == EditorTab.sprites)
                 const Expanded(child: SpritesWorkspace()),
               if (state.currentTab == EditorTab.templates)
-                Expanded(child: Text(state.currentTab.toString())),
+                const Expanded(child: TemplatesWorkspace()),
               if (state.currentTab == EditorTab.stages)
                 Expanded(child: Text(state.currentTab.toString())),
             ],
