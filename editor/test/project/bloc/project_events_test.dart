@@ -146,6 +146,31 @@ void main() {
         );
       });
     });
+
+    group('UpdateFieldTemplateEvent', () {
+      test('objects with the same name and value are equal', () {
+        const event1 = UpdateFieldTemplateEvent<String>('bullet', 'script', 'bulletController');
+        const event2 = UpdateFieldTemplateEvent<String>('bullet', 'script', 'bulletController');
+
+        expect(event1, event2);
+      });
+      test('objects with the different name or value are not equals', () {
+        var event1 = const UpdateFieldTemplateEvent<String>('bullet', 'script', 'bulletController');
+        var event2 = const UpdateFieldTemplateEvent<String>('bullet', 'sprite', 'bulletController');
+
+        expect(event1, isNot(event2));
+
+        event1 = const UpdateFieldTemplateEvent<String>('bullet', 'script', 'bulletController');
+        event2 = const UpdateFieldTemplateEvent<String>('bullet', 'script', 'bulletMovement');
+
+        expect(event1, isNot(event2));
+
+        event1 = const UpdateFieldTemplateEvent<String>('enemy', 'script', 'bulletController');
+        event2 = const UpdateFieldTemplateEvent<String>('bullet', 'script', 'bulletController');
+
+        expect(event1, isNot(event2));
+      });
+    });
   });
 }
 

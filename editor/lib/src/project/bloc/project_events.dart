@@ -67,20 +67,36 @@ class NewTemplateEvent extends ProjectEvent {
   List<Object?> get props => [name];
 }
 
-class AddFieldTemplateEvent<T> extends ProjectEvent {
+abstract class ManageFieldTemplateEvent<T> extends ProjectEvent {
   final String templateName;
   final String fieldName;
   final T value;
 
-  const AddFieldTemplateEvent(this.templateName, this.fieldName, this.value);
+  const ManageFieldTemplateEvent(this.templateName, this.fieldName, this.value);
 
   @override
   List<Object?> get props => [templateName, fieldName, value];
 
   ProjectTemplateField<T> toProjectTemplateField() {
     return ProjectTemplateField<T>(
-        fieldName,
-        value,
+      fieldName,
+      value,
     );
   }
+}
+
+class AddFieldTemplateEvent<T> extends ManageFieldTemplateEvent<T> {
+  const AddFieldTemplateEvent(String templateName, String fieldName, T value) : super(
+          templateName,
+          fieldName,
+          value,
+        );
+}
+
+class UpdateFieldTemplateEvent<T> extends ManageFieldTemplateEvent<T> {
+  const UpdateFieldTemplateEvent(String templateName, String fieldName, T value) : super(
+          templateName,
+          fieldName,
+          value,
+        );
 }

@@ -167,5 +167,27 @@ void main() {
         ]),
       ],
     );
+    blocTest<ProjectBloc, ProjectState>(
+      'Changes the value of a template field on UpdateFieldTemplateEvent',
+      build: () => ProjectBloc(
+        initialState: const ProjectState(
+            templates: [
+              ProjectTemplate('bullet', [
+                ProjectTemplateField<String>('script', 'bullet'),
+              ]),
+            ],
+        ),
+      ),
+      act: (bloc) => bloc.add(
+        const UpdateFieldTemplateEvent<String>('bullet', 'script', 'bulletController'),
+      ),
+      expect: () => [
+        const ProjectState(templates: [
+          ProjectTemplate('bullet', [
+            ProjectTemplateField<String>('script', 'bulletController'),
+          ]),
+        ]),
+      ],
+    );
   });
 }
