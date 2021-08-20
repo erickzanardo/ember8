@@ -29,5 +29,11 @@ extension EditorCommonFinders on CommonFinders {
 
     return descendant(of: tab, matching: byType(IconButton));
   }
+
+  Finder byIconButtonTooltip(String tooltip) {
+    return byWidgetPredicate((widget) {
+      return widget is IconButton && widget.tooltip == tooltip;
+    });
+  }
 }
 

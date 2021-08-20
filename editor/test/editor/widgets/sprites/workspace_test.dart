@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../page_objects.dart';
-import '../../widgets_extensions.dart';
+import '../../../page_objects.dart';
+import '../../../widgets_extensions.dart';
 
 void main() {
   group('Widgets - Editor - Sprites', () {

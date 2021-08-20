@@ -1,6 +1,8 @@
-import 'package:editor/src/editor/widgets/editor_scaffold.dart';
 import 'package:editor/src/editor/widgets/scripts/scripts_workspace.dart';
+import 'package:editor/src/editor/widgets/sprites/sprite_editor/color_palette.dart';
+import 'package:editor/src/editor/widgets/sprites/sprite_editor/sprite_editor_cell.dart';
 import 'package:editor/src/editor/widgets/sprites/sprites_workspace.dart';
+import 'package:editor/src/widgets/clickable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -68,6 +70,23 @@ class SpritesPageObject extends PageObject {
     await tester.enterText(find.byType(TextField).at(2), height.toString());
 
     await tester.tap(find.text('Create'));
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> selectColorInPalette(int index) async {
+    final colors = find.descendant(
+      of: find.byType(ColorPalette),
+      matching: find.byType(Clickable),
+    );
+
+    await tester.tap(colors.at(index));
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> paintPixel(int index) async {
+    final pixels = find.byType(SpriteEditorCell);
+
+    await tester.tap(pixels.at(index));
     await tester.pumpAndSettle();
   }
 }
