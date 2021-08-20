@@ -135,5 +135,19 @@ void main() {
         ),
       ],
     );
+    blocTest<ProjectBloc, ProjectState>(
+      'Add a new template on NewTemplateEvent',
+      build: () => ProjectBloc(
+        initialState: const ProjectState(),
+      ),
+      act: (bloc) => bloc.add(
+        const NewTemplateEvent('bullet'),
+      ),
+      expect: () => [
+        const ProjectState(templates: [
+          ProjectTemplate('bullet', []),
+        ]),
+      ],
+    );
   });
 }

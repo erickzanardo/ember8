@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:equatable/equatable.dart';
 
 import 'project_state.dart';
@@ -58,4 +56,14 @@ class PaintSpritePixelEvent extends ProjectEvent {
 
   @override
   List<Object?> get props => [spriteName, x, y, color];
+}
+
+class NewTemplateEvent extends ProjectEvent {
+  final String name;
+
+  const NewTemplateEvent(this.name);
+
+  @override
+  List<Object?> get props => [name];
+
 }

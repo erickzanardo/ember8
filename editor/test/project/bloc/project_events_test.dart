@@ -1,6 +1,5 @@
 import 'package:editor/src/project/bloc/project_events.dart';
 import 'package:editor/src/project/bloc/project_state.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -95,6 +94,21 @@ void main() {
 
         event1 = const PaintSpritePixelEvent(spriteName: 'player', x: 1, y: 1, color: 0);
         event2 = const PaintSpritePixelEvent(spriteName: 'player', x: 1, y: 1, color: 1);
+
+        expect(event1, isNot(event2));
+      });
+    });
+
+    group('NewTemplateEvent', () {
+      test('objects with the same name are equal', () {
+        const event1 = NewTemplateEvent('bullet');
+        const event2 = NewTemplateEvent('bullet');
+
+        expect(event1, event2);
+      });
+      test('objects with the different name are not equals', () {
+        const event1 = NewTemplateEvent('bullet');
+        const event2 = NewTemplateEvent('enemy');
 
         expect(event1, isNot(event2));
       });

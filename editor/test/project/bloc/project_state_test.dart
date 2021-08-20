@@ -47,5 +47,29 @@ void main() {
 
       expect(newEqualState, state);
     });
+
+    test('copyWith returns a new instance (templates)', () {
+      const state = ProjectState();
+
+      const newTemplate = ProjectTemplate(
+          'bullet',
+          [
+            ProjectTemplateField<String>('script', 'bulletController'),
+            ProjectTemplateField<String>('sprite', 'bulletSprite'),
+          ],
+      );
+
+      final newState = state.copyWith(
+        templates: const [
+          newTemplate,
+        ],
+      );
+
+      final newEqualState = state.copyWith();
+
+      expect(newState.templates, [newTemplate]);
+
+      expect(newEqualState, state);
+    });
   });
 }
