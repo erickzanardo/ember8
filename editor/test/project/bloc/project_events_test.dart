@@ -171,6 +171,23 @@ void main() {
         expect(event1, isNot(event2));
       });
     });
+    group('RemoveFieldTemplateEvent', () {
+      test('objects with the same templateName and fieldName are equal', () {
+        const event1 = RemoveFieldTemplateEvent('bullet', 'script');
+        const event2 = RemoveFieldTemplateEvent('bullet', 'script');
+
+        expect(event1, event2);
+      });
+      test('objects with the different name or value are not equals', () {
+        var event1 = const RemoveFieldTemplateEvent('bullet', 'script');
+        var event2 = const RemoveFieldTemplateEvent('bullet', 'sprite');
+
+        expect(event1, isNot(event2));
+
+        event1 = const RemoveFieldTemplateEvent('bullet', 'script');
+        event2 = const RemoveFieldTemplateEvent('enemy', 'script');
+      });
+    });
   });
 }
 

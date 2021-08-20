@@ -100,3 +100,13 @@ class UpdateFieldTemplateEvent<T> extends ManageFieldTemplateEvent<T> {
           value,
         );
 }
+
+class RemoveFieldTemplateEvent extends ProjectEvent {
+  final String templateName;
+  final String fieldName;
+
+  const RemoveFieldTemplateEvent(this.templateName, this.fieldName);
+
+  @override
+  List<Object?> get props => [templateName, fieldName];
+}

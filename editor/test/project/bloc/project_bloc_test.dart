@@ -189,5 +189,25 @@ void main() {
         ]),
       ],
     );
+    blocTest<ProjectBloc, ProjectState>(
+      'Removes a template field on RemoveFieldTemplateEvent',
+      build: () => ProjectBloc(
+        initialState: const ProjectState(
+            templates: [
+              ProjectTemplate('bullet', [
+                ProjectTemplateField<String>('script', 'bullet'),
+              ]),
+            ],
+        ),
+      ),
+      act: (bloc) => bloc.add(
+        const RemoveFieldTemplateEvent('bullet', 'script'),
+      ),
+      expect: () => [
+        const ProjectState(templates: [
+          ProjectTemplate('bullet', []),
+        ]),
+      ],
+    );
   });
 }
