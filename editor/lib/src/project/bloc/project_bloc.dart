@@ -74,6 +74,16 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
           ProjectTemplate(event.name, const []),
         ],
       );
+    } else if (event is AddFieldTemplateEvent) {
+      yield state.copyWith(
+        templates: state.templates.map((template) {
+          if (template.name == event.templateName) {
+            return template.copyWithNewField(event.toProjectTemplateField());
+          } else {
+            return template;
+          }
+        }).toList(),
+      );
     }
   }
 }

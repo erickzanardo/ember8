@@ -64,6 +64,16 @@ class ProjectTemplate extends Equatable {
 
   @override
   List<Object?> get props => [name, fields];
+
+  ProjectTemplate copyWithNewField(ProjectTemplateField field) {
+    return ProjectTemplate(
+        name, 
+        [
+          ...fields,
+          field,
+        ],
+    );
+  }
 }
 
 class ProjectState extends Equatable {

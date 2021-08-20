@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:bloc_test/bloc_test.dart';
 import 'package:editor/src/project/bloc/project_bloc.dart';
 import 'package:editor/src/project/bloc/project_events.dart';
@@ -146,6 +144,26 @@ void main() {
       expect: () => [
         const ProjectState(templates: [
           ProjectTemplate('bullet', []),
+        ]),
+      ],
+    );
+    blocTest<ProjectBloc, ProjectState>(
+      'Add a new field to the template',
+      build: () => ProjectBloc(
+        initialState: const ProjectState(
+            templates: [
+              ProjectTemplate('bullet', []),
+            ],
+        ),
+      ),
+      act: (bloc) => bloc.add(
+        const AddFieldTemplateEvent<String>('bullet', 'script', 'bulletController'),
+      ),
+      expect: () => [
+        const ProjectState(templates: [
+          ProjectTemplate('bullet', [
+            ProjectTemplateField<String>('script', 'bulletController'),
+          ]),
         ]),
       ],
     );

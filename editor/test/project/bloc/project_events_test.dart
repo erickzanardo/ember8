@@ -113,6 +113,39 @@ void main() {
         expect(event1, isNot(event2));
       });
     });
+
+    group('AddFieldTemplateEvent', () {
+      test('objects with the same name and value are equal', () {
+        const event1 = AddFieldTemplateEvent<String>('bullet', 'script', 'bulletController');
+        const event2 = AddFieldTemplateEvent<String>('bullet', 'script', 'bulletController');
+
+        expect(event1, event2);
+      });
+      test('objects with the different name or value are not equals', () {
+        var event1 = const AddFieldTemplateEvent<String>('bullet', 'script', 'bulletController');
+        var event2 = const AddFieldTemplateEvent<String>('bullet', 'sprite', 'bulletController');
+
+        expect(event1, isNot(event2));
+
+        event1 = const AddFieldTemplateEvent<String>('bullet', 'script', 'bulletController');
+        event2 = const AddFieldTemplateEvent<String>('bullet', 'script', 'bulletMovement');
+
+        expect(event1, isNot(event2));
+
+        event1 = const AddFieldTemplateEvent<String>('enemy', 'script', 'bulletController');
+        event2 = const AddFieldTemplateEvent<String>('bullet', 'script', 'bulletController');
+
+        expect(event1, isNot(event2));
+      });
+      test('toProjectTemplateField returns a copy of the event as the state model', () {
+        const event = AddFieldTemplateEvent<String>('enemy', 'script', 'enemyController');
+
+        expect(
+            event.toProjectTemplateField(),
+            const ProjectTemplateField<String>('script', 'enemyController'),
+        );
+      });
+    });
   });
 }
 
