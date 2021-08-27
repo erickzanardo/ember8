@@ -1,3 +1,4 @@
+import 'package:editor/src/editor/widgets/templates/template_editor/template_editor.dart';
 import 'package:editor/src/project/bloc/project_bloc.dart';
 import 'package:editor/src/project/bloc/project_events.dart';
 import 'package:editor/src/project/bloc/project_state.dart';
@@ -38,7 +39,7 @@ class TemplatesWorkspace extends StatelessWidget {
           mapItemValue: (template) => template.name,
           items: state.templates,
           emptyMessage: 'Nothing to show yet, select a template on the left side bar',
-          buildCurrent: (current) => Container(),
+          buildCurrent: (current) => TemplateEditor(templateName: current),
         );
       },
     );
