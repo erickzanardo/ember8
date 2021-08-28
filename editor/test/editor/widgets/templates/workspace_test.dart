@@ -12,11 +12,11 @@ void main() {
 
       await EditorPageObject(tester).openTemplateTab();
 
-      // No sprites should exists
+      // No templates should exists
       expect(find.text('Empty'), findsOneWidget);
 
-      final spritePageObject = TemplatesPageObject(tester);
-      await spritePageObject.openTemplatesCreationForm();
+      final templatePageObject = TemplatesPageObject(tester);
+      await templatePageObject.openTemplatesCreationForm();
 
       await tester.enterText(find.byType(TextField), 'bullet');
 
@@ -34,11 +34,11 @@ void main() {
 
       await EditorPageObject(tester).openTemplateTab();
 
-      // No sprites should exists
+      // No templates should exists
       expect(find.text('Empty'), findsOneWidget);
 
-      final spritePageObject = TemplatesPageObject(tester);
-      await spritePageObject.openTemplatesCreationForm();
+      final templatePageObject = TemplatesPageObject(tester);
+      await templatePageObject.openTemplatesCreationForm();
 
       await tester.tap(find.text('Cancel'));
       await tester.pumpAndSettle();
@@ -47,14 +47,14 @@ void main() {
     });
 
     testWidgets('it can open template from the sidebar', (tester) async {
-      final spritePageObject = TemplatesPageObject(tester);
+      final templatePageObject = TemplatesPageObject(tester);
 
       await tester.pumpEditor();
       await EditorPageObject(tester).openTemplateTab();
 
-      // Creates a sprite first
-      await spritePageObject.createTemplate('bullet');
-      await spritePageObject.createTemplate('enemy');
+      // Creates a template first
+      await templatePageObject.createTemplate('bullet');
+      await templatePageObject.createTemplate('enemy');
 
       await tester.tap(find.sideBarItemWithText('bullet'));
       await tester.pumpAndSettle();
