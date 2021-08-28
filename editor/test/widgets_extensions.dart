@@ -1,5 +1,6 @@
 import 'package:editor/src/editor/editor.dart';
 import 'package:editor/src/widgets/icon_button.dart';
+import 'package:editor/src/widgets/side_bar_item.dart';
 import 'package:editor/src/widgets/tab.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -34,6 +35,10 @@ extension EditorCommonFinders on CommonFinders {
     return byWidgetPredicate((widget) {
       return widget is IconButton && widget.tooltip == tooltip;
     });
+  }
+
+  Finder sideBarItemWithText(String label) {
+    return descendant(of: byType(SideBarItem), matching: text(label));
   }
 }
 

@@ -25,7 +25,7 @@ void main() {
       await tester.tap(find.text('Create'));
       await tester.pumpAndSettle();
 
-      expect(find.text('playerSprite'), findsOneWidget);
+      expect(find.sideBarItemWithText('playerSprite'), findsOneWidget);
       expect(find.text('Empty'), findsNothing);
     });
 
@@ -57,7 +57,7 @@ void main() {
       await spritePageObject.createSprite('playerSprite', 10, 10);
       await spritePageObject.createSprite('playerAttack', 10, 10);
 
-      await tester.tap(find.text('playerSprite'));
+      await tester.tap(find.sideBarItemWithText('playerSprite'));
       await tester.pumpAndSettle();
 
       // A tab should have open, with it selected
@@ -66,7 +66,7 @@ void main() {
         findsOneWidget,
       );
 
-      await tester.tap(find.text('playerAttack'));
+      await tester.tap(find.sideBarItemWithText('playerAttack'));
       await tester.pumpAndSettle();
 
       // A tab should have open, with it selected and the previous should exists still

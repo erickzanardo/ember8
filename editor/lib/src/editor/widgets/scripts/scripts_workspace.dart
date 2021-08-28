@@ -34,7 +34,11 @@ class ScriptsWorkspace extends StatelessWidget {
                 context
                     .read<ProjectBloc>()
                     .add(NewScriptEvent(script.name, script.type));
+
+                return script.name;
               }
+
+              return null;
             },
             buildSideBarItem: (script) {
               return ScriptSideItem(

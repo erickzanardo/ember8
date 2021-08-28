@@ -31,7 +31,11 @@ class TemplatesWorkspace extends StatelessWidget {
 
             if (template != null) {
               context.read<ProjectBloc>().add(NewTemplateEvent(template.name));
+
+              return template.name;
             }
+
+            return null;
           },
           buildSideBarItem: (template) {
             return Text(template.name);

@@ -10,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class Workspace<T extends WorkspaceBloc, V> extends StatelessWidget {
   final Key addButtonKey;
   final String addButtonTooltip;
-  final Future<void> Function() onAddButtonClick;
+  final Future<String?> Function() onAddButtonClick;
   final Widget Function(V) buildSideBarItem;
   final String Function(V) mapItemValue;
   final Widget Function(String) buildCurrent;
@@ -53,8 +53,11 @@ class Workspace<T extends WorkspaceBloc, V> extends StatelessWidget {
                       key: addButtonKey,
                       data: Icons.add,
                       tooltip: addButtonTooltip,
-                      onClick: () {
-                        onAddButtonClick();
+                      onClick: () async {
+                        final createdItem = await onAddButtonClick();
+                        if (createdItem != null) {
+                          context.read<T>().add(OpenEditorEvent(createdItem));
+                        }
                       },
                     ),
                   ],

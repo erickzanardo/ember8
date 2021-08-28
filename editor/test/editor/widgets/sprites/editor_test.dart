@@ -15,10 +15,6 @@ void main() {
       // Creates a sprite first
       await spritePageObject.createSprite('playerSprite', 2, 2);
 
-      // Open the sprite
-      await tester.tap(find.text('playerSprite'));
-      await tester.pumpAndSettle();
-
       // Brush is the default tool, so no need to select it
       await spritePageObject.selectColorInPalette(0);
       await spritePageObject.paintPixel(0);

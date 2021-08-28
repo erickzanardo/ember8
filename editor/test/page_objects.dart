@@ -36,7 +36,7 @@ class ScriptsPageObject extends PageObject {
   }
 
   Future<void> fillNewScriptName(String name) async {
-    await tester.enterText(find.byType(TextField), name);
+    await tester.enterText(find.byType(TextField).first, name);
   }
 
   Future<void> cancelScriptForm() async {

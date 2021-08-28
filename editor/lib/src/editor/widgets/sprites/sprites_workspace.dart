@@ -36,7 +36,11 @@ class SpritesWorkspace extends StatelessWidget {
                       height: sprite.height,
                     ),
                   );
+
+              return sprite.name;
             }
+
+            return null;
           },
           buildSideBarItem: (sprite) {
             // TODO we could show the small image here

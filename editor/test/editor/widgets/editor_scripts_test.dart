@@ -22,7 +22,7 @@ void main() {
       await tester.tap(find.text('Create'));
       await tester.pumpAndSettle();
 
-      expect(find.text('playerController'), findsOneWidget);
+      expect(find.sideBarItemWithText('playerController'), findsOneWidget);
       expect(find.text('Empty'), findsNothing);
       expect(find.byIcon(Icons.computer), findsOneWidget);
     });
@@ -36,7 +36,7 @@ void main() {
       await ScriptsPageObject(tester)
           .createScript('playerMovement', 'Directional Pad');
 
-      expect(find.text('playerMovement'), findsOneWidget);
+      expect(find.sideBarItemWithText('playerMovement'), findsOneWidget);
       expect(find.text('Empty'), findsNothing);
       expect(find.byIcon(Icons.gamepad), findsOneWidget);
     });
@@ -50,7 +50,7 @@ void main() {
       await ScriptsPageObject(tester)
           .createScript('playerActions', 'Action Button');
 
-      expect(find.text('playerActions'), findsOneWidget);
+      expect(find.sideBarItemWithText('playerActions'), findsOneWidget);
       expect(find.text('Empty'), findsNothing);
       expect(find.byIcon(Icons.sports_mma), findsOneWidget);
     });
@@ -81,7 +81,7 @@ void main() {
       await scriptsPageObject.createScript('playerController', 'Controller');
       await scriptsPageObject.createScript('playerMovement', 'Action Button');
 
-      await tester.tap(find.text('playerController'));
+      await tester.tap(find.sideBarItemWithText('playerController'));
       await tester.pumpAndSettle();
 
       // A tab should have open, with it selected
@@ -90,7 +90,7 @@ void main() {
         findsOneWidget,
       );
 
-      await tester.tap(find.text('playerMovement'));
+      await tester.tap(find.sideBarItemWithText('playerMovement'));
       await tester.pumpAndSettle();
 
       // A tab should have open, with it selected and the previous should exists still
@@ -114,10 +114,10 @@ void main() {
       await scriptsPageObject.createScript('playerController', 'Controller');
       await scriptsPageObject.createScript('playerMovement', 'Action Button');
 
-      await tester.tap(find.text('playerController'));
+      await tester.tap(find.sideBarItemWithText('playerController'));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('playerMovement'));
+      await tester.tap(find.sideBarItemWithText('playerMovement'));
       await tester.pumpAndSettle();
 
       // Making sure our scripts are open
@@ -147,10 +147,10 @@ void main() {
       await scriptsPageObject.createScript('playerController', 'Controller');
       await scriptsPageObject.createScript('playerMovement', 'Action Button');
 
-      await tester.tap(find.text('playerController'));
+      await tester.tap(find.sideBarItemWithText('playerController'));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('playerMovement'));
+      await tester.tap(find.sideBarItemWithText('playerMovement'));
       await tester.pumpAndSettle();
 
       // Making sure our scripts are open

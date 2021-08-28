@@ -23,7 +23,8 @@ void main() {
       await tester.tap(find.text('Create'));
       await tester.pumpAndSettle();
 
-      expect(find.text('bullet'), findsOneWidget);
+      expect(find.byTabOptions(label: 'bullet', selected: true), findsOneWidget);
+      expect(find.sideBarItemWithText('bullet'), findsOneWidget);
       expect(find.text('Empty'), findsNothing);
     });
 
@@ -55,7 +56,7 @@ void main() {
       await spritePageObject.createTemplate('bullet');
       await spritePageObject.createTemplate('enemy');
 
-      await tester.tap(find.text('bullet'));
+      await tester.tap(find.sideBarItemWithText('bullet'));
       await tester.pumpAndSettle();
 
       // A tab should have open, with it selected
@@ -64,7 +65,7 @@ void main() {
         findsOneWidget,
       );
 
-      await tester.tap(find.text('enemy'));
+      await tester.tap(find.sideBarItemWithText('enemy'));
       await tester.pumpAndSettle();
 
       // A tab should have open, with it selected and the previous should exists still
