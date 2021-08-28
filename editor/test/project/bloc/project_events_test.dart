@@ -188,6 +188,20 @@ void main() {
         event2 = const RemoveFieldTemplateEvent('enemy', 'script');
       });
     });
+    group('NewStageEvent', () {
+      test('objects with the same name are equal', () {
+        const event1 = NewStageEvent('title');
+        const event2 = NewStageEvent('title');
+
+        expect(event1, event2);
+      });
+      test('objects with the different name are not equals', () {
+        const event1 = NewStageEvent('title');
+        const event2 = NewStageEvent('game');
+
+        expect(event1, isNot(event2));
+      });
+    });
   });
 }
 

@@ -71,5 +71,29 @@ void main() {
 
       expect(newEqualState, state);
     });
+
+    test('copyWith returns a new instance (stages)', () {
+      const state = ProjectState();
+
+      const newStage = ProjectStage(
+          'title',
+          [
+            ProjectStageObject(name: 'title', templateName: 'titleLabel', x: 0, y: 0),
+            ProjectStageObject(name: 'playButton', templateName: 'playButton', x: 10, y: 10),
+          ],
+      );
+
+      final newState = state.copyWith(
+        stages: const [
+          newStage,
+        ],
+      );
+
+      final newEqualState = state.copyWith();
+
+      expect(newState.stages, [newStage]);
+
+      expect(newEqualState, state);
+    });
   });
 }

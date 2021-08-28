@@ -110,3 +110,12 @@ class RemoveFieldTemplateEvent extends ProjectEvent {
   @override
   List<Object?> get props => [templateName, fieldName];
 }
+
+class NewStageEvent extends ProjectEvent {
+  final String name;
+
+  const NewStageEvent(this.name);
+
+  @override
+  List<Object?> get props => [name];
+}
