@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SideBarItem extends StatelessWidget {
-
+class SideBarItem extends StatefulWidget {
   final Widget child;
   final VoidCallback onClick;
 
@@ -12,14 +11,34 @@ class SideBarItem extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<SideBarItem> createState() => _SideBarItemState();
+}
+
+class _SideBarItemState extends State<SideBarItem> {
+  bool _beingHovered = false;
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onClick,
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 5.0),
-          child: child,
+      onTap: widget.onClick,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 2),
+        color: _beingHovered
+          ? Theme.of(context).hoverColor
+          : Colors.transparent,
+        child: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          onEnter: (_) {
+            setState(() => _beingHovered = true);
+          },
+          onExit: (_) {
+            setState(() => _beingHovered = false);
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(left: 5.0),
+            child: widget.child,
+          ),
         ),
       ),
     );

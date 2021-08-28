@@ -49,7 +49,11 @@ class Tab extends StatelessWidget {
                           width: 1,
                           color: selected
                             ? Theme.of(context).primaryColor
-                            : Colors.transparent,
+                            : Theme.of(context).dividerColor,
+                      ),
+                      right: BorderSide(
+                          width: 1,
+                          color: Theme.of(context).dividerColor,
                       ),
                   ),
               ),

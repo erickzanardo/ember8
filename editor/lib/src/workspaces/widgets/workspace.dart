@@ -36,40 +36,51 @@ class Workspace<T extends WorkspaceBloc, V> extends StatelessWidget {
       children: [
         Expanded(
           flex: 2,
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  IconButton(
-                    key: addButtonKey,
-                    data: Icons.add,
-                    tooltip: addButtonTooltip,
-                    onClick: () {
-                      onAddButtonClick();
-                    },
-                  ),
-                ],
-              ),
-              Expanded(
-                child: SideBar(
-                  children: items.map((e) {
-                    final child = buildSideBarItem(e);
-                    final value = mapItemValue(e);
-                    return SideBarItem(
-                      child: child,
-                      onClick: () {
-                        context.read<T>().add(OpenEditorEvent(value));
-                      },
-                    );
-                  }).toList(),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border(
+                right: BorderSide(
+                  width: 1,
+                  color: Theme.of(context).dividerColor,
                 ),
               ),
-            ],
+            ),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                      key: addButtonKey,
+                      data: Icons.add,
+                      tooltip: addButtonTooltip,
+                      onClick: () {
+                        onAddButtonClick();
+                      },
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: SideBar(
+                    children: items.map((e) {
+                      final child = buildSideBarItem(e);
+                      final value = mapItemValue(e);
+                      return SideBarItem(
+                        child: child,
+                        onClick: () {
+                          context.read<T>().add(OpenEditorEvent(value));
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         Expanded(
           flex: 8,
-          child: WorkspaceEditor<T>(emptyMessage: emptyMessage, buildCurrent: buildCurrent),
+          child: WorkspaceEditor<T>(
+              emptyMessage: emptyMessage, buildCurrent: buildCurrent),
         ),
       ],
     );

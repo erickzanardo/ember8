@@ -10,10 +10,13 @@ class SideBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      if (children.isEmpty)
-        const Text('Empty'),
-      ...children,
-    ]);
+    return SizedBox(
+      width: double.infinity,
+      child: Column(children: [
+        if (children.isEmpty)
+          const Text('Empty'),
+        ...children,
+      ]),
+    );
   }
 }
