@@ -28,6 +28,9 @@ class Editor extends StatelessWidget {
                   BlocProvider<TemplatesWorkspaceBloc>(
                       create: (_) => TemplatesWorkspaceBloc(),
                   ),
+                  BlocProvider<StagesWorkspaceBloc>(
+                      create: (_) => StagesWorkspaceBloc(),
+                  ),
                   BlocProvider<ProjectBloc>(
                       create: (_) => ProjectBloc(),
                   ),

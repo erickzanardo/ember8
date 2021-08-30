@@ -2,6 +2,7 @@ import 'package:editor/src/editor/widgets/scripts/scripts_workspace.dart';
 import 'package:editor/src/editor/widgets/sprites/sprite_editor/color_palette.dart';
 import 'package:editor/src/editor/widgets/sprites/sprite_editor/sprite_editor_cell.dart';
 import 'package:editor/src/editor/widgets/sprites/sprites_workspace.dart';
+import 'package:editor/src/editor/widgets/stages/stages_workspace.dart';
 import 'package:editor/src/editor/widgets/templates/templates_workspace.dart';
 import 'package:editor/src/widgets/clickable.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,11 @@ class EditorPageObject extends PageObject {
 
   Future<void> openTemplateTab() async {
     await tester.tap(find.text('Templates'));
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> openStageTab() async {
+    await tester.tap(find.text('Stages'));
     await tester.pumpAndSettle();
   }
 }
@@ -107,6 +113,24 @@ class TemplatesPageObject extends PageObject {
 
   Future<void> createTemplate(String name) async {
     await openTemplatesCreationForm();
+
+    await tester.enterText(find.byType(TextField), name);
+
+    await tester.tap(find.text('Create'));
+    await tester.pumpAndSettle();
+  }
+}
+
+class StagesPageObject extends PageObject {
+  StagesPageObject(WidgetTester tester) : super(tester);
+
+  Future<void> openStagesCreationForm() async {
+    await tester.tap(find.byKey(StagesWorkspace.newStageKey));
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> createStage(String name) async {
+    await openStagesCreationForm();
 
     await tester.enterText(find.byType(TextField), name);
 

@@ -209,5 +209,19 @@ void main() {
         ]),
       ],
     );
+    blocTest<ProjectBloc, ProjectState>(
+      'Adds a stage on NewStageEvent',
+      build: () => ProjectBloc(
+        initialState: const ProjectState(),
+      ),
+      act: (bloc) => bloc.add(
+        const NewStageEvent('game'),
+      ),
+      expect: () => [
+        const ProjectState(stages: [
+          ProjectStage('game', []),
+        ]),
+      ],
+    );
   });
 }

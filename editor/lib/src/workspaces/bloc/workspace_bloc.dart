@@ -64,3 +64,8 @@ class TemplatesWorkspaceBloc extends WorkspaceBloc {
   }) : super(initialState: initialState);
 }
 
+class StagesWorkspaceBloc extends WorkspaceBloc {
+  StagesWorkspaceBloc({
+    WorkspaceState initialState = const WorkspaceState(),
+  }) : super(initialState: initialState);
+}

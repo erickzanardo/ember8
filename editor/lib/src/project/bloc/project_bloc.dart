@@ -116,6 +116,13 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
           }
         }).toList(),
       );
+    } else if (event is NewStageEvent) {
+      yield state.copyWith(
+        stages: [
+          ...state.stages,
+          ProjectStage(event.name, const []),
+        ],
+      );
     }
   }
 }
