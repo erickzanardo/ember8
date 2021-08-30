@@ -7,8 +7,6 @@ import 'package:flutter/material.dart' hide IconButton;
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../new_template_form.dart';
-
 class TemplateEditor extends StatelessWidget {
   final String templateName;
 

@@ -1,3 +1,4 @@
+import 'package:editor/src/editor/widgets/stages/stages_editor/stage_editor.dart';
 import 'package:editor/src/project/bloc/project_bloc.dart';
 import 'package:editor/src/project/bloc/project_events.dart';
 import 'package:editor/src/project/bloc/project_state.dart';
@@ -42,7 +43,7 @@ class StagesWorkspace extends StatelessWidget {
           mapItemValue: (stage) => stage.name,
           items: state.stages,
           emptyMessage: 'Nothing to show yet, select a stage on the left side bar',
-          buildCurrent: (current) => Container(),
+          buildCurrent: (current) => StageEditor(stageName: current),
         );
       },
     );
