@@ -6,12 +6,24 @@ import 'project_state.dart';
 class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
   ProjectBloc({
     ProjectState initialState = const ProjectState(),
-  }) : super(initialState);
+  }) : super(initialState) {
+    on<NewScriptEvent>(_handleNewScript);
+    on<UpdateScriptEvent>(_handleUpdateScript);
+    on<NewSpriteEvent>(_handleNewSprite);
+    on<PaintSpritePixelEvent>(_handlePaintSpritePixel);
+    on<NewTemplateEvent>(_handleNewTemplate);
+    on<AddFieldTemplateEvent>(_handleAddFieldTemplate);
+    on<UpdateFieldTemplateEvent>(_handleUpdateFielTemplate);
+    on<RemoveFieldTemplateEvent>(_handleRemoveFieldTemplate);
+    on<NewStageEvent>(_handleNewStage);
+  }
 
-  @override
-  Stream<ProjectState> mapEventToState(ProjectEvent event) async* {
-    if (event is NewScriptEvent) {
-      yield state.copyWith(
+  Future<void> _handleNewScript(
+    NewScriptEvent event,
+    Emitter<ProjectState> emit,
+  ) async {
+    emit(
+      state.copyWith(
         scripts: [
           ...state.scripts,
           ProjectScript(
@@ -20,9 +32,16 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
             body: '',
           ),
         ],
-      );
-    } else if (event is UpdateScriptEvent) {
-      yield state.copyWith(
+      ),
+    );
+  }
+
+  Future<void> _handleUpdateScript(
+    UpdateScriptEvent event,
+    Emitter<ProjectState> emit,
+  ) async {
+    emit(
+      state.copyWith(
         scripts: state.scripts.map((script) {
           if (script.name == event.name) {
             return script.copyWithNewBody(event.code);
@@ -30,23 +49,33 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
             return script;
           }
         }).toList(),
-      );
-    } else if (event is NewSpriteEvent) {
-      final pixels = List.generate(event.height, (index) {
-        return List.filled(event.width, null, growable: false);
-      }, growable: false);
+      ),
+    );
+  }
 
-      yield state.copyWith(
-        sprites: [
-          ...state.sprites,
-          ProjectSprite(
-            name: event.name,
-            pixels: pixels,
-          ),
-        ],
-      );
-    } else if (event is PaintSpritePixelEvent) {
-      yield state.copyWith(
+  Future<void> _handleNewSprite(
+      NewSpriteEvent event, Emitter<ProjectState> emit) async {
+    final pixels = List.generate(event.height, (index) {
+      return List.filled(event.width, null, growable: false);
+    }, growable: false);
+
+    emit(state.copyWith(
+      sprites: [
+        ...state.sprites,
+        ProjectSprite(
+          name: event.name,
+          pixels: pixels,
+        ),
+      ],
+    ));
+  }
+
+  Future<void> _handlePaintSpritePixel(
+    PaintSpritePixelEvent event,
+    Emitter<ProjectState> emit,
+  ) async {
+    emit(
+      state.copyWith(
         sprites: [
           ...state.sprites.map((sprite) {
             if (sprite.name == event.spriteName) {
@@ -66,16 +95,30 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
             }
           }).toList(),
         ],
-      );
-    } else if (event is NewTemplateEvent) {
-      yield state.copyWith(
+      ),
+    );
+  }
+
+  Future<void> _handleNewTemplate(
+    NewTemplateEvent event,
+    Emitter<ProjectState> emit,
+  ) async {
+    emit(
+      state.copyWith(
         templates: [
           ...state.templates,
           ProjectTemplate(event.name, const []),
         ],
-      );
-    } else if (event is AddFieldTemplateEvent) {
-      yield state.copyWith(
+      ),
+    );
+  }
+
+  Future<void> _handleAddFieldTemplate(
+    AddFieldTemplateEvent event,
+    Emitter<ProjectState> emit,
+  ) async {
+    emit(
+      state.copyWith(
         templates: state.templates.map((template) {
           if (template.name == event.templateName) {
             return template.copyWithNewField(event.toProjectTemplateField());
@@ -83,46 +126,69 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
             return template;
           }
         }).toList(),
-      );
-    } else if (event is UpdateFieldTemplateEvent) {
-      yield state.copyWith(
+      ),
+    );
+  }
+
+  Future<void> _handleUpdateFielTemplate(
+    UpdateFieldTemplateEvent event,
+    Emitter<ProjectState> emit,
+  ) async {
+    emit(
+      state.copyWith(
         templates: state.templates.map((template) {
           if (template.name == event.templateName) {
             return ProjectTemplate(
-                template.name,
-                template.fields.map((field) {
-                  if (field.name == event.fieldName) {
-                    return event.toProjectTemplateField();
-                  } else {
-                    return field;
-                  }
-                }).toList(),
+              template.name,
+              template.fields.map((field) {
+                if (field.name == event.fieldName) {
+                  return event.toProjectTemplateField();
+                } else {
+                  return field;
+                }
+              }).toList(),
             );
           } else {
             return template;
           }
         }).toList(),
-      );
-    } else if (event is RemoveFieldTemplateEvent) {
-      yield state.copyWith(
+      ),
+    );
+  }
+
+  Future<void> _handleRemoveFieldTemplate(
+    RemoveFieldTemplateEvent event,
+    Emitter<ProjectState> emit,
+  ) async {
+    emit(
+      state.copyWith(
         templates: state.templates.map((template) {
           if (template.name == event.templateName) {
             return ProjectTemplate(
-                template.name,
-                template.fields.where((element) => element.name != event.fieldName).toList(),
+              template.name,
+              template.fields
+                  .where((element) => element.name != event.fieldName)
+                  .toList(),
             );
           } else {
             return template;
           }
         }).toList(),
-      );
-    } else if (event is NewStageEvent) {
-      yield state.copyWith(
+      ),
+    );
+  }
+
+  Future<void> _handleNewStage(
+    NewStageEvent event,
+    Emitter<ProjectState> emit,
+  ) async {
+    emit(
+      state.copyWith(
         stages: [
           ...state.stages,
           ProjectStage(event.name, const []),
         ],
-      );
-    }
+      ),
+    );
   }
 }
