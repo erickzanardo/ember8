@@ -4,6 +4,7 @@ import 'package:editor/src/editor/widgets/sprites/sprite_editor/tools.dart';
 import 'package:editor/src/project/bloc/project_bloc.dart';
 import 'package:editor/src/project/bloc/project_events.dart';
 import 'package:editor/src/project/bloc/project_state.dart';
+import 'package:editor/src/project/models/project.dart';
 import 'package:engine/engine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,7 +27,9 @@ class SpriteEditor extends StatelessWidget {
     return BlocSelector<ProjectBloc, ProjectState, ProjectSprite>(
       key: Key('_sprite_editor$spriteName'),
       selector: (state) {
-        return state.sprites.where((sprite) => sprite.name == spriteName).first;
+        return state.project.sprites
+            .where((sprite) => sprite.name == spriteName)
+            .first;
       },
       builder: (context, sprite) {
         return _Editor(sprite: sprite);
@@ -79,9 +82,10 @@ class _EditorState extends State<_Editor> {
                                       spriteName: widget.sprite.name,
                                       x: x,
                                       y: y,
-                                      color: _currentTool == SpriteEditorTool.brush
-                                        ? _color
-                                        : null,
+                                      color:
+                                          _currentTool == SpriteEditorTool.brush
+                                              ? _color
+                                              : null,
                                     ),
                                   );
                             },

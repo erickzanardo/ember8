@@ -1,8 +1,7 @@
-import 'package:editor/src/project/bloc/project_state.dart';
+import 'package:editor/src/project/models/project.dart';
 import 'package:flutter/material.dart';
 
 class ScriptSideItem extends StatelessWidget {
-
   final ProjectScriptType type;
   final String name;
 
@@ -13,7 +12,7 @@ class ScriptSideItem extends StatelessWidget {
   }) : super(key: key);
 
   IconData _mapTypeIcon() {
-    switch(type) {
+    switch (type) {
       case ProjectScriptType.dpad:
         return Icons.gamepad;
       case ProjectScriptType.action:
@@ -26,16 +25,16 @@ class ScriptSideItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Icon(_mapTypeIcon()),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 5.0),
-              child: Text(name),
-            ),
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Icon(_mapTypeIcon()),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 5.0),
+            child: Text(name),
           ),
-        ],
+        ),
+      ],
     );
   }
 }

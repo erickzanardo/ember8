@@ -1,5 +1,6 @@
 import 'package:editor/src/project/bloc/project_bloc.dart';
 import 'package:editor/src/project/bloc/project_state.dart';
+import 'package:editor/src/project/models/project.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart' hide IconButton;
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,10 +28,11 @@ class StageEditor extends StatelessWidget {
     return BlocSelector<ProjectBloc, ProjectState, _StageEditorSelection>(
       key: Key('_stage_editor$stageName'),
       selector: (state) {
-        final stage =
-            state.stages.where((stage) => stage.name == stageName).first;
+        final stage = state.project.stages
+            .where((stage) => stage.name == stageName)
+            .first;
 
-        return _StageEditorSelection(stage, state.templates);
+        return _StageEditorSelection(stage, state.project.templates);
       },
       builder: (context, selection) {
         return _Editor(data: selection);

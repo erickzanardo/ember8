@@ -1,3 +1,4 @@
+import 'package:editor/src/project/models/project.dart';
 import 'package:equatable/equatable.dart';
 
 import 'project_state.dart';
@@ -86,7 +87,8 @@ abstract class ManageFieldTemplateEvent<T> extends ProjectEvent {
 }
 
 class AddFieldTemplateEvent<T> extends ManageFieldTemplateEvent<T> {
-  const AddFieldTemplateEvent(String templateName, String fieldName, T value) : super(
+  const AddFieldTemplateEvent(String templateName, String fieldName, T value)
+      : super(
           templateName,
           fieldName,
           value,
@@ -94,7 +96,8 @@ class AddFieldTemplateEvent<T> extends ManageFieldTemplateEvent<T> {
 }
 
 class UpdateFieldTemplateEvent<T> extends ManageFieldTemplateEvent<T> {
-  const UpdateFieldTemplateEvent(String templateName, String fieldName, T value) : super(
+  const UpdateFieldTemplateEvent(String templateName, String fieldName, T value)
+      : super(
           templateName,
           fieldName,
           value,

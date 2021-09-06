@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:editor/src/project/bloc/project_bloc.dart';
 import 'package:editor/src/project/bloc/project_events.dart';
 import 'package:editor/src/project/bloc/project_state.dart';
+import 'package:editor/src/project/models/project.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -18,26 +19,32 @@ void main() {
         ),
       ),
       expect: () => [
-        const ProjectState(scripts: [
-          ProjectScript(
-            type: ProjectScriptType.controller,
-            name: 'playerController',
-            body: '',
+        const ProjectState(
+          project: Project(
+            scripts: [
+              ProjectScript(
+                type: ProjectScriptType.controller,
+                name: 'playerController',
+                body: '',
+              ),
+            ],
           ),
-        ]),
+        ),
       ],
     );
     blocTest<ProjectBloc, ProjectState>(
       'Update the script body on UpdateScriptEvent',
       build: () => ProjectBloc(
         initialState: const ProjectState(
-          scripts: [
-            ProjectScript(
-              type: ProjectScriptType.controller,
-              name: 'playerController',
-              body: '',
-            ),
-          ],
+          project: Project(
+            scripts: [
+              ProjectScript(
+                type: ProjectScriptType.controller,
+                name: 'playerController',
+                body: '',
+              ),
+            ],
+          ),
         ),
       ),
       act: (bloc) => bloc.add(
@@ -47,13 +54,15 @@ void main() {
         ),
       ),
       expect: () => [
-        const ProjectState(scripts: [
-          ProjectScript(
-            type: ProjectScriptType.controller,
-            name: 'playerController',
-            body: 'bla',
-          ),
-        ]),
+        const ProjectState(
+          project: Project(scripts: [
+            ProjectScript(
+              type: ProjectScriptType.controller,
+              name: 'playerController',
+              body: 'bla',
+            ),
+          ]),
+        ),
       ],
     );
     blocTest<ProjectBloc, ProjectState>(
@@ -70,15 +79,17 @@ void main() {
       ),
       expect: () => [
         const ProjectState(
-          sprites: [
-            ProjectSprite(
-              name: 'player',
-              pixels: [
-                [null, null],
-                [null, null],
-              ],
-            ),
-          ],
+          project: Project(
+            sprites: [
+              ProjectSprite(
+                name: 'player',
+                pixels: [
+                  [null, null],
+                  [null, null],
+                ],
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -86,22 +97,24 @@ void main() {
       'Changes the pixel of a sprite on PaintSpritePixelEvent',
       build: () => ProjectBloc(
         initialState: const ProjectState(
-          sprites: [
-            ProjectSprite(
-              name: 'bullet',
-              pixels: [
-                [null, null],
-                [null, null],
-              ],
-            ),
-            ProjectSprite(
-              name: 'player',
-              pixels: [
-                [null, null],
-                [null, null],
-              ],
-            )
-          ],
+          project: Project(
+            sprites: [
+              ProjectSprite(
+                name: 'bullet',
+                pixels: [
+                  [null, null],
+                  [null, null],
+                ],
+              ),
+              ProjectSprite(
+                name: 'player',
+                pixels: [
+                  [null, null],
+                  [null, null],
+                ],
+              )
+            ],
+          ),
         ),
       ),
       act: (bloc) => bloc.add(
@@ -114,22 +127,24 @@ void main() {
       ),
       expect: () => [
         const ProjectState(
-          sprites: [
-            ProjectSprite(
-              name: 'bullet',
-              pixels: [
-                [null, null],
-                [null, null],
-              ],
-            ),
-            ProjectSprite(
-              name: 'player',
-              pixels: [
-                [0, null],
-                [null, null],
-              ],
-            ),
-          ],
+          project: Project(
+            sprites: [
+              ProjectSprite(
+                name: 'bullet',
+                pixels: [
+                  [null, null],
+                  [null, null],
+                ],
+              ),
+              ProjectSprite(
+                name: 'player',
+                pixels: [
+                  [0, null],
+                  [null, null],
+                ],
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -142,71 +157,87 @@ void main() {
         const NewTemplateEvent('bullet'),
       ),
       expect: () => [
-        const ProjectState(templates: [
-          ProjectTemplate('bullet', []),
-        ]),
+        const ProjectState(
+          project: Project(templates: [
+            ProjectTemplate('bullet', []),
+          ]),
+        ),
       ],
     );
     blocTest<ProjectBloc, ProjectState>(
       'Add a new field to the template',
       build: () => ProjectBloc(
         initialState: const ProjectState(
+          project: Project(
             templates: [
               ProjectTemplate('bullet', []),
             ],
+          ),
         ),
       ),
       act: (bloc) => bloc.add(
-        const AddFieldTemplateEvent<String>('bullet', 'script', 'bulletController'),
+        const AddFieldTemplateEvent<String>(
+            'bullet', 'script', 'bulletController'),
       ),
       expect: () => [
-        const ProjectState(templates: [
-          ProjectTemplate('bullet', [
-            ProjectTemplateField<String>('script', 'bulletController'),
+        const ProjectState(
+          project: Project(templates: [
+            ProjectTemplate('bullet', [
+              ProjectTemplateField<String>('script', 'bulletController'),
+            ]),
           ]),
-        ]),
+        ),
       ],
     );
     blocTest<ProjectBloc, ProjectState>(
       'Changes the value of a template field on UpdateFieldTemplateEvent',
       build: () => ProjectBloc(
         initialState: const ProjectState(
+          project: Project(
             templates: [
               ProjectTemplate('bullet', [
                 ProjectTemplateField<String>('script', 'bullet'),
               ]),
             ],
+          ),
         ),
       ),
       act: (bloc) => bloc.add(
-        const UpdateFieldTemplateEvent<String>('bullet', 'script', 'bulletController'),
+        const UpdateFieldTemplateEvent<String>(
+            'bullet', 'script', 'bulletController'),
       ),
       expect: () => [
-        const ProjectState(templates: [
-          ProjectTemplate('bullet', [
-            ProjectTemplateField<String>('script', 'bulletController'),
+        const ProjectState(
+          project: Project(templates: [
+            ProjectTemplate('bullet', [
+              ProjectTemplateField<String>('script', 'bulletController'),
+            ]),
           ]),
-        ]),
+        ),
       ],
     );
     blocTest<ProjectBloc, ProjectState>(
       'Removes a template field on RemoveFieldTemplateEvent',
       build: () => ProjectBloc(
         initialState: const ProjectState(
+          project: Project(
             templates: [
               ProjectTemplate('bullet', [
                 ProjectTemplateField<String>('script', 'bullet'),
               ]),
             ],
+          ),
         ),
       ),
       act: (bloc) => bloc.add(
         const RemoveFieldTemplateEvent('bullet', 'script'),
       ),
       expect: () => [
-        const ProjectState(templates: [
-          ProjectTemplate('bullet', []),
-        ]),
+        const ProjectState(
+          project: Project(templates: [
+            ProjectTemplate('bullet', []),
+          ]),
+        ),
       ],
     );
     blocTest<ProjectBloc, ProjectState>(
@@ -218,9 +249,13 @@ void main() {
         const NewStageEvent('game'),
       ),
       expect: () => [
-        const ProjectState(stages: [
-          ProjectStage('game', []),
-        ]),
+        const ProjectState(
+          project: Project(
+            stages: [
+              ProjectStage('game', []),
+            ],
+          ),
+        ),
       ],
     );
   });

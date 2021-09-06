@@ -17,8 +17,10 @@ class ScriptCodeField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.read<ProjectBloc>().state;
-    final code =
-        state.scripts.where((script) => script.name == scriptName).first.body;
+    final code = state.project.scripts
+        .where((script) => script.name == scriptName)
+        .first
+        .body;
     return _Field(
         key: Key('_code_field_$scriptName'), text: code, scripName: scriptName);
   }
@@ -58,8 +60,7 @@ class _FieldState extends State<_Field> {
       _updateCode();
     });
 
-    _focusNode = FocusNode()
-        ..requestFocus();
+    _focusNode = FocusNode()..requestFocus();
   }
 
   @override

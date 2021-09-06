@@ -2,6 +2,7 @@ import 'package:editor/src/editor/widgets/scripts/script_code_field.dart';
 import 'package:editor/src/project/bloc/project_bloc.dart';
 import 'package:editor/src/project/bloc/project_events.dart';
 import 'package:editor/src/project/bloc/project_state.dart';
+import 'package:editor/src/project/models/project.dart';
 import 'package:editor/src/workspaces/bloc/workspace_bloc.dart';
 import 'package:editor/src/workspaces/widgets/workspace.dart';
 import 'package:flutter/material.dart' hide IconButton;
@@ -20,36 +21,37 @@ class ScriptsWorkspace extends StatelessWidget {
     return BlocBuilder<ProjectBloc, ProjectState>(
       builder: (context, state) {
         return Workspace<ScriptsWorkspaceBloc, ProjectScript>(
-            addButtonKey: newScriptKey,
-            addButtonTooltip: 'New script',
-            onAddButtonClick: () async {
-              final script = await showDialog<NewScriptFormEntry>(
-                  context: context,
-                  builder: (context) {
-                    return const NewScriptForm();
-                  },
-              );
+          addButtonKey: newScriptKey,
+          addButtonTooltip: 'New script',
+          onAddButtonClick: () async {
+            final script = await showDialog<NewScriptFormEntry>(
+              context: context,
+              builder: (context) {
+                return const NewScriptForm();
+              },
+            );
 
-              if (script != null) {
-                context
-                    .read<ProjectBloc>()
-                    .add(NewScriptEvent(script.name, script.type));
+            if (script != null) {
+              context
+                  .read<ProjectBloc>()
+                  .add(NewScriptEvent(script.name, script.type));
 
-                return script.name;
-              }
+              return script.name;
+            }
 
-              return null;
-            },
-            buildSideBarItem: (script) {
-              return ScriptSideItem(
-                  name: script.name,
-                  type: script.type,
-              );
-            },
-            mapItemValue: (script) => script.name,
-            items: state.scripts,
-            emptyMessage: 'Nothing open yet, select a script on the left side bar',
-            buildCurrent: (current) => ScriptCodeField(scriptName: current),
+            return null;
+          },
+          buildSideBarItem: (script) {
+            return ScriptSideItem(
+              name: script.name,
+              type: script.type,
+            );
+          },
+          mapItemValue: (script) => script.name,
+          items: state.project.scripts,
+          emptyMessage:
+              'Nothing open yet, select a script on the left side bar',
+          buildCurrent: (current) => ScriptCodeField(scriptName: current),
         );
       },
     );

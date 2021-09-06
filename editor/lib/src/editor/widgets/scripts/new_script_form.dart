@@ -1,4 +1,4 @@
-import 'package:editor/src/project/bloc/project_state.dart';
+import 'package:editor/src/project/models/project.dart';
 import 'package:flutter/material.dart';
 
 class NewScriptFormEntry {
@@ -95,9 +95,9 @@ class _NewScriptFormState extends State<NewScriptForm> {
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState?.validate() ?? false) {
-                        final script  = NewScriptFormEntry(
-                            _nameController.text,
-                            _type,
+                        final script = NewScriptFormEntry(
+                          _nameController.text,
+                          _type,
                         );
                         Navigator.of(context).pop(script);
                       }

@@ -2,6 +2,7 @@ import 'package:editor/src/editor/widgets/templates/template_editor/new_template
 import 'package:editor/src/project/bloc/project_bloc.dart';
 import 'package:editor/src/project/bloc/project_events.dart';
 import 'package:editor/src/project/bloc/project_state.dart';
+import 'package:editor/src/project/models/project.dart';
 import 'package:editor/src/widgets/icon_button.dart';
 import 'package:flutter/material.dart' hide IconButton;
 import 'package:flutter/services.dart';
@@ -20,7 +21,7 @@ class TemplateEditor extends StatelessWidget {
     return BlocSelector<ProjectBloc, ProjectState, ProjectTemplate>(
       key: Key('_sprite_editor$templateName'),
       selector: (state) {
-        return state.templates
+        return state.project.templates
             .where((template) => template.name == templateName)
             .first;
       },
@@ -90,8 +91,8 @@ class _Editor extends StatelessWidget {
             Row(
               children: [
                 SizedBox(
-                    width: 100,
-                    child: Center(child: Text(field.name)),
+                  width: 100,
+                  child: Center(child: Text(field.name)),
                 ),
                 if (field is ProjectTemplateField<String>)
                   Expanded(
@@ -125,36 +126,35 @@ class _Editor extends StatelessWidget {
                   ),
                 // TODO handle floating number here
                 if (field is ProjectTemplateField<double>)
-                    Expanded(
-                      child: TextFormField(
-                        initialValue: field.value.toInt().toString(),
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
-                        onChanged: (newValue) {
-                          context.read<ProjectBloc>().add(
-                                UpdateFieldTemplateEvent<double>(
-                                  template.name,
-                                  field.name,
-                                  double.tryParse(newValue) ?? field.value,
-                                ),
-                              );
-                        },
-                      ),
+                  Expanded(
+                    child: TextFormField(
+                      initialValue: field.value.toInt().toString(),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      onChanged: (newValue) {
+                        context.read<ProjectBloc>().add(
+                              UpdateFieldTemplateEvent<double>(
+                                template.name,
+                                field.name,
+                                double.tryParse(newValue) ?? field.value,
+                              ),
+                            );
+                      },
                     ),
+                  ),
 
-                      IconButton(
-                          data: Icons.remove_circle,
-                          tooltip: 'Remove field',
-                          onClick: () {
-                          context.read<ProjectBloc>().add(
-                                RemoveFieldTemplateEvent(
-                                  template.name,
-                                  field.name,
-                                ),
-                              );
-                          }
-                      ),
+                IconButton(
+                    data: Icons.remove_circle,
+                    tooltip: 'Remove field',
+                    onClick: () {
+                      context.read<ProjectBloc>().add(
+                            RemoveFieldTemplateEvent(
+                              template.name,
+                              field.name,
+                            ),
+                          );
+                    }),
               ],
             ),
         ],

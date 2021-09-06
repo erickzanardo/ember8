@@ -3,6 +3,7 @@ import 'package:editor/src/editor/widgets/sprites/sprite_editor/sprite_editor.da
 import 'package:editor/src/project/bloc/project_bloc.dart';
 import 'package:editor/src/project/bloc/project_events.dart';
 import 'package:editor/src/project/bloc/project_state.dart';
+import 'package:editor/src/project/models/project.dart';
 import 'package:editor/src/workspaces/bloc/workspace_bloc.dart';
 import 'package:editor/src/workspaces/widgets/workspace.dart';
 import 'package:flutter/material.dart' hide IconButton;
@@ -47,8 +48,9 @@ class SpritesWorkspace extends StatelessWidget {
             return Text(sprite.name);
           },
           mapItemValue: (sprite) => sprite.name,
-          items: state.sprites,
-          emptyMessage: 'Nothing to show yet, select a sprite on the left side bar',
+          items: state.project.sprites,
+          emptyMessage:
+              'Nothing to show yet, select a sprite on the left side bar',
           buildCurrent: (current) => SpriteEditor(spriteName: current),
         );
       },

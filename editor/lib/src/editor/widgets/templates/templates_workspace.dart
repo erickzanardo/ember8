@@ -2,6 +2,7 @@ import 'package:editor/src/editor/widgets/templates/template_editor/template_edi
 import 'package:editor/src/project/bloc/project_bloc.dart';
 import 'package:editor/src/project/bloc/project_events.dart';
 import 'package:editor/src/project/bloc/project_state.dart';
+import 'package:editor/src/project/models/project.dart';
 import 'package:editor/src/workspaces/bloc/workspace_bloc.dart';
 import 'package:editor/src/workspaces/widgets/workspace.dart';
 import 'package:flutter/material.dart' hide IconButton;
@@ -41,12 +42,12 @@ class TemplatesWorkspace extends StatelessWidget {
             return Text(template.name);
           },
           mapItemValue: (template) => template.name,
-          items: state.templates,
-          emptyMessage: 'Nothing to show yet, select a template on the left side bar',
+          items: state.project.templates,
+          emptyMessage:
+              'Nothing to show yet, select a template on the left side bar',
           buildCurrent: (current) => TemplateEditor(templateName: current),
         );
       },
     );
   }
 }
-
