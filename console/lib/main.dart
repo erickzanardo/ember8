@@ -1,30 +1,18 @@
+import 'package:console/theme.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ConsoleTheme(child: ConsoleApp()));
 }
 
-class MyApp extends StatelessWidget {
+class ConsoleApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Ember8',
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(
-          'Hi!',
+      home: Scaffold(
+        body: Center(
+          child: Text('Hi!'),
         ),
       ),
     );
