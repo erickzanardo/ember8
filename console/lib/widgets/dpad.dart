@@ -1,6 +1,5 @@
 import 'package:console/theme.dart';
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 
 class DPad extends StatelessWidget {
   final double size;
@@ -56,7 +55,7 @@ enum Direction {
   left,
 }
 
-class DirectionalButton extends StatelessWidget {
+class DirectionalButton extends StatefulWidget {
   final double size;
   final Direction direction;
 
@@ -66,44 +65,69 @@ class DirectionalButton extends StatelessWidget {
   });
 
   @override
+  State<DirectionalButton> createState() => _DirectionalButtonState();
+}
+
+class _DirectionalButtonState extends State<DirectionalButton> {
+  bool _pressed = false;
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => print('DIRECTION $direction'),
+      onTapDown: (_) {
+        setState(() => _pressed = true);
+        print('TAP DOWN ${widget.direction}');
+      },
+      onTapUp: (_) {
+        setState(() => _pressed = false);
+        print('TAP UP ${widget.direction}');
+      },
+      onTapCancel: () {
+        setState(() => _pressed = false);
+      },
       child: Container(
         decoration: BoxDecoration(
           color: ConsoleTheme.of(context).dPadColor,
         ),
         child: UnconstrainedBox(
-          alignment: direction == Direction.right
+          alignment: widget.direction == Direction.right
               ? Alignment.centerRight
-              : direction == Direction.left
+              : widget.direction == Direction.left
                   ? Alignment.centerLeft
                   : Alignment.center,
           child: Container(
-            width: size,
-            height: size,
+            width: widget.size,
+            height: widget.size,
             decoration: BoxDecoration(
-              border: direction != Direction.top
+              border: widget.direction != Direction.top
                   ? Border(
                       bottom: BorderSide(
                         color: ConsoleTheme.of(context).dPadBorderColor,
-                        width: ConsoleTheme.of(context).dPadBorderSize,
+                        width: _pressed
+                            ? ConsoleTheme.of(context).dPadBorderSize / 2
+                            : ConsoleTheme.of(context).dPadBorderSize,
                       ),
                     )
                   : null,
             ),
-            child: RotatedBox(
-              quarterTurns: _calculateTransform(direction),
-              child: Align(
-                alignment: _calculateAlignment(direction),
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: ClipPath(
-                    clipper: TriangleClipper(),
-                    child: Container(
-                      color: ConsoleTheme.of(context).dPadButtonColor,
-                      height: size / 3,
-                      width: size,
+            child: Container(
+              padding: _pressed
+                  ? EdgeInsets.only(
+                      top: ConsoleTheme.of(context).dPadBorderSize / 2)
+                  : null,
+              child: RotatedBox(
+                quarterTurns: _calculateTransform(widget.direction),
+                child: Align(
+                  alignment: _calculateAlignment(widget.direction),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: ClipPath(
+                      clipper: TriangleClipper(),
+                      child: Container(
+                        color: ConsoleTheme.of(context).dPadButtonColor,
+                        height: widget.size / 3,
+                        width: widget.size,
+                      ),
                     ),
                   ),
                 ),
