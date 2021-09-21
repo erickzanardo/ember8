@@ -21,7 +21,8 @@ class TemplateEditor extends StatelessWidget {
     return BlocSelector<ProjectBloc, ProjectState, ProjectTemplate>(
       key: Key('_sprite_editor$templateName'),
       selector: (state) {
-        return state.project.templates
+        final templates = state.project?.templates ?? [];
+        return templates
             .where((template) => template.name == templateName)
             .first;
       },

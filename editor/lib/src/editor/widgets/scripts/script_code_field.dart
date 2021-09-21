@@ -17,7 +17,8 @@ class ScriptCodeField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.read<ProjectBloc>().state;
-    final code = state.project.scripts
+    final scripts = state.project?.scripts ?? [];
+    final code = scripts
         .where((script) => script.name == scriptName)
         .first
         .body;

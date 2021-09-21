@@ -48,7 +48,7 @@ class ScriptsWorkspace extends StatelessWidget {
             );
           },
           mapItemValue: (script) => script.name,
-          items: state.project.scripts,
+          items: state.project?.scripts ?? [],
           emptyMessage:
               'Nothing open yet, select a script on the left side bar',
           buildCurrent: (current) => ScriptCodeField(scriptName: current),

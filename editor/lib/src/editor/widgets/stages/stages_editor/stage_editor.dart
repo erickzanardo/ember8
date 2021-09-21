@@ -28,11 +28,12 @@ class StageEditor extends StatelessWidget {
     return BlocSelector<ProjectBloc, ProjectState, _StageEditorSelection>(
       key: Key('_stage_editor$stageName'),
       selector: (state) {
-        final stage = state.project.stages
+        final stages = state.project?.stages ?? [];
+        final stage = stages
             .where((stage) => stage.name == stageName)
             .first;
 
-        return _StageEditorSelection(stage, state.project.templates);
+        return _StageEditorSelection(stage, state.project?.templates ?? []);
       },
       builder: (context, selection) {
         return _Editor(data: selection);

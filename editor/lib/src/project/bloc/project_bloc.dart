@@ -27,7 +27,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       state.copyWith(
         project: Project(
           scripts: [
-            ...state.project.scripts,
+            ...state.project?.scripts ?? [],
             ProjectScript(
               type: event.type,
               name: event.name,
@@ -46,13 +46,13 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
     emit(
       state.copyWith(
         project: Project(
-          scripts: state.project.scripts.map((script) {
+          scripts: state.project?.scripts.map((script) {
             if (script.name == event.name) {
               return script.copyWithNewBody(event.code);
             } else {
               return script;
             }
-          }).toList(),
+          }).toList() ?? [],
         ),
       ),
     );
@@ -68,7 +68,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       state.copyWith(
         project: Project(
           sprites: [
-            ...state.project.sprites,
+            ...state.project?.sprites ?? [],
             ProjectSprite(
               name: event.name,
               pixels: pixels,
@@ -87,7 +87,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       state.copyWith(
         project: Project(
           sprites: [
-            ...state.project.sprites.map((sprite) {
+            ...state.project?.sprites.map((sprite) {
               if (sprite.name == event.spriteName) {
                 final newPixels = List.generate(sprite.pixels.length, (y) {
                   return List.generate(sprite.pixels[y].length, (x) {
@@ -103,7 +103,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
               } else {
                 return sprite;
               }
-            }).toList(),
+            }).toList() ?? [],
           ],
         ),
       ),
@@ -118,7 +118,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       state.copyWith(
         project: Project(
           templates: [
-            ...state.project.templates,
+            ...state.project?.templates ?? [],
             ProjectTemplate(event.name, const []),
           ],
         ),
@@ -133,13 +133,13 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
     emit(
       state.copyWith(
         project: Project(
-          templates: state.project.templates.map((template) {
+          templates: state.project?.templates.map((template) {
             if (template.name == event.templateName) {
               return template.copyWithNewField(event.toProjectTemplateField());
             } else {
               return template;
             }
-          }).toList(),
+          }).toList() ?? [],
         ),
       ),
     );
@@ -152,7 +152,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
     emit(
       state.copyWith(
         project: Project(
-          templates: state.project.templates.map((template) {
+          templates: state.project?.templates.map((template) {
             if (template.name == event.templateName) {
               return ProjectTemplate(
                 template.name,
@@ -169,7 +169,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
             } else {
               return template;
             }
-          }).toList(),
+          }).toList() ?? [],
         ),
       ),
     );
@@ -182,7 +182,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
     emit(
       state.copyWith(
         project: Project(
-          templates: state.project.templates.map((template) {
+          templates: state.project?.templates.map((template) {
             if (template.name == event.templateName) {
               return ProjectTemplate(
                 template.name,
@@ -193,7 +193,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
             } else {
               return template;
             }
-          }).toList(),
+          }).toList() ?? [],
         ),
       ),
     );
@@ -207,7 +207,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       state.copyWith(
         project: Project(
           stages: [
-            ...state.project.stages,
+            ...state.project?.stages ?? [],
             ProjectStage(event.name, const []),
           ],
         ),

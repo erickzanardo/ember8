@@ -1,8 +1,6 @@
 import 'package:editor/src/project/models/project.dart';
 import 'package:equatable/equatable.dart';
 
-import 'project_state.dart';
-
 abstract class ProjectEvent extends Equatable {
   const ProjectEvent();
 }

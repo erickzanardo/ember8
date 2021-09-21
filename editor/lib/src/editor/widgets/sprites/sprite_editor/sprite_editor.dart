@@ -27,7 +27,8 @@ class SpriteEditor extends StatelessWidget {
     return BlocSelector<ProjectBloc, ProjectState, ProjectSprite>(
       key: Key('_sprite_editor$spriteName'),
       selector: (state) {
-        return state.project.sprites
+        final sprites = state.project?.sprites ?? [];
+        return sprites
             .where((sprite) => sprite.name == spriteName)
             .first;
       },

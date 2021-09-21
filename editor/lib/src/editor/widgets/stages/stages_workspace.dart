@@ -42,7 +42,7 @@ class StagesWorkspace extends StatelessWidget {
             return Text(stage.name);
           },
           mapItemValue: (stage) => stage.name,
-          items: state.project.stages,
+          items: state.project?.stages ?? [],
           emptyMessage:
               'Nothing to show yet, select a stage on the left side bar',
           buildCurrent: (current) => StageEditor(stageName: current),

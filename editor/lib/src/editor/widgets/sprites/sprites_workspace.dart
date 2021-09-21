@@ -48,7 +48,7 @@ class SpritesWorkspace extends StatelessWidget {
             return Text(sprite.name);
           },
           mapItemValue: (sprite) => sprite.name,
-          items: state.project.sprites,
+          items: state.project?.sprites ?? [],
           emptyMessage:
               'Nothing to show yet, select a sprite on the left side bar',
           buildCurrent: (current) => SpriteEditor(spriteName: current),

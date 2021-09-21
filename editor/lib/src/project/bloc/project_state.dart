@@ -2,10 +2,10 @@ import 'package:editor/src/project/models/project.dart';
 import 'package:equatable/equatable.dart';
 
 class ProjectState extends Equatable {
-  final Project project;
+  final Project? project;
 
   const ProjectState({
-    this.project = const Project(),
+    this.project,
   });
 
   @override

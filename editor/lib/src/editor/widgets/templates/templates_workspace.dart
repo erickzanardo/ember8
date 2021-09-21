@@ -42,7 +42,7 @@ class TemplatesWorkspace extends StatelessWidget {
             return Text(template.name);
           },
           mapItemValue: (template) => template.name,
-          items: state.project.templates,
+          items: state.project?.templates ?? [],
           emptyMessage:
               'Nothing to show yet, select a template on the left side bar',
           buildCurrent: (current) => TemplateEditor(templateName: current),

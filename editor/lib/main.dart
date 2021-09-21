@@ -1,7 +1,6 @@
+import 'package:editor/src/project/project_workspace.dart';
 import 'package:flutter/material.dart';
 
-import 'src/editor/editor.dart';
-
 void main() {
-  runApp(const Editor());
+  runApp(const ProjectWorkspace());
 }
