@@ -9,7 +9,7 @@ void main() {
   group('Widgets - Editor - Scripts', () {
     testWidgets('it adds a controller script (the default one)',
         (tester) async {
-      await tester.pumpEditor();
+      await tester.pumpWithCreatedProject();
 
       // Scripts is the initial tab and should show an empty message
       expect(find.text('Empty'), findsOneWidget);
@@ -28,7 +28,7 @@ void main() {
     });
 
     testWidgets('it adds a directional pad script', (tester) async {
-      await tester.pumpEditor();
+      await tester.pumpWithCreatedProject();
 
       // Scripts is the initial tab and should show an empty message
       expect(find.text('Empty'), findsOneWidget);
@@ -42,7 +42,7 @@ void main() {
     });
 
     testWidgets('it adds an action button event script', (tester) async {
-      await tester.pumpEditor();
+      await tester.pumpWithCreatedProject();
 
       // Scripts is the initial tab and should show an empty message
       expect(find.text('Empty'), findsOneWidget);
@@ -58,7 +58,7 @@ void main() {
     testWidgets('it can cancel the new script', (tester) async {
       final scriptsPageObject = ScriptsPageObject(tester);
 
-      await tester.pumpEditor();
+      await tester.pumpWithCreatedProject();
 
       // Scripts is the initial tab and should show an empty message
       expect(find.text('Empty'), findsOneWidget);
@@ -75,7 +75,7 @@ void main() {
     testWidgets('it can open scripts from the sidebar', (tester) async {
       final scriptsPageObject = ScriptsPageObject(tester);
 
-      await tester.pumpEditor();
+      await tester.pumpWithCreatedProject();
 
       // Creates a script first
       await scriptsPageObject.createScript('playerController', 'Controller');
@@ -105,10 +105,11 @@ void main() {
       );
     });
 
-    testWidgets('it can close open scripts using the icon on the tab', (tester) async {
+    testWidgets('it can close open scripts using the icon on the tab',
+        (tester) async {
       final scriptsPageObject = ScriptsPageObject(tester);
 
-      await tester.pumpEditor();
+      await tester.pumpWithCreatedProject();
 
       // Creates a script first
       await scriptsPageObject.createScript('playerController', 'Controller');
@@ -130,7 +131,8 @@ void main() {
         findsOneWidget,
       );
 
-      await tester.tap(find.closeIconFromTabOptions(label: 'playerMovement', selected: true));
+      await tester.tap(find.closeIconFromTabOptions(
+          label: 'playerMovement', selected: true));
       await tester.pumpAndSettle();
 
       expect(
@@ -141,7 +143,7 @@ void main() {
     testWidgets('it can change between tabs', (tester) async {
       final scriptsPageObject = ScriptsPageObject(tester);
 
-      await tester.pumpEditor();
+      await tester.pumpWithCreatedProject();
 
       // Creates a script first
       await scriptsPageObject.createScript('playerController', 'Controller');
@@ -163,7 +165,8 @@ void main() {
         findsOneWidget,
       );
 
-      await tester.tap(find.byTabOptions(label: 'playerController', selected: false));
+      await tester
+          .tap(find.byTabOptions(label: 'playerController', selected: false));
       await tester.pumpAndSettle();
 
       expect(
@@ -182,7 +185,7 @@ void main() {
     //testWidgets('it can write code', (tester) async {
     //  final scriptsPageObject = ScriptsPageObject(tester);
 
-    //  await tester.pumpEditor();
+    //  await tester.pumpWithCreatedProject();
 
     //  // Creates a script first
     //  await scriptsPageObject.createScript('playerController', 'Controller');

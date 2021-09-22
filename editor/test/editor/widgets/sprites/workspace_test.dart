@@ -8,7 +8,7 @@ void main() {
   group('Widgets - Editor - Sprites', () {
     testWidgets('it adds a controller sprite (the default one)',
         (tester) async {
-      await tester.pumpEditor();
+      await tester.pumpWithCreatedProject();
 
       await EditorPageObject(tester).openSpriteTab();
 
@@ -29,9 +29,8 @@ void main() {
       expect(find.text('Empty'), findsNothing);
     });
 
-    testWidgets('it can cancel the new sprite',
-        (tester) async {
-      await tester.pumpEditor();
+    testWidgets('it can cancel the new sprite', (tester) async {
+      await tester.pumpWithCreatedProject();
 
       await EditorPageObject(tester).openSpriteTab();
 
@@ -50,7 +49,7 @@ void main() {
     testWidgets('it can open sprite from the sidebar', (tester) async {
       final spritePageObject = SpritesPageObject(tester);
 
-      await tester.pumpEditor();
+      await tester.pumpWithCreatedProject();
       await EditorPageObject(tester).openSpriteTab();
 
       // Creates a sprite first

@@ -13,6 +13,7 @@ void main() {
         body: 'aa',
       );
       const newProject = Project(
+        name: '',
         scripts: [newScript],
       );
 

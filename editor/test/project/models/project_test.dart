@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('Project - models - Project', () {
     test('copyWith returns a new instance (scripts)', () {
-      const model = Project();
+      const model = Project(name: '');
 
       const newScript = ProjectScript(
         type: ProjectScriptType.controller,
@@ -26,7 +26,7 @@ void main() {
     });
 
     test('copyWith returns a new instance (sprites)', () {
-      const model = Project();
+      const model = Project(name: '');
 
       const newSprite = ProjectSprite(name: 'player', pixels: [
         [1, 1],
@@ -46,7 +46,7 @@ void main() {
     });
 
     test('copyWith returns a new instance (templates)', () {
-      const model = Project();
+      const model = Project(name: '');
 
       const newTemplate = ProjectTemplate(
         'bullet',
@@ -70,7 +70,7 @@ void main() {
     });
 
     test('copyWith returns a new instance (stages)', () {
-      const model = Project();
+      const model = Project(name: '');
 
       const newStage = ProjectStage(
         'title',
@@ -91,6 +91,20 @@ void main() {
       final newEqualModel = model.copyWith();
 
       expect(newModel.stages, [newStage]);
+
+      expect(newEqualModel, model);
+    });
+
+    test('copyWith returns a new instance (name)', () {
+      const model = Project(name: '');
+
+      final newModel = model.copyWith(
+        name: 'cool name',
+      );
+
+      final newEqualModel = model.copyWith();
+
+      expect(newModel.name, 'cool name');
 
       expect(newEqualModel, model);
     });

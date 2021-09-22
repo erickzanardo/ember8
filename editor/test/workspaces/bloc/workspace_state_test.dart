@@ -7,7 +7,7 @@ void main() {
       const state = WorkspaceState();
 
       final newState = state.copyWith(
-          openEditors: ['playerController'],
+        openEditors: ['playerController'],
       );
 
       final newEqualState = state.copyWith();
@@ -20,9 +20,7 @@ void main() {
     test('copyWith returns a new instance (currentEditor)', () {
       const state = WorkspaceState();
 
-      final newState = state.copyWith(
-          currentEditor: 'playerController'
-      );
+      final newState = state.copyWith(currentEditor: 'playerController');
 
       final newEqualState = state.copyWith();
 
@@ -33,4 +31,3 @@ void main() {
     });
   });
 }
-

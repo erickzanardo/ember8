@@ -8,6 +8,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
   ProjectBloc({
     ProjectState initialState = const ProjectState(),
   }) : super(initialState) {
+    on<NewProjectEvent>(_handleNewProject);
     on<NewScriptEvent>(_handleNewScript);
     on<UpdateScriptEvent>(_handleUpdateScript);
     on<NewSpriteEvent>(_handleNewSprite);
@@ -19,13 +20,24 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
     on<NewStageEvent>(_handleNewStage);
   }
 
+  Future<void> _handleNewProject(
+    NewProjectEvent event,
+    Emitter<ProjectState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        project: Project(name: event.name),
+      ),
+    );
+  }
+
   Future<void> _handleNewScript(
     NewScriptEvent event,
     Emitter<ProjectState> emit,
   ) async {
     emit(
       state.copyWith(
-        project: Project(
+        project: state.project?.copyWith(
           scripts: [
             ...state.project?.scripts ?? [],
             ProjectScript(
@@ -45,14 +57,15 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
   ) async {
     emit(
       state.copyWith(
-        project: Project(
+        project: state.project?.copyWith(
           scripts: state.project?.scripts.map((script) {
-            if (script.name == event.name) {
-              return script.copyWithNewBody(event.code);
-            } else {
-              return script;
-            }
-          }).toList() ?? [],
+                if (script.name == event.name) {
+                  return script.copyWithNewBody(event.code);
+                } else {
+                  return script;
+                }
+              }).toList() ??
+              [],
         ),
       ),
     );
@@ -66,7 +79,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
 
     emit(
       state.copyWith(
-        project: Project(
+        project: state.project?.copyWith(
           sprites: [
             ...state.project?.sprites ?? [],
             ProjectSprite(
@@ -85,25 +98,26 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
   ) async {
     emit(
       state.copyWith(
-        project: Project(
+        project: state.project?.copyWith(
           sprites: [
             ...state.project?.sprites.map((sprite) {
-              if (sprite.name == event.spriteName) {
-                final newPixels = List.generate(sprite.pixels.length, (y) {
-                  return List.generate(sprite.pixels[y].length, (x) {
-                    if (y == event.y && x == event.x) {
-                      return event.color;
-                    } else {
-                      return sprite.pixels[y][x];
-                    }
-                  });
-                });
+                  if (sprite.name == event.spriteName) {
+                    final newPixels = List.generate(sprite.pixels.length, (y) {
+                      return List.generate(sprite.pixels[y].length, (x) {
+                        if (y == event.y && x == event.x) {
+                          return event.color;
+                        } else {
+                          return sprite.pixels[y][x];
+                        }
+                      });
+                    });
 
-                return sprite.copyWithNewPixels(newPixels);
-              } else {
-                return sprite;
-              }
-            }).toList() ?? [],
+                    return sprite.copyWithNewPixels(newPixels);
+                  } else {
+                    return sprite;
+                  }
+                }).toList() ??
+                [],
           ],
         ),
       ),
@@ -116,7 +130,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
   ) async {
     emit(
       state.copyWith(
-        project: Project(
+        project: state.project?.copyWith(
           templates: [
             ...state.project?.templates ?? [],
             ProjectTemplate(event.name, const []),
@@ -132,14 +146,16 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
   ) async {
     emit(
       state.copyWith(
-        project: Project(
+        project: state.project?.copyWith(
           templates: state.project?.templates.map((template) {
-            if (template.name == event.templateName) {
-              return template.copyWithNewField(event.toProjectTemplateField());
-            } else {
-              return template;
-            }
-          }).toList() ?? [],
+                if (template.name == event.templateName) {
+                  return template
+                      .copyWithNewField(event.toProjectTemplateField());
+                } else {
+                  return template;
+                }
+              }).toList() ??
+              [],
         ),
       ),
     );
@@ -151,25 +167,26 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
   ) async {
     emit(
       state.copyWith(
-        project: Project(
+        project: state.project?.copyWith(
           templates: state.project?.templates.map((template) {
-            if (template.name == event.templateName) {
-              return ProjectTemplate(
-                template.name,
-                template.fields.map(
-                  (field) {
-                    if (field.name == event.fieldName) {
-                      return event.toProjectTemplateField();
-                    } else {
-                      return field;
-                    }
-                  },
-                ).toList(),
-              );
-            } else {
-              return template;
-            }
-          }).toList() ?? [],
+                if (template.name == event.templateName) {
+                  return ProjectTemplate(
+                    template.name,
+                    template.fields.map(
+                      (field) {
+                        if (field.name == event.fieldName) {
+                          return event.toProjectTemplateField();
+                        } else {
+                          return field;
+                        }
+                      },
+                    ).toList(),
+                  );
+                } else {
+                  return template;
+                }
+              }).toList() ??
+              [],
         ),
       ),
     );
@@ -181,19 +198,20 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
   ) async {
     emit(
       state.copyWith(
-        project: Project(
+        project: state.project?.copyWith(
           templates: state.project?.templates.map((template) {
-            if (template.name == event.templateName) {
-              return ProjectTemplate(
-                template.name,
-                template.fields
-                    .where((element) => element.name != event.fieldName)
-                    .toList(),
-              );
-            } else {
-              return template;
-            }
-          }).toList() ?? [],
+                if (template.name == event.templateName) {
+                  return ProjectTemplate(
+                    template.name,
+                    template.fields
+                        .where((element) => element.name != event.fieldName)
+                        .toList(),
+                  );
+                } else {
+                  return template;
+                }
+              }).toList() ??
+              [],
         ),
       ),
     );
@@ -205,7 +223,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
   ) async {
     emit(
       state.copyWith(
-        project: Project(
+        project: state.project?.copyWith(
           stages: [
             ...state.project?.stages ?? [],
             ProjectStage(event.name, const []),

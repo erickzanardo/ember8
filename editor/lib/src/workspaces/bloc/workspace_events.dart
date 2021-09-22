@@ -30,4 +30,3 @@ class SelectEditorEvent extends WorkspaceEvent {
   @override
   List<Object?> get props => [name];
 }
-

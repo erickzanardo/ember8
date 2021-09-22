@@ -5,44 +5,44 @@ import '../../widgets_extensions.dart';
 void main() {
   group('Widgets - Editor', () {
     testWidgets('can select tabs', (tester) async {
-      await tester.pumpEditor(); 
+      await tester.pumpWithCreatedProject();
 
       // Starts with the scripts tab selected
       expect(
-          find.byTabOptions(label: 'Scripts', selected: true),
-          findsOneWidget,
+        find.byTabOptions(label: 'Scripts', selected: true),
+        findsOneWidget,
       );
 
       await tester.tap(find.byTabOptions(label: 'Sprites'));
       await tester.pump();
 
       expect(
-          find.byTabOptions(label: 'Sprites', selected: true),
-          findsOneWidget,
+        find.byTabOptions(label: 'Sprites', selected: true),
+        findsOneWidget,
       );
 
       await tester.tap(find.byTabOptions(label: 'Templates'));
       await tester.pump();
 
       expect(
-          find.byTabOptions(label: 'Templates', selected: true),
-          findsOneWidget,
+        find.byTabOptions(label: 'Templates', selected: true),
+        findsOneWidget,
       );
 
       await tester.tap(find.byTabOptions(label: 'Stages'));
       await tester.pump();
 
       expect(
-          find.byTabOptions(label: 'Stages', selected: true),
-          findsOneWidget,
+        find.byTabOptions(label: 'Stages', selected: true),
+        findsOneWidget,
       );
 
       await tester.tap(find.byTabOptions(label: 'Scripts'));
       await tester.pump();
 
       expect(
-          find.byTabOptions(label: 'Scripts', selected: true),
-          findsOneWidget,
+        find.byTabOptions(label: 'Scripts', selected: true),
+        findsOneWidget,
       );
     });
   });

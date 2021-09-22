@@ -24,9 +24,8 @@ class _SideBarItemState extends State<SideBarItem> {
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 2),
-        color: _beingHovered
-          ? Theme.of(context).hoverColor
-          : Colors.transparent,
+        color:
+            _beingHovered ? Theme.of(context).hoverColor : Colors.transparent,
         child: MouseRegion(
           cursor: SystemMouseCursors.click,
           onEnter: (_) {
@@ -44,4 +43,3 @@ class _SideBarItemState extends State<SideBarItem> {
     );
   }
 }
-

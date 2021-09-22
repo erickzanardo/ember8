@@ -23,7 +23,7 @@ class EditorState extends Equatable {
     String? currentOpenScript,
   }) {
     return EditorState(
-        currentTab: currentTab ?? this.currentTab,
+      currentTab: currentTab ?? this.currentTab,
     );
   }
 }

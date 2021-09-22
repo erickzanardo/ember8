@@ -6,9 +6,8 @@ import '../../../widgets_extensions.dart';
 
 void main() {
   group('Widgets - Editor - Templates', () {
-    testWidgets('it adds a template',
-        (tester) async {
-      await tester.pumpEditor();
+    testWidgets('it adds a template', (tester) async {
+      await tester.pumpWithCreatedProject();
 
       await EditorPageObject(tester).openTemplateTab();
 
@@ -23,14 +22,14 @@ void main() {
       await tester.tap(find.text('Create'));
       await tester.pumpAndSettle();
 
-      expect(find.byTabOptions(label: 'bullet', selected: true), findsOneWidget);
+      expect(
+          find.byTabOptions(label: 'bullet', selected: true), findsOneWidget);
       expect(find.sideBarItemWithText('bullet'), findsOneWidget);
       expect(find.text('Empty'), findsNothing);
     });
 
-    testWidgets('it can cancel the new template',
-        (tester) async {
-      await tester.pumpEditor();
+    testWidgets('it can cancel the new template', (tester) async {
+      await tester.pumpWithCreatedProject();
 
       await EditorPageObject(tester).openTemplateTab();
 
@@ -49,7 +48,7 @@ void main() {
     testWidgets('it can open template from the sidebar', (tester) async {
       final templatePageObject = TemplatesPageObject(tester);
 
-      await tester.pumpEditor();
+      await tester.pumpWithCreatedProject();
       await EditorPageObject(tester).openTemplateTab();
 
       // Creates a template first

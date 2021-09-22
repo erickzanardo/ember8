@@ -5,6 +5,15 @@ abstract class ProjectEvent extends Equatable {
   const ProjectEvent();
 }
 
+class NewProjectEvent extends ProjectEvent {
+  final String name;
+
+  const NewProjectEvent({required this.name});
+
+  @override
+  List<Object?> get props => [name];
+}
+
 class NewScriptEvent extends ProjectEvent {
   final String name;
   final ProjectScriptType type;

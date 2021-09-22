@@ -16,17 +16,15 @@ class SpriteEditorCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: pixelSize.toDouble(),
-        height: pixelSize.toDouble(),
-        decoration: BoxDecoration(
-            color: color != null
-            ? palette.colors[color!]
-            : Colors.transparent,
-            border: Border.all(
-                width: 1,
-                color: Colors.black,
-            ), // Depends on the grid
-        ),
+      width: pixelSize.toDouble(),
+      height: pixelSize.toDouble(),
+      decoration: BoxDecoration(
+        color: color != null ? palette.colors[color!] : Colors.transparent,
+        border: Border.all(
+          width: 1,
+          color: Colors.black,
+        ), // Depends on the grid
+      ),
     );
   }
 }

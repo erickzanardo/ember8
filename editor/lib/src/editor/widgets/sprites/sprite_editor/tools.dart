@@ -18,24 +18,24 @@ class Tools extends StatelessWidget {
       color: Theme.of(context).cardColor,
       padding: const EdgeInsets.all(5),
       child: Column(
-          children: [
-            IconButton(
-                data: Icons.brush,
-                tooltip: 'Brush',
-                primary: tool == SpriteEditorTool.brush,
-                onClick: () {
-                  onSelectTool(SpriteEditorTool.brush);
-                },
-            ),
-            IconButton(
-                data: Icons.crop_7_5_sharp,
-                tooltip: 'Eraser',
-                primary: tool == SpriteEditorTool.eraser,
-                onClick: () {
-                  onSelectTool(SpriteEditorTool.eraser);
-                },
-            ),
-          ],
+        children: [
+          IconButton(
+            data: Icons.brush,
+            tooltip: 'Brush',
+            primary: tool == SpriteEditorTool.brush,
+            onClick: () {
+              onSelectTool(SpriteEditorTool.brush);
+            },
+          ),
+          IconButton(
+            data: Icons.crop_7_5_sharp,
+            tooltip: 'Eraser',
+            primary: tool == SpriteEditorTool.eraser,
+            onClick: () {
+              onSelectTool(SpriteEditorTool.eraser);
+            },
+          ),
+        ],
       ),
     );
   }

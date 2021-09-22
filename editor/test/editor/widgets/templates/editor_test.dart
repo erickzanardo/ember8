@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -8,7 +7,7 @@ import '../../../widgets_extensions.dart';
 void main() {
   group('Widgets - Editor - Template Editor', () {
     testWidgets('can add string fields', (tester) async {
-      await tester.pumpEditor();
+      await tester.pumpWithCreatedProject();
       await EditorPageObject(tester).openTemplateTab();
 
       final templatePageObject = TemplatesPageObject(tester);
@@ -24,7 +23,7 @@ void main() {
     });
 
     testWidgets('can add boolean fields', (tester) async {
-      await tester.pumpEditor();
+      await tester.pumpWithCreatedProject();
       await EditorPageObject(tester).openTemplateTab();
 
       final templatePageObject = TemplatesPageObject(tester);
@@ -46,7 +45,7 @@ void main() {
     });
 
     testWidgets('can add number fields', (tester) async {
-      await tester.pumpEditor();
+      await tester.pumpWithCreatedProject();
       await EditorPageObject(tester).openTemplateTab();
 
       final templatePageObject = TemplatesPageObject(tester);

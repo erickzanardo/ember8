@@ -6,10 +6,11 @@ import '../../../widgets_extensions.dart';
 
 void main() {
   group('Widgets - Editor - Sprites Pixel Editor', () {
-    testWidgets('can paint a pixel using the brush and remove with the eraser', (tester) async {
+    testWidgets('can paint a pixel using the brush and remove with the eraser',
+        (tester) async {
       final spritePageObject = SpritesPageObject(tester);
 
-      await tester.pumpEditor();
+      await tester.pumpWithCreatedProject();
       await EditorPageObject(tester).openSpriteTab();
 
       // Creates a sprite first

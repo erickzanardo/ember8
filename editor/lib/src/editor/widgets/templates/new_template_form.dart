@@ -66,8 +66,8 @@ class _NewTemplateFormState extends State<NewTemplateForm> {
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState?.validate() ?? false) {
-                        final template  = NewTemplateFormEntry(
-                            name: _nameController.text,
+                        final template = NewTemplateFormEntry(
+                          name: _nameController.text,
                         );
                         Navigator.of(context).pop(template);
                       }
@@ -83,4 +83,3 @@ class _NewTemplateFormState extends State<NewTemplateForm> {
     );
   }
 }
-

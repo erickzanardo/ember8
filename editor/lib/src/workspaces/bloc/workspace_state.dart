@@ -17,9 +17,8 @@ class WorkspaceState extends Equatable {
     String? currentEditor,
   }) {
     return WorkspaceState(
-        openEditors: openEditors ?? this.openEditors,
-        currentEditor: currentEditor ?? this.currentEditor,
+      openEditors: openEditors ?? this.openEditors,
+      currentEditor: currentEditor ?? this.currentEditor,
     );
   }
 }
-

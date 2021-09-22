@@ -1,4 +1,3 @@
-
 import 'package:editor/src/workspaces/bloc/workspace_events.dart';
 import 'package:flutter_test/flutter_test.dart';
 

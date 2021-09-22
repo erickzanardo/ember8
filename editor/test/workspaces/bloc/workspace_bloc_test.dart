@@ -65,8 +65,7 @@ void main() {
         act: (bloc) => bloc.add(const CloseEditorEvent('playerController')),
         expect: () => [
           const WorkspaceState(
-              openEditors: ['playerMovement'],
-              currentEditor: 'playerMovement'),
+              openEditors: ['playerMovement'], currentEditor: 'playerMovement'),
         ],
       );
       blocTest<WorkspaceBloc, WorkspaceState>(
@@ -105,4 +104,3 @@ void main() {
     });
   });
 }
-

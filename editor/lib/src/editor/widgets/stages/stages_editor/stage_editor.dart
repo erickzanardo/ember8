@@ -29,9 +29,7 @@ class StageEditor extends StatelessWidget {
       key: Key('_stage_editor$stageName'),
       selector: (state) {
         final stages = state.project?.stages ?? [];
-        final stage = stages
-            .where((stage) => stage.name == stageName)
-            .first;
+        final stage = stages.where((stage) => stage.name == stageName).first;
 
         return _StageEditorSelection(stage, state.project?.templates ?? []);
       },

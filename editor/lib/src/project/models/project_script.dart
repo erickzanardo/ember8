@@ -30,7 +30,7 @@ class ProjectScript extends Equatable {
 
   List<dynamic> toData() {
     late String stringType;
-    switch(type) {
+    switch (type) {
       case ProjectScriptType.controller:
         stringType = 'C';
         break;
@@ -64,5 +64,3 @@ class ProjectScript extends Equatable {
     return ProjectScript(type: scriptType, name: name, body: body);
   }
 }
-
-

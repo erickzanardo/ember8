@@ -17,22 +17,22 @@ class IconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: Tooltip(
-          message: tooltip,
-          child: GestureDetector(
-              onTap: onClick,
-              child: Padding(
-                  padding: const EdgeInsets.all(2),
-                  child: Icon(
-                      data,
-                      color: primary
-                        ? Theme.of(context).primaryColor
-                        : Theme.of(context).iconTheme.color,
-                  ),
-              ),
+      cursor: SystemMouseCursors.click,
+      child: Tooltip(
+        message: tooltip,
+        child: GestureDetector(
+          onTap: onClick,
+          child: Padding(
+            padding: const EdgeInsets.all(2),
+            child: Icon(
+              data,
+              color: primary
+                  ? Theme.of(context).primaryColor
+                  : Theme.of(context).iconTheme.color,
+            ),
           ),
         ),
+      ),
     );
   }
 }

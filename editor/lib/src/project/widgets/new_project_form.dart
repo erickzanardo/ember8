@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
-class NewStageFormEntry {
+class NewProjectFormEntry {
   final String name;
 
-  NewStageFormEntry({
+  NewProjectFormEntry({
     required this.name,
   });
 }
 
-class NewStageForm extends StatefulWidget {
-  const NewStageForm({Key? key}) : super(key: key);
+class NewProjectForm extends StatefulWidget {
+  const NewProjectForm({Key? key}) : super(key: key);
 
   @override
-  State<NewStageForm> createState() => _NewStageFormState();
+  State<NewProjectForm> createState() => _NewProjectFormState();
 }
 
-class _NewStageFormState extends State<NewStageForm> {
+class _NewProjectFormState extends State<NewProjectForm> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
 
@@ -41,7 +41,7 @@ class _NewStageFormState extends State<NewStageForm> {
                 children: [
                   TextFormField(
                     decoration: const InputDecoration(
-                      labelText: 'Stage name',
+                      labelText: 'Project name',
                     ),
                     autofocus: true,
                     controller: _nameController,
@@ -66,10 +66,10 @@ class _NewStageFormState extends State<NewStageForm> {
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState?.validate() ?? false) {
-                        final stage = NewStageFormEntry(
+                        final project = NewProjectFormEntry(
                           name: _nameController.text,
                         );
-                        Navigator.of(context).pop(stage);
+                        Navigator.of(context).pop(project);
                       }
                     },
                     child: const Text('Create'),

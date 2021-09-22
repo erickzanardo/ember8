@@ -6,9 +6,8 @@ import '../../../widgets_extensions.dart';
 
 void main() {
   group('Widgets - Editor - Stages', () {
-    testWidgets('it adds a stage',
-        (tester) async {
-      await tester.pumpEditor();
+    testWidgets('it adds a stage', (tester) async {
+      await tester.pumpWithCreatedProject();
 
       await EditorPageObject(tester).openStageTab();
 
@@ -28,9 +27,8 @@ void main() {
       expect(find.text('Empty'), findsNothing);
     });
 
-    testWidgets('it can cancel the new stage',
-        (tester) async {
-      await tester.pumpEditor();
+    testWidgets('it can cancel the new stage', (tester) async {
+      await tester.pumpWithCreatedProject();
 
       await EditorPageObject(tester).openStageTab();
 
@@ -49,7 +47,7 @@ void main() {
     testWidgets('it can open stage from the sidebar', (tester) async {
       final stagePageObject = StagesPageObject(tester);
 
-      await tester.pumpEditor();
+      await tester.pumpWithCreatedProject();
       await EditorPageObject(tester).openStageTab();
 
       // Creates a stage first

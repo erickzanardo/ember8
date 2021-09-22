@@ -18,10 +18,8 @@ class ScriptCodeField extends StatelessWidget {
   Widget build(BuildContext context) {
     final state = context.read<ProjectBloc>().state;
     final scripts = state.project?.scripts ?? [];
-    final code = scripts
-        .where((script) => script.name == scriptName)
-        .first
-        .body;
+    final code =
+        scripts.where((script) => script.name == scriptName).first.body;
     return _Field(
         key: Key('_code_field_$scriptName'), text: code, scripName: scriptName);
   }

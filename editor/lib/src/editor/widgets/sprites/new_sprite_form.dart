@@ -99,10 +99,10 @@ class _NewSpriteFormState extends State<NewSpriteForm> {
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState?.validate() ?? false) {
-                        final script  = NewSpriteFormEntry(
-                            name: _nameController.text,
-                            width: int.parse(_widthController.text),
-                            height: int.parse(_heightController.text),
+                        final script = NewSpriteFormEntry(
+                          name: _nameController.text,
+                          width: int.parse(_widthController.text),
+                          height: int.parse(_heightController.text),
                         );
                         Navigator.of(context).pop(script);
                       }

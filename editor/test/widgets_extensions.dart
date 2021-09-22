@@ -1,13 +1,22 @@
-import 'package:editor/src/editor/editor.dart';
+import 'package:editor/src/project/project.dart';
 import 'package:editor/src/widgets/icon_button.dart';
 import 'package:editor/src/widgets/side_bar_item.dart';
 import 'package:editor/src/widgets/tab.dart';
+import 'package:flutter/material.dart' as material;
 import 'package:flutter_test/flutter_test.dart';
 
 extension EditorWidgetTester on WidgetTester {
+  Future<void> pumpWithCreatedProject(
+      {String projectName = 'cool game'}) async {
+    await pumpWidget(const Project());
 
-  Future<void> pumpEditor() =>
-      pumpWidget(const Editor());
+    await tap(find.text('New project'));
+    await pumpAndSettle();
+
+    await enterText(find.byType(material.TextField), projectName);
+    await tap(find.text('Create'));
+    await pumpAndSettle();
+  }
 }
 
 extension EditorCommonFinders on CommonFinders {
@@ -16,7 +25,9 @@ extension EditorCommonFinders on CommonFinders {
     bool selected = false,
   }) {
     return byWidgetPredicate((widget) {
-      return widget is Tab && widget.selected == selected && widget.label == label;
+      return widget is Tab &&
+          widget.selected == selected &&
+          widget.label == label;
     });
   }
 
@@ -25,7 +36,9 @@ extension EditorCommonFinders on CommonFinders {
     bool selected = false,
   }) {
     final tab = byWidgetPredicate((widget) {
-      return widget is Tab && widget.selected == selected && widget.label == label;
+      return widget is Tab &&
+          widget.selected == selected &&
+          widget.label == label;
     });
 
     return descendant(of: tab, matching: byType(IconButton));
@@ -41,4 +54,3 @@ extension EditorCommonFinders on CommonFinders {
     return descendant(of: byType(SideBarItem), matching: text(label));
   }
 }
-

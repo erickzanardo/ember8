@@ -13,8 +13,7 @@ class SideBar extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: Column(children: [
-        if (children.isEmpty)
-          const Text('Empty'),
+        if (children.isEmpty) const Text('Empty'),
         ...children,
       ]),
     );

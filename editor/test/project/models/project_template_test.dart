@@ -50,10 +50,12 @@ void main() {
     test('correctly serializes', () {
       const field = ProjectTemplateField<String>('field', 'value');
       const template = ProjectTemplate('template', [field]);
-      expect(template.toData(), equals([
-        'template',
-        [field.toData()],
-      ]));
+      expect(
+          template.toData(),
+          equals([
+            'template',
+            [field.toData()],
+          ]));
     });
     test('correctly deserializes', () {
       const field = ProjectTemplateField<String>('field', 'value');

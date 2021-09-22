@@ -12,67 +12,72 @@ import '../bloc/editor_events.dart';
 import '../../widgets/tab.dart';
 
 class EditorScaffold extends StatelessWidget {
-
   const EditorScaffold({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditorBloc, EditorState>(
-      builder: (context, state) {
-        return Column(
+    return BlocBuilder<EditorBloc, EditorState>(builder: (context, state) {
+      return Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      child: Tab(
-                          label: 'Scripts',
-                          selected: state.currentTab == EditorTab.scripts,
-                          onClick: () {
-                            context.read<EditorBloc>().add(const SelectTabEvent(EditorTab.scripts));
-                          },
-                      ),
-                    ),
-                    Expanded(
-                      child: Tab(
-                          label: 'Sprites',
-                          selected: state.currentTab == EditorTab.sprites,
-                          onClick: () {
-                            context.read<EditorBloc>().add(const SelectTabEvent(EditorTab.sprites));
-                          },
-                      ),
-                    ),
-                    Expanded(
-                      child: Tab(
-                          label: 'Templates',
-                          selected: state.currentTab == EditorTab.templates,
-                          onClick: () {
-                            context.read<EditorBloc>().add(const SelectTabEvent(EditorTab.templates));
-                          },
-                      ),
-                    ),
-                    Expanded(
-                      child: Tab(
-                          label: 'Stages',
-                          selected: state.currentTab == EditorTab.stages,
-                          onClick: () {
-                            context.read<EditorBloc>().add(const SelectTabEvent(EditorTab.stages));
-                          },
-                      ),
-                    ),
-                  ],
+              Expanded(
+                child: Tab(
+                  label: 'Scripts',
+                  selected: state.currentTab == EditorTab.scripts,
+                  onClick: () {
+                    context
+                        .read<EditorBloc>()
+                        .add(const SelectTabEvent(EditorTab.scripts));
+                  },
+                ),
               ),
-              if (state.currentTab == EditorTab.scripts)
-                const Expanded(child: ScriptsWorkspace()),
-              if (state.currentTab == EditorTab.sprites)
-                const Expanded(child: SpritesWorkspace()),
-              if (state.currentTab == EditorTab.templates)
-                const Expanded(child: TemplatesWorkspace()),
-              if (state.currentTab == EditorTab.stages)
-                const Expanded(child: StagesWorkspace()),
+              Expanded(
+                child: Tab(
+                  label: 'Sprites',
+                  selected: state.currentTab == EditorTab.sprites,
+                  onClick: () {
+                    context
+                        .read<EditorBloc>()
+                        .add(const SelectTabEvent(EditorTab.sprites));
+                  },
+                ),
+              ),
+              Expanded(
+                child: Tab(
+                  label: 'Templates',
+                  selected: state.currentTab == EditorTab.templates,
+                  onClick: () {
+                    context
+                        .read<EditorBloc>()
+                        .add(const SelectTabEvent(EditorTab.templates));
+                  },
+                ),
+              ),
+              Expanded(
+                child: Tab(
+                  label: 'Stages',
+                  selected: state.currentTab == EditorTab.stages,
+                  onClick: () {
+                    context
+                        .read<EditorBloc>()
+                        .add(const SelectTabEvent(EditorTab.stages));
+                  },
+                ),
+              ),
             ],
-        );
-      }
-    );
+          ),
+          if (state.currentTab == EditorTab.scripts)
+            const Expanded(child: ScriptsWorkspace()),
+          if (state.currentTab == EditorTab.sprites)
+            const Expanded(child: SpritesWorkspace()),
+          if (state.currentTab == EditorTab.templates)
+            const Expanded(child: TemplatesWorkspace()),
+          if (state.currentTab == EditorTab.stages)
+            const Expanded(child: StagesWorkspace()),
+        ],
+      );
+    });
   }
 }

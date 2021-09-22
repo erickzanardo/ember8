@@ -28,9 +28,7 @@ class SpriteEditor extends StatelessWidget {
       key: Key('_sprite_editor$spriteName'),
       selector: (state) {
         final sprites = state.project?.sprites ?? [];
-        return sprites
-            .where((sprite) => sprite.name == spriteName)
-            .first;
+        return sprites.where((sprite) => sprite.name == spriteName).first;
       },
       builder: (context, sprite) {
         return _Editor(sprite: sprite);

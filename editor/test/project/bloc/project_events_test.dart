@@ -4,6 +4,14 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('Project - Bloc - Events', () {
+    group('NewProjectEvent', () {
+      test('objects with the same name are equal', () {
+        const event1 = NewProjectEvent(name: 'game');
+        const event2 = NewProjectEvent(name: 'game');
+
+        expect(event1, event2);
+      });
+    });
     group('NewScriptEvent', () {
       test('objects with the same name and type are equal', () {
         const event1 =
