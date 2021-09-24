@@ -1,12 +1,13 @@
 import 'package:console/theme.dart';
 import 'package:console/widgets/dpad.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dashbook/dashbook.dart';
 
 void main() {
   final dashbook = Dashbook(
-    usePreviewSafeArea: true,
+    usePreviewSafeArea: kIsWeb,
   );
 
   dashbook.storiesOf('dpad').decorator(CenterDecorator()).add(
