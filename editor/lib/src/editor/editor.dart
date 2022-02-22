@@ -1,3 +1,7 @@
+import 'package:editor/src/scripts/bloc/scripts_bloc.dart';
+import 'package:editor/src/sprites/bloc/sprites_bloc.dart';
+import 'package:editor/src/stages/bloc/stages_bloc.dart';
+import 'package:editor/src/templates/bloc/templates_bloc.dart';
 import 'package:editor/src/workspaces/bloc/workspace_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +30,18 @@ class Editor extends StatelessWidget {
         ),
         BlocProvider<StagesWorkspaceBloc>(
           create: (_) => StagesWorkspaceBloc(),
+        ),
+        BlocProvider<ScriptsBloc>(
+          create: (_) => ScriptsBloc(),
+        ),
+        BlocProvider<SpritesBloc>(
+          create: (_) => SpritesBloc(),
+        ),
+        BlocProvider<TemplatesBloc>(
+          create: (_) => TemplatesBloc(),
+        ),
+        BlocProvider<StagesBloc>(
+          create: (_) => StagesBloc(),
         ),
       ],
       child: const EditorScaffold(),

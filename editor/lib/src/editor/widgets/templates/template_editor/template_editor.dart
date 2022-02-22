@@ -1,12 +1,12 @@
 import 'package:editor/src/editor/widgets/templates/template_editor/new_template_field_form.dart';
 import 'package:editor/src/project/bloc/project_bloc.dart';
-import 'package:editor/src/project/bloc/project_events.dart';
 import 'package:editor/src/project/bloc/project_state.dart';
-import 'package:editor/src/project/models/project.dart';
+import 'package:editor/src/templates/bloc/templates_bloc.dart';
 import 'package:editor/src/widgets/icon_button.dart';
 import 'package:flutter/material.dart' hide IconButton;
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:repository/repository.dart';
 
 class TemplateEditor extends StatelessWidget {
   final String templateName;
@@ -18,10 +18,10 @@ class TemplateEditor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<ProjectBloc, ProjectState, ProjectTemplate>(
-      key: Key('_sprite_editor$templateName'),
+    return BlocSelector<TemplatesBloc, TemplatesState, ProjectTemplate>(
+      key: Key('_template_editor$templateName'),
       selector: (state) {
-        final templates = state.project?.templates ?? [];
+        final templates = state.templates;
         return templates
             .where((template) => template.name == templateName)
             .first;
@@ -43,6 +43,7 @@ class _Editor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fields = context.read<TemplatesBloc>().state.fields.where((t) => t.id == template.id);
     return Align(
       alignment: Alignment.topLeft,
       child: Column(
@@ -63,32 +64,32 @@ class _Editor extends StatelessWidget {
                 switch (newField.type) {
                   case NewTemplateFielType.string:
                     event = AddFieldTemplateEvent<String>(
-                      template.name,
-                      newField.name,
-                      '',
+                      templateId: template.id!,
+                      fieldName: newField.name,
+                      value: '',
                     );
                     break;
                   case NewTemplateFielType.number:
                     event = AddFieldTemplateEvent<double>(
-                      template.name,
-                      newField.name,
-                      0.0,
+                      templateId: template.id!,
+                      fieldName: newField.name,
+                      value: 0.0,
                     );
                     break;
                   case NewTemplateFielType.boolean:
                     event = AddFieldTemplateEvent<bool>(
-                      template.name,
-                      newField.name,
-                      true,
+                      templateId: template.id!,
+                      fieldName: newField.name,
+                      value: true,
                     );
                     break;
                 }
 
-                context.read<ProjectBloc>().add(event);
+                context.read<TemplatesBloc>().add(event);
               }
             },
           ),
-          for (var field in template.fields)
+          for (var field in fields)
             Row(
               children: [
                 SizedBox(
@@ -100,11 +101,11 @@ class _Editor extends StatelessWidget {
                     child: TextFormField(
                       initialValue: field.value,
                       onChanged: (newValue) {
-                        context.read<ProjectBloc>().add(
+                        context.read<TemplatesBloc>().add(
                               UpdateFieldTemplateEvent<String>(
-                                template.name,
-                                field.name,
-                                newValue,
+                                templateId: template.id!,
+                                fieldName: field.name,
+                                value: newValue,
                               ),
                             );
                       },
@@ -115,11 +116,11 @@ class _Editor extends StatelessWidget {
                     child: Checkbox(
                       value: field.value,
                       onChanged: (newValue) {
-                        context.read<ProjectBloc>().add(
+                        context.read<TemplatesBloc>().add(
                               UpdateFieldTemplateEvent<bool>(
-                                template.name,
-                                field.name,
-                                newValue ?? false,
+                                templateId: template.id!,
+                                fieldName: field.name,
+                                value: newValue ?? false,
                               ),
                             );
                       },
@@ -134,11 +135,11 @@ class _Editor extends StatelessWidget {
                         FilteringTextInputFormatter.digitsOnly,
                       ],
                       onChanged: (newValue) {
-                        context.read<ProjectBloc>().add(
+                        context.read<TemplatesBloc>().add(
                               UpdateFieldTemplateEvent<double>(
-                                template.name,
-                                field.name,
-                                double.tryParse(newValue) ?? field.value,
+                                templateId: template.id!,
+                                fieldName: field.name,
+                                value: double.tryParse(newValue) ?? field.value,
                               ),
                             );
                       },
@@ -149,10 +150,10 @@ class _Editor extends StatelessWidget {
                     data: Icons.remove_circle,
                     tooltip: 'Remove field',
                     onClick: () {
-                      context.read<ProjectBloc>().add(
+                      context.read<TemplatesBloc>().add(
                             RemoveFieldTemplateEvent(
-                              template.name,
-                              field.name,
+                              templateId: template.id!,
+                              fieldName: field.name,
                             ),
                           );
                     }),

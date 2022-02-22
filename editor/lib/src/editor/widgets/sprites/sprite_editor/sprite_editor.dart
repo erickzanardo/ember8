@@ -2,12 +2,11 @@ import 'package:editor/src/editor/widgets/sprites/sprite_editor/color_palette.da
 import 'package:editor/src/editor/widgets/sprites/sprite_editor/sprite_editor_cell.dart';
 import 'package:editor/src/editor/widgets/sprites/sprite_editor/tools.dart';
 import 'package:editor/src/project/bloc/project_bloc.dart';
-import 'package:editor/src/project/bloc/project_events.dart';
-import 'package:editor/src/project/bloc/project_state.dart';
-import 'package:editor/src/project/models/project.dart';
+import 'package:editor/src/sprites/bloc/sprites_bloc.dart';
 import 'package:engine/engine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:repository/repository.dart';
 
 enum SpriteEditorTool {
   brush,
@@ -24,10 +23,10 @@ class SpriteEditor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<ProjectBloc, ProjectState, ProjectSprite>(
+    return BlocSelector<SpritesBloc, SpritesState, ProjectSprite>(
       key: Key('_sprite_editor$spriteName'),
       selector: (state) {
-        final sprites = state.project?.sprites ?? [];
+        final sprites = state.sprites;
         return sprites.where((sprite) => sprite.name == spriteName).first;
       },
       builder: (context, sprite) {
@@ -76,7 +75,7 @@ class _EditorState extends State<_Editor> {
                         for (var x = 0; x < widget.sprite.pixels[y].length; x++)
                           GestureDetector(
                             onTap: () {
-                              context.read<ProjectBloc>().add(
+                              context.read<SpritesBloc>().add(
                                     PaintSpritePixelEvent(
                                       spriteName: widget.sprite.name,
                                       x: x,

@@ -1,5 +1,5 @@
-import 'package:editor/src/project/models/project.dart';
 import 'package:flutter/material.dart';
+import 'package:repository/repository.dart';
 
 class NewScriptFormEntry {
   final String name;

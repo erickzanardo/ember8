@@ -1,12 +1,12 @@
 import 'package:editor/src/editor/widgets/templates/template_editor/template_editor.dart';
 import 'package:editor/src/project/bloc/project_bloc.dart';
-import 'package:editor/src/project/bloc/project_events.dart';
 import 'package:editor/src/project/bloc/project_state.dart';
-import 'package:editor/src/project/models/project.dart';
+import 'package:editor/src/templates/bloc/templates_bloc.dart';
 import 'package:editor/src/workspaces/bloc/workspace_bloc.dart';
 import 'package:editor/src/workspaces/widgets/workspace.dart';
 import 'package:flutter/material.dart' hide IconButton;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:repository/repository.dart';
 
 import 'new_template_form.dart';
 
@@ -17,7 +17,7 @@ class TemplatesWorkspace extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProjectBloc, ProjectState>(
+    return BlocBuilder<TemplatesBloc, TemplatesState>(
       builder: (context, state) {
         return Workspace<TemplatesWorkspaceBloc, ProjectTemplate>(
           addButtonKey: newTemplateKey,
@@ -31,7 +31,13 @@ class TemplatesWorkspace extends StatelessWidget {
             );
 
             if (template != null) {
-              context.read<ProjectBloc>().add(NewTemplateEvent(template.name));
+              final projectId = context.read<ProjectBloc>().state.projectId;
+              context.read<TemplatesBloc>().add(
+                    NewTemplateEvent(
+                      projectId: projectId,
+                      name: template.name,
+                    ),
+                  );
 
               return template.name;
             }
@@ -42,7 +48,7 @@ class TemplatesWorkspace extends StatelessWidget {
             return Text(template.name);
           },
           mapItemValue: (template) => template.name,
-          items: state.project?.templates ?? [],
+          items: state.templates,
           emptyMessage:
               'Nothing to show yet, select a template on the left side bar',
           buildCurrent: (current) => TemplateEditor(templateName: current),

@@ -18,6 +18,8 @@ dependencies:
   code_text_field: ^1.0.1-2
   engine:
     path: ../engine
+  repository:
+    path: ../repository
 
 dev_dependencies:
   flutter_test:

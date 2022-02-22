@@ -1,11 +1,13 @@
-import 'package:editor/src/project/models/project.dart';
 import 'package:equatable/equatable.dart';
+import 'package:repository/repository.dart';
 
 class ProjectState extends Equatable {
+  final String projectId;
   final Project? project;
 
   const ProjectState({
     this.project,
+    required this.projectId,
   });
 
   @override
@@ -15,6 +17,7 @@ class ProjectState extends Equatable {
     Project? project,
   }) {
     return ProjectState(
+      projectId: projectId,
       project: project ?? this.project,
     );
   }

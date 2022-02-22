@@ -24,6 +24,7 @@ class EmptyProjectView extends StatelessWidget {
               if (newProject != null) {
                 context.read<ProjectBloc>().add(
                       NewProjectEvent(
+                        userId: 'test', // TODO auth
                         name: newProject.name,
                       ),
                     );

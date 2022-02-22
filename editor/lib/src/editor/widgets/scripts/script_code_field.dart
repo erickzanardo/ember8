@@ -1,6 +1,6 @@
 import 'package:code_text_field/code_text_field.dart';
 import 'package:editor/src/project/bloc/project_bloc.dart';
-import 'package:editor/src/project/bloc/project_events.dart';
+import 'package:editor/src/scripts/bloc/scripts_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:highlight/languages/javascript.dart';
@@ -16,8 +16,8 @@ class ScriptCodeField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.read<ProjectBloc>().state;
-    final scripts = state.project?.scripts ?? [];
+    final state = context.read<ScriptsBloc>().state;
+    final scripts = state.scripts;
     final code =
         scripts.where((script) => script.name == scriptName).first.body;
     return _Field(
@@ -71,7 +71,7 @@ class _FieldState extends State<_Field> {
 
   void _updateCode() {
     context
-        .read<ProjectBloc>()
+        .read<ScriptsBloc>()
         .add(UpdateScriptEvent(widget.scripName, _controller.text));
   }
 

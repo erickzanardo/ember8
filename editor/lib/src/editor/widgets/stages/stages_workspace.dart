@@ -1,12 +1,11 @@
 import 'package:editor/src/editor/widgets/stages/stages_editor/stage_editor.dart';
 import 'package:editor/src/project/bloc/project_bloc.dart';
-import 'package:editor/src/project/bloc/project_events.dart';
-import 'package:editor/src/project/bloc/project_state.dart';
-import 'package:editor/src/project/models/project.dart';
+import 'package:editor/src/stages/bloc/stages_bloc.dart';
 import 'package:editor/src/workspaces/bloc/workspace_bloc.dart';
 import 'package:editor/src/workspaces/widgets/workspace.dart';
 import 'package:flutter/material.dart' hide IconButton;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:repository/repository.dart';
 
 import 'new_stage_form.dart';
 
@@ -17,7 +16,7 @@ class StagesWorkspace extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProjectBloc, ProjectState>(
+    return BlocBuilder<StagesBloc, StagesState>(
       builder: (context, state) {
         return Workspace<StagesWorkspaceBloc, ProjectStage>(
           addButtonKey: newStageKey,
@@ -31,7 +30,9 @@ class StagesWorkspace extends StatelessWidget {
             );
 
             if (stage != null) {
-              context.read<ProjectBloc>().add(NewStageEvent(stage.name));
+              final projectId = context.read<ProjectBloc>().state.projectId;
+
+              context.read<StagesBloc>().add(NewStageEvent(projectId: projectId, name: stage.name,),);
 
               return stage.name;
             }
@@ -42,7 +43,7 @@ class StagesWorkspace extends StatelessWidget {
             return Text(stage.name);
           },
           mapItemValue: (stage) => stage.name,
-          items: state.project?.stages ?? [],
+          items: state.stages,
           emptyMessage:
               'Nothing to show yet, select a stage on the left side bar',
           buildCurrent: (current) => StageEditor(stageName: current),

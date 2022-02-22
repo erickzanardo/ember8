@@ -1,13 +1,13 @@
 import 'package:editor/src/editor/widgets/sprites/new_sprite_form.dart';
 import 'package:editor/src/editor/widgets/sprites/sprite_editor/sprite_editor.dart';
 import 'package:editor/src/project/bloc/project_bloc.dart';
-import 'package:editor/src/project/bloc/project_events.dart';
 import 'package:editor/src/project/bloc/project_state.dart';
-import 'package:editor/src/project/models/project.dart';
+import 'package:editor/src/sprites/bloc/sprites_bloc.dart';
 import 'package:editor/src/workspaces/bloc/workspace_bloc.dart';
 import 'package:editor/src/workspaces/widgets/workspace.dart';
 import 'package:flutter/material.dart' hide IconButton;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:repository/repository.dart';
 
 class SpritesWorkspace extends StatelessWidget {
   static const newSpriteKey = Key('new_sprite_key');
@@ -16,7 +16,7 @@ class SpritesWorkspace extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProjectBloc, ProjectState>(
+    return BlocBuilder<SpritesBloc, SpritesState>(
       builder: (context, state) {
         return Workspace<SpritesWorkspaceBloc, ProjectSprite>(
           addButtonKey: newSpriteKey,
@@ -30,8 +30,10 @@ class SpritesWorkspace extends StatelessWidget {
             );
 
             if (sprite != null) {
-              context.read<ProjectBloc>().add(
+              final projectId = context.read<ProjectBloc>().state.projectId;
+              context.read<SpritesBloc>().add(
                     NewSpriteEvent(
+                      projectId: projectId,
                       name: sprite.name,
                       width: sprite.width,
                       height: sprite.height,
@@ -48,7 +50,7 @@ class SpritesWorkspace extends StatelessWidget {
             return Text(sprite.name);
           },
           mapItemValue: (sprite) => sprite.name,
-          items: state.project?.sprites ?? [],
+          items: state.sprites,
           emptyMessage:
               'Nothing to show yet, select a sprite on the left side bar',
           buildCurrent: (current) => SpriteEditor(spriteName: current),

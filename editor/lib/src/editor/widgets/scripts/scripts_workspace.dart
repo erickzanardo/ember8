@@ -1,12 +1,11 @@
 import 'package:editor/src/editor/widgets/scripts/script_code_field.dart';
 import 'package:editor/src/project/bloc/project_bloc.dart';
-import 'package:editor/src/project/bloc/project_events.dart';
-import 'package:editor/src/project/bloc/project_state.dart';
-import 'package:editor/src/project/models/project.dart';
+import 'package:editor/src/scripts/bloc/scripts_bloc.dart';
 import 'package:editor/src/workspaces/bloc/workspace_bloc.dart';
 import 'package:editor/src/workspaces/widgets/workspace.dart';
 import 'package:flutter/material.dart' hide IconButton;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:repository/repository.dart';
 
 import 'new_script_form.dart';
 import 'script_side_item.dart';
@@ -18,7 +17,7 @@ class ScriptsWorkspace extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProjectBloc, ProjectState>(
+    return BlocBuilder<ScriptsBloc, ScriptsState>(
       builder: (context, state) {
         return Workspace<ScriptsWorkspaceBloc, ProjectScript>(
           addButtonKey: newScriptKey,
@@ -32,9 +31,12 @@ class ScriptsWorkspace extends StatelessWidget {
             );
 
             if (script != null) {
-              context
-                  .read<ProjectBloc>()
-                  .add(NewScriptEvent(script.name, script.type));
+              final projectId = context.read<ProjectBloc>().state.projectId;
+              context.read<ScriptsBloc>().add(NewScriptEvent(
+                    projectId: projectId,
+                    name: script.name,
+                    type: script.type,
+                  ));
 
               return script.name;
             }
@@ -48,7 +50,7 @@ class ScriptsWorkspace extends StatelessWidget {
             );
           },
           mapItemValue: (script) => script.name,
-          items: state.project?.scripts ?? [],
+          items: state.scripts,
           emptyMessage:
               'Nothing open yet, select a script on the left side bar',
           buildCurrent: (current) => ScriptCodeField(scriptName: current),
