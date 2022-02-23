@@ -1,0 +1,20 @@
+name: auth_repository
+description: Provides authentication features to Ember8
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=2.15.0 <3.0.0"
+
+dependencies:
+  equatable: ^2.0.3
+  firebase_auth: ^3.3.4
+  flutter:
+    sdk: flutter
+  google_sign_in: ^5.2.1
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  very_good_analysis: ^2.4.0
