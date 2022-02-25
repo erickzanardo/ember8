@@ -1,16 +1,21 @@
+import 'package:deposit/deposit.dart';
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part './project_script.dart';
 part './project_sprite.dart';
 part './project_template.dart';
 part './project_stage.dart';
 
+part 'project.g.dart';
+
 /// {@template project_model}
 ///
 /// Model for a project
 ///
 /// {@endtemplate}
-class Project extends Equatable {
+@JsonSerializable()
+class Project extends Entity with EquatableMixin {
 
   /// {@macro project_model}
   const Project({
@@ -18,6 +23,10 @@ class Project extends Equatable {
     required this.userId,
     required this.name,
   });
+
+  factory Project.fromJson(Map<String, dynamic> json) {
+    return _$ProjectFromJson(json);
+  }
 
   /// Id of this project
   final String? id;
@@ -42,5 +51,10 @@ class Project extends Equatable {
       name: name ?? this.name,
       userId: userId ?? this.userId,
     );
+  }
+
+  @override
+  Map<String, dynamic> toJSON() {
+    return _$ProjectToJson(this);
   }
 }

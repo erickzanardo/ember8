@@ -1,6 +1,10 @@
 import 'package:editor/src/app/app.dart';
+import 'package:editor/src/project_list/project_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
+
+import '../../widgets/spacings.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -26,14 +30,16 @@ class Home extends StatelessWidget {
                 : Row(
                     children: [
                       Text('Welcome ${user.name}'),
-                      const SizedBox(width: 8),
+                      const Gap(sm),
                       ElevatedButton(
                         onPressed: () {
-                          ///  Navigate to the project list
+                          Navigator.of(context).push(
+                            ProjectListPage.route(userId: user.id),
+                          );
                         },
                         child: const Text('My projects'),
                       ),
-                      const SizedBox(width: 8),
+                      const Gap(sm),
                       ElevatedButton(
                         onPressed: () {
                           context.read<AppBloc>().add(const SignOutRequested());
